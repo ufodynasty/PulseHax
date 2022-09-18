@@ -1,0 +1,33 @@
+{
+    "name": "Hacksus",
+    "version": "0.3.2",
+    "description": "Hacking pulsus has never been so easy",
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://*.pulsus.cc/*"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*.pulsus.cc/*"],
+        "js": ["contentScript.js"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "Wave.js",
+          "Init.js"
+        ],
+        "matches": ["https://*.pulsus.cc/*"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "32": "assets/PulsusHax.png"
+      },
+      "default_title": "Hacksus",
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 3
+}

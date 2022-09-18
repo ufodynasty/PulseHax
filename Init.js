@@ -1,0 +1,38 @@
+zt.skipIntro = false;
+Zn.musicTime = function () {
+  var e;
+  1 === soundManager.getSoundById('menuMusic').playState && (soundManager.stop('menuMusic'), soundManager.setVolume(zt.song, Et.settings.musicVolume)),
+  !1 === zt.edit && (!1 === zt.preLevelStart && (zt.preLevelStart = millis()), 5000 <= millis() - zt.preLevelStart + (zt.songOffset + zt.mods.offset + Et.settings.offset) && !zt.songPlaying && !zt.paused ? (St[zt.song].rate(zt.mods.bpm), St[zt.song].volume(Et.settings.musicVolume / 100), e = St[zt.song].play(), St[zt.song].seek((zt.songOffset + zt.mods.offset + Et.settings.offset) / 1000 + ((zt.skipIntro ? zt.beat[0][1] : 0) * zt.mods.bpm / (zt.bpm / 60)) - 5, e), zt.songPlaying = !0) : zt.paused && (St[zt.song].pause(), zt.songPlaying = !1)),
+  zt.edit || !1 !== zt.songEnded || St[zt.song].on('end', function () {
+    zt.songEnded = [
+      millis(),
+      St[zt.song].duration
+    ]
+  }),
+  !1 !== zt.edit || zt.paused || 1 !== zt.disMode || (!1 !== zt.songPlaying || !1 !== ye && 'hidden' !== ye || !1 === zt.preLevelStart ? ( - 1000 < ((e = ((!1 === zt.songEnded ? St[zt.song].seek() : St[zt.song].duration() + (!1 === zt.songEnded ? 0 : (millis() - zt.songEnded[0]) / 1000 * zt.mods.bpm)) - (zt.songOffset + zt.mods.offset + Et.settings.offset) / 1000) * (zt.bpm / 60) / zt.mods.bpm) - zt.time) * zt.mods.bpm / (zt.bpm / 60) || 'set' === zt.time) && (zt.time = e) : zt.time = (millis() - zt.preLevelStart - 5000) / 1000 * (zt.bpm / 60) / zt.mods.bpm)
+}
+
+window.addEventListener("InjectedScriptEval", function(evt) {
+  try {
+    response = JSON.parse(JSON.stringify(eval(evt.detail) ?? null, getCircularReplacer()));
+  } catch(error) {
+    response = undefined;
+  }
+  var test = new CustomEvent("InjectedScriptResponse", {detail: response});
+  window.dispatchEvent(test);
+}, false);
+
+
+
+const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};
