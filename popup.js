@@ -89,10 +89,38 @@ document.getElementById("skipIntro").addEventListener('click', function(e) {
   execute(`zt.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
 
+document.getElementById("aInRange").addEventListener("click", function() {
+  let ub = document.getElementById("uBound").value;
+  let lb = document.getElementById("lBound").value;
+  let value = document.getElementById('select').value;
+  execute(`zt.beat.sort(function (e, t) {return e[1] - t[1]});
+  zt.timelineMode = "select";
+  zt.selectedBeats = []
+  for (i=${lb}; i <= ${ub}; i++){
+    if (${value == 'selA' ? "1" : `${value == 'selB' ? "!" : ""}zt.beat[i][5]`}){
+      zt.selectedBeats.push(i)
+    }
+  }
+`)
+  document.getElementById("uBound").value = document.getElementById("uBound").max
+  document.getElementById("lBound").vaule = document.getElementById("lBound").min
+});
+
 document.getElementById("sInRange").addEventListener("click", function() {
   let ub = document.getElementById("uBound").value;
   let lb = document.getElementById("lBound").value;
-  execute(`zt.beat.sort(function (e, t) {return e[1] - t[1]}); zt.timelineMode = "select"; zt.selectedBeats = [...Array(${ub - lb + 1}).keys()].map(i => i + ${lb})`)
+  let value = document.getElementById('select').value;
+  execute(`zt.beat.sort(function (e, t) {return e[1] - t[1]});
+  zt.timelineMode = "select";
+  zt.selectedBeats = []
+  for (i=${lb}; i <= ${ub}; i++){
+    if((i+1 >= zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1])
+    && (i == 0 || zt.beat[i][1] != zt.beat[i-1][1]) ${value == "selA" ?"":`
+    && ${value == "selB" ? "!" : ""}zt.beat[i][5]`}){
+      zt.selectedBeats.push(i);
+    }
+  }
+  `)
   document.getElementById("uBound").value = document.getElementById("uBound").max
   document.getElementById("lBound").vaule = document.getElementById("lBound").min
 });
