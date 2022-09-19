@@ -5,7 +5,7 @@ chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
   userSettings = result.Settings;
   Object.keys(userSettings).forEach(function (key){
     let element = document.getElementById(key)
-    if(element.b == "checkbox") {
+    if(element.type == "checkbox") {
       element.checked = userSettings[key];
     } else {
       element.value = userSettings[key];
@@ -112,6 +112,13 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   `)
   document.getElementById("uBound").value = document.getElementById("uBound").max
   document.getElementById("lBound").vaule = document.getElementById("lBound").min
+});
+
+document.getElementById("deleteSelected").addEventListener("click", function() {
+  execute(`
+    zt.beat = zt.beat.filter((v,i,a) => {return !zt.selectedBeats.includes(i)})
+    zt.selectedBeats = [];
+  `)
 });
 
 document.getElementById("getTBar").addEventListener("click", function() {
