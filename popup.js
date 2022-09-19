@@ -99,16 +99,18 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   zt.timelineMode = "select";
   zt.selectedBeats = []
   for (i=${lb}; i <= ${ub}; i++){
-    if(${(chValue == "1" || chValue == "2") ? "i+1 < zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1]" : chValue == "3+" ? "i+1 < zt.beat.length && zt.beat[i][1] == zt.beat[i+1][1]" : "true"}) {
-      if(${(chValue == "2" || chValue == "3+") ? "i > 0 && zt.beat[i][1] == zt.beat[i-1][1]" : chValue == "1" ? "i > 0 && zt.beat[i][1] != zt.beat[i-1][1]" : "true"}){
-        if(${bValue == "beat" ? "!zt.beat[i][5]" : bValue == "hold" ? "zt.beat[i][5]" : "true"}){
-          zt.selectedBeats.push(i);
-          ${chValue == "2" || chValue == "3+" ? "zt.selectedBeats.push(i-1);" : ""}
-          ${chValue == "3+" ? "zt.selectedBeats.push(i+1);" : ""}
+    if((${bValue == 'bSelect'} || ${chValue == 'chSelect'}) ? "" : "1") {
+      if(${(chValue == "1" || chValue == "2") ? "i+1 < zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1]" : chValue == "3+" ? "i+1 < zt.beat.length && zt.beat[i][1] == zt.beat[i+1][1]" : "true"}) {
+        if(${(chValue == "2" || chValue == "3+") ? "i > 0 && zt.beat[i][1] == zt.beat[i-1][1]" : chValue == "1" ? "i > 0 && zt.beat[i][1] != zt.beat[i-1][1]" : "true"}){
+          if(${bValue == "beat" ? "!zt.beat[i][5]" : bValue == "hold" ? "zt.beat[i][5]" : "true"}){
+            zt.selectedBeats.push(i);
+            ${chValue == "2" || chValue == "3+" ? "zt.selectedBeats.push(i-1);" : ""}
+            ${chValue == "3+" ? "zt.selectedBeats.push(i+1);" : ""}
+            }
+          }
         }
       }
     }
-  }
   `)
   document.getElementById("uBound").value = document.getElementById("uBound").max
   document.getElementById("lBound").vaule = document.getElementById("lBound").min
