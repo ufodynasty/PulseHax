@@ -89,64 +89,39 @@ document.getElementById("skipIntro").addEventListener('click', function(e) {
   execute(`zt.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
 
-document.getElementById("sInRange").addEventListener("click", function() {
+document.getElementById("selectInRange").addEventListener("click", function() {
   let ub = document.getElementById("uBound").value;
   let lb = document.getElementById("lBound").value;
-  execute(`zt.beat.sort(function (e, t) {return e[1] - t[1]}); zt.timelineMode = "select"; zt.selectedBeats = [...Array(${ub - lb + 1}).keys()].map(i => i + ${lb})`)
+  let bValue = document.getElementById('bType').value;
+  let chValue = document.getElementById('chType').value;
+
+  execute(`zt.beat.sort(function (e, t) {return e[1] - t[1]});
+  zt.timelineMode = "select";
+  zt.selectedBeats = []
+  for (i=${lb}; i <= ${ub}; i++){
+    if(${!(bValue == 'bSelect' || chValue == 'chSelect')}) {
+      if(${(chValue == "1" || chValue == "2") ? "i+1 < zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1]" : chValue == "3+" ? "i+1 < zt.beat.length && zt.beat[i][1] == zt.beat[i+1][1]" : "true"}) {
+        if(${(chValue == "2" || chValue == "3+") ? "i > 0 && zt.beat[i][1] == zt.beat[i-1][1]" : chValue == "1" ? "i > 0 && zt.beat[i][1] != zt.beat[i-1][1]" : "true"}){
+          if(${bValue == "beat" ? "!zt.beat[i][5]" : bValue == "hold" ? "zt.beat[i][5]" : "true"}){
+            zt.selectedBeats.push(i);
+            ${chValue == "2" || chValue == "3+" ? "zt.selectedBeats.push(i-1);" : ""}
+            ${chValue == "3+" ? "zt.selectedBeats.push(i+1);" : ""}
+            }
+          }
+        }
+      }
+    }
+  `)
   document.getElementById("uBound").value = document.getElementById("uBound").max
   document.getElementById("lBound").vaule = document.getElementById("lBound").min
 });
 
-document.getElementById("sSelect").addEventListener("click", function() {
-  execute(`
-  zt.beat.sort(function (e, t) {return e[1] - t[1]});
-  zt.timelineMode = "select";
-  zt.selectedBeats = [];
-  for (i=0; i < zt.beat.length; i++) {
-    if((i+1 >= zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1]) && (i == 0 || zt.beat[i][1] != zt.beat[i-1][1])) {
-      zt.selectedBeats.push(i);
-    }
-  }
-  zt.selectedBeats = [...new Set(zt.selectedBeats)].sort()
-  `)
-});
-document.getElementById("dSelect").addEventListener("click", function() {
-  execute(`
-  zt.beat.sort(function (e, t) {return e[1] - t[1]});
-  zt.timelineMode = "select";
-  zt.selectedBeats = [];
-  for (i=0; i + 1 < zt.beat.length; i++) {
-    if(zt.beat[i][1] == zt.beat[i+1][1] && (i+2 >= zt.beat.length || zt.beat[i][1] != zt.beat[i+2][1]) && (i == 0 || zt.beat[i][1] != zt.beat[i-1][1])) {
-      zt.selectedBeats.push(i);
-      zt.selectedBeats.push(i+1);
-    }
-  }
-  zt.selectedBeats = [...new Set(zt.selectedBeats)].sort()
-  `)
-});
-document.getElementById("t+Select").addEventListener("click", function() {
-  execute(`
-  zt.beat.sort(function (e, t) {return e[1] - t[1]});
-  zt.timelineMode = "select";
-  zt.selectedBeats = [];
-  for (i=1; i + 1 < zt.beat.length; i++) {
-    if(zt.beat[i][1] == zt.beat[i+1][1] && zt.beat[i][1] == zt.beat[i-1][1]) {
-      zt.selectedBeats.push(i-1);
-      zt.selectedBeats.push(i);
-      zt.selectedBeats.push(i+1);
-    }
-  }
-  zt.selectedBeats = [...new Set(zt.selectedBeats)].sort()
-  `)
-});
-document.getElementById("delSelect").addEventListener("click", function() {
+document.getElementById("deleteSelected").addEventListener("click", function() {
   execute(`
     zt.beat = zt.beat.filter((v,i,a) => {return !zt.selectedBeats.includes(i)})
     zt.selectedBeats = [];
   `)
 });
-
-
 
 document.getElementById("getTBar").addEventListener("click", function() {
   execute(`[zt.beatColor, zt.beatSaturation, zt.beatBrightness]`,function(response){
