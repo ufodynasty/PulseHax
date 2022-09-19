@@ -1,21 +1,19 @@
 <link href="popup.css" rel="stylesheet" type="text/css" />
 <script type="module" src="popup.js"></script>
-
-<div class="container">
+<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
   <div>
-    <div class="title">Welcome to Hacksus o/
+    <h1>GigaPulsus v0.3.1</h1>
     <input type="button" id="refresh" value="&#11118;" style="width: 21px; padding: 1px 1px; float:right;"> 
-    </div>
     <br>
     <fieldset>
-      <legend>Startup Features</legend> 
+      <legend><h3>Startup Features</h3></legend> 
       <form id = "startup" style="margin: 0px">
         <input type="checkbox" id="Wave" name="Wave" checked>
         <label for="Wave">Wave</label>
       </form>
     </fieldset>
     <fieldset>
-      <legend>Menu Features</legend> 
+      <legend><h3>Menu Features</h3></legend> 
       <form id = "menu" style="margin: 0px">
         <input type="checkbox" id="ranked" name="ranked">
         <label for="ranked">Ranked</label><br>
@@ -24,37 +22,20 @@
       </form>
     </fieldset>
     <fieldset>
-      <legend>Editor Features</legend> 
+      <legend><h3>Editor Features</h3></legend> 
       <form id = "massSelect">
           <label for="lBound">Lower Bound</label>
           <input type="number" id="lBound" name="lBound" min="0" max="0" step="1" style="width: 100px;"><br>
           <label for="uBound">Upper Bound</label>
           <input type="number" id="uBound" name="uBound" min="0" max="0" step="1" style="width: 100px;"><br>
-          <input type="button" id = "sInRange" value="Select beats in range">
-          <hr>
-          <input type="button" id="sSelect" value="Select singles">
-          <input type="button" id="dSelect" value="Select doubles">
-          <input type="button" id="t+Select" value="Select triples+">
-          <input type="button" id="delSelect" value="Delete selected beats">
+          <label for="select">Select:</label>
+          <select id="select">
+            <option value="selA" selected>All</option>
+            <option value="selB">Beats</option>
+            <option value="selH">Holds</option>
+          </select>
+          <input type="button" id="aInRange" value="Select all">
+          <input type="button" id="sInRange" value="Select singles">
         </form>
-        <hr>
-        <form id = "colors">
-          <input type="color" id = "cBank1" style="width: 21px; height: 21px;">
-          <input type="color" id = "cBank2" style="width: 21px; height: 21px;">
-          <input type="color" id = "cBank3" style="width: 21px; height: 21px;">
-          <input type="color" id = "cBank4" style="width: 21px; height: 21px;">
-        </form>
-        <select name="banks" id="banks">
-          <option value="cBank1">Color bank 1</option>
-          <option value="cBank2">Color bank 2</option>
-          <option value="cBank3">Color bank 3</option>
-          <option value="cBank4">Color bank 4</option>
-        </select>
-        <input type="button" id="getTBar" value="Get current color">
-        <input type="button" id="setTBar" value="Set current color">
-        <input type="button" id="getSBeat" value="Get selected color">
-        <input type="button" id="setSBeat" value="Set selected color">
-    </fieldset>
-    
   </div>
 </div>

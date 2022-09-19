@@ -1,0 +1,49 @@
+body{
+    
+    border-color: #FFD700;
+    background: #0e0e0e;
+    color: #FFFFFF;
+    font-family: 'Quicksand'
+
+
+}
+h1{
+
+    color: #FFD700
+
+}
+h3{
+    
+    color: #FFD700
+
+}
+select {
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    appearance:none;
+    outline:0;
+    box-shadow:rgb(150, 150, 150);
+    border:0!important;
+    background: #1e1e1e;
+    font-family: 'Quicksand';
+    color: #FFFFFF;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+-moz-appearance: textfield;
+margin: 0;
+}
+button{
+
+    background-color: solid rgb(150, 150, 150);
+    color: #FFFFFF;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    appearance:none;
+    outline:0;
+    font-family: 'Quicksand';
+
+}
