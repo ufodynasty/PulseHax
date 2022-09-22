@@ -51,14 +51,6 @@ function refresh() {
   })
 }refresh();
 
-//This code is my code. There is much code out there that is like it but this one is mine. It may not be the best code
-//but this is the one that I wrote that actually worked.
-function darkmodetoggle() {
-  let DarkHeaderToggle = document.getElementById("pain");
-  DarkHeaderToggle.classList.toggle("header-dark-mode");
-  document.querySelectorAll("*:not(.pain)").forEach(e => e.classList.toggle("dark-mode"));
-}
-
 function refreshBeatMultiSelect(response) {
   if(document.getElementById('uBound').max == 0 && response.response.zt.beat.length != 0) {
     document.getElementById('uBound').max = response.response.zt.beat.length - 1;
@@ -85,7 +77,14 @@ document.getElementById("refresh").addEventListener("click", function() {
 });
 
 document.getElementById("darkmodetoggle").addEventListener("click", function() {
-  darkmodetoggle();
+  /*
+  This code is my code. There is much code out there that is like it but this one is mine. It may not be the best code
+  But this is the one that I wrote that actually worked.
+  
+  - Musings of a pickle
+  
+  */
+  document.querySelectorAll("*").forEach(e => e.classList.toggle("dark-mode"));
 });
 
 document.getElementById("ranked").addEventListener('click', function(e) {
