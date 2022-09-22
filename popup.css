@@ -1,0 +1,34 @@
+h1 {
+    color: #f0f0f0;
+    background: linear-gradient(
+        to Right, 
+        #ff5757, 
+        #ffb53f, 
+        #fff100,
+        #9ae900,
+        #15ffe1,
+        #816aff,
+        #ff0040
+    );
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0.2em transparent;
+    padding-left: 10px;
+}
+
+.header-dark-mode {
+    color:#232323
+}
+
+.dark-mode {
+    background-color: #232323;
+    color: #f0f0f0;
+}
+
+/*
+
+once there's a fix to make quicksand behave with the gradient for the header we can uncomment this
+
+body{
+    font-family:"Quicksand";
+}
+*/
