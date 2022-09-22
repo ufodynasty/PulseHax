@@ -89,6 +89,34 @@ document.getElementById("skipIntro").addEventListener('click', function(e) {
   execute(`zt.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
 
+document.getElementById("selectTheme").addEventListener('click', function(e) {
+  let st = document.getElementById("theme").value
+  execute(`if(${st == "silver"}) {
+    T['en'].theme_blackSilver = 'Black Silver';
+    Et.settings.themesK.push(['lang("theme_blackSilver",langSel)', 10]);
+    test = {
+      buttonDown: color(30, 30, 30),
+      buttonText: color(255, 255, 255),
+      buttonUp: color(75, 75, 75),
+      checkmark: color(220, 220, 220),
+      dropdown: color(100, 100, 100),
+      lightTheme: !1,
+      main: color(15, 15, 15),
+      modText: color(150, 150, 150),
+      overlayShade: color(8, 8, 8),
+      scrollbar: color(220, 220, 220),
+      select: color(75, 75, 75),
+      shade: color(5, 5, 5),
+      text: color(255, 255, 255),
+      textDown: color(200, 200, 200)
+    };
+    Le.push(test);
+    Et.settings.menu.pages[1].items[1].options.push(10);
+    Et.settings.menu.pages[1].items[1].labels.push('theme_blackSilver');
+    Et.settings.themeSel = 10
+  }`);
+});
+
 document.getElementById("selectInRange").addEventListener("click", function() {
   let ub = document.getElementById("uBound").value;
   let lb = document.getElementById("lBound").value;
