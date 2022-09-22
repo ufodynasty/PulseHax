@@ -15,13 +15,13 @@ h1 {
     padding-left: 10px;
 }
 
-.header-dark-mode {
-    color:#232323
-}
-
 .dark-mode {
     background-color: #232323;
     color: #f0f0f0;
+}
+
+h1.dark-mode {
+  color:#232323
 }
 
 /*
