@@ -15,11 +15,6 @@ eval(Ln.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupCo
 window.addEventListener("SetupComplete", function() {
   zt.skipIntro = false;
   console.log("Setup is done");
-  console.log(Le);
-  console.log(Je);
-  T[Ct].theme_tbd1 = "tbd1";
-  T[Ct].theme_tbd2 = "tbd2";
-  T[Ct].theme_tbd3 = "tbd3";
   Le.push({
     main: color(0, 0, 0),
     text: color(255, 255, 255),
@@ -66,8 +61,6 @@ window.addEventListener("SetupComplete", function() {
     checkmark: color(0, 175, 255),
     dropdown: color(225, 225, 225)
   });
-  Et.settings.menu.pages[1].items[1].options.push(10,11,12);
-  Et.settings.menu.pages[1].items[1].labels.push('theme_tbd1','theme_tbd2','theme_tbd3');
 });
 
 window.addEventListener("InjectedScriptEval", function(evt) {

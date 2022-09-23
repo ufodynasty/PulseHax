@@ -100,6 +100,30 @@ document.getElementById("ranked").addEventListener('click', function(e) {
 document.getElementById("skipIntro").addEventListener('click', function(e) {
   execute(`zt.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
+document.getElementById("customThemes").addEventListener('click', function(e) {
+  if(e.target.checked) {
+    console.log("Is it working?");
+    execute(`
+      T[Ct].theme_tbd1 = "tbd1";
+      T[Ct].theme_tbd2 = "tbd2";
+      T[Ct].theme_tbd3 = "tbd3";
+      Et.settings.menu.pages[1].items[1].options.push(10,11,12);
+      Et.settings.menu.pages[1].items[1].labels.push('theme_tbd1','theme_tbd2','theme_tbd3');
+    `);
+  } else {
+    execute(`
+      Et.settings.menu.pages[1].items[1].options = Et.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v <= 9});
+      Et.settings.menu.pages[1].items[1].labels = Et.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_tbd1','theme_tbd2','theme_tbd3'].includes(v)});
+      Et.settings.themeSel = Et.settings.themeSel > 9 ? 0 : Et.settings.themeSel;
+    `)
+  }
+  let ID = e.target.id;
+  userSettings[ID] = e.target.checked;
+  chrome.storage.sync.set({Settings:userSettings}, function() {
+    console.log(`${ID} is set to ${userSettings[ID]}`);
+  });
+});
+
 
 document.getElementById("selectInRange").addEventListener("click", function() {
   let ub = document.getElementById("uBound").value;
@@ -174,6 +198,5 @@ document.forms.colors.onchange = (e) => {
   chrome.storage.sync.set({Settings:userSettings}, function() {
     console.log(`${ID} is set to ${userSettings[ID]}`);
   });
-  return false;
   }
 
