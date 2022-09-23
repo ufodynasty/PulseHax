@@ -15,17 +15,17 @@ h1 {
     padding-left: 10px;
 }
 
-.header-dark-mode {
-    color:#232323
-}
-
 .dark-mode {
     background-color: #232323;
     color: #f0f0f0;
 }
 
-/*
+h1.dark-mode {
+  color:#232323
+}
 
+/*
+TODO
 once there's a fix to make quicksand behave with the gradient for the header we can uncomment this
 
 body{
