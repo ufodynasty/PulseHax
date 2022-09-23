@@ -1,4 +1,3 @@
-zt.skipIntro = false;
 Zn.musicTime = function () {
   var e;
   1 === soundManager.getSoundById('menuMusic').playState && (soundManager.stop('menuMusic'), soundManager.setVolume(zt.song, Et.settings.musicVolume)),
@@ -12,6 +11,65 @@ Zn.musicTime = function () {
   !1 !== zt.edit || zt.paused || 1 !== zt.disMode || (!1 !== zt.songPlaying || !1 !== ye && 'hidden' !== ye || !1 === zt.preLevelStart ? ( - 1000 < ((e = ((!1 === zt.songEnded ? St[zt.song].seek() : St[zt.song].duration() + (!1 === zt.songEnded ? 0 : (millis() - zt.songEnded[0]) / 1000 * zt.mods.bpm)) - (zt.songOffset + zt.mods.offset + Et.settings.offset) / 1000) * (zt.bpm / 60) / zt.mods.bpm) - zt.time) * zt.mods.bpm / (zt.bpm / 60) || 'set' === zt.time) && (zt.time = e) : zt.time = (millis() - zt.preLevelStart - 5000) / 1000 * (zt.bpm / 60) / zt.mods.bpm)
 }
 
+eval(Ln.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
+window.addEventListener("SetupComplete", function() {
+  zt.skipIntro = false;
+  console.log("Setup is done");
+  console.log(Le);
+  console.log(Je);
+  T[Ct].theme_tbd1 = "tbd1";
+  T[Ct].theme_tbd2 = "tbd2";
+  T[Ct].theme_tbd3 = "tbd3";
+  Le.push({
+    main: color(0, 0, 0),
+    text: color(255, 255, 255),
+    overlayShade: color(32, 45, 54),
+    shade: color(20, 35, 45),
+    buttonDown: color(240, 240, 240),
+    buttonUp: color(255, 255, 255),
+    buttonText: color(0, 0, 0),
+    textDown: color(200, 200, 200),
+    select: color(60, 50, 35),
+    modText: color(255, 175, 0),
+    scrollbar: color(255, 255, 255),
+    lightTheme: !1,
+    checkmark: color(0, 175, 255),
+    dropdown: color(225, 225, 225)
+  },{
+    main: color(0, 0, 0),
+    text: color(255, 255, 255),
+    overlayShade: color(32, 45, 54),
+    shade: color(20, 35, 45),
+    buttonDown: color(240, 240, 240),
+    buttonUp: color(255, 255, 255),
+    buttonText: color(0, 0, 0),
+    textDown: color(200, 200, 200),
+    select: color(60, 50, 35),
+    modText: color(255, 175, 0),
+    scrollbar: color(255, 255, 255),
+    lightTheme: !1,
+    checkmark: color(0, 175, 255),
+    dropdown: color(225, 225, 225)
+  },{
+    main: color(0, 0, 0),
+    text: color(255, 255, 255),
+    overlayShade: color(32, 45, 54),
+    shade: color(20, 35, 45),
+    buttonDown: color(240, 240, 240),
+    buttonUp: color(255, 255, 255),
+    buttonText: color(0, 0, 0),
+    textDown: color(200, 200, 200),
+    select: color(60, 50, 35),
+    modText: color(255, 175, 0),
+    scrollbar: color(255, 255, 255),
+    lightTheme: !1,
+    checkmark: color(0, 175, 255),
+    dropdown: color(225, 225, 225)
+  });
+  Et.settings.menu.pages[1].items[1].options.push(10,11,12);
+  Et.settings.menu.pages[1].items[1].labels.push('theme_tbd1','theme_tbd2','theme_tbd3');
+});
+
 window.addEventListener("InjectedScriptEval", function(evt) {
   try {
     response = JSON.parse(JSON.stringify(eval(evt.detail) ?? null, getCircularReplacer()));
@@ -21,8 +79,6 @@ window.addEventListener("InjectedScriptEval", function(evt) {
   var test = new CustomEvent("InjectedScriptResponse", {detail: response});
   window.dispatchEvent(test);
 }, false);
-
-
 
 const getCircularReplacer = () => {
   const seen = new WeakSet();
