@@ -13,7 +13,6 @@ chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
   });
 });
 
-
 document.forms.startup.onchange = testsync;
 function testsync(e) {
   const checked = e.target;
@@ -34,7 +33,7 @@ function testsync(e) {
 
 function execute(request,func = () => {}) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-    chrome.tabs.sendMessage(tabs[0].id, {message: request}, function(response) {
+    chrome.tabs.sendMessage(tabs[0].id, {payload: request}, function(response) {
       func(response);
       return false;
     });  
@@ -198,5 +197,4 @@ document.forms.colors.onchange = (e) => {
   chrome.storage.sync.set({Settings:userSettings}, function() {
     console.log(`${ID} is set to ${userSettings[ID]}`);
   });
-  }
-
+}

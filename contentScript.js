@@ -1,33 +1,41 @@
-chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
+inject("Init");
+window.addEventListener("SetupComplete", function() {
+  chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
     if(result.Settings.Wave) {
-        inject("Wave");
+      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
+      Pe.wave = 1;
+      `}));
     }
-    inject("Init");
-});
+    window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
+      T[Ct].theme_tbd1 = "tbd1";
+      T[Ct].theme_tbd2 = "tbd2";
+      T[Ct].theme_tbd3 = "tbd3";
+      Et.settings.menu.pages[1].items[1].options.push(10,11,12);
+      Et.settings.menu.pages[1].items[1].labels.push('theme_tbd1','theme_tbd2','theme_tbd3');
+    `}));
+  });
+})
 
-
-// window.addEventListener("InjectedScriptResponse", function(evt) {
-//     console.log("This is the response:");
-//     console.log(evt.detail);
-// }, false);
 
 chrome.runtime.onMessage.addListener((obj,sender, response) => {
-    window.addEventListener("InjectedScriptResponse", function(evt) {
-        response( {response: evt.detail})
-        return false;
-    }, false);
-    var test = new CustomEvent("InjectedScriptEval", {detail: obj.message});
-    window.dispatchEvent(test);
-    return false;
+	if(obj.payload) {
+		window.addEventListener("InjectedScriptResponse", function(evt) {
+				response( {response: evt.detail})
+				return false;
+		},{once: true});
+		var test = new CustomEvent("InjectedScriptEval", {detail: obj.payload});
+		window.dispatchEvent(test);
+	}
+	return false;
 });
 
 function inject(name) {
-    var s = document.createElement('script');
-    s.src = chrome.runtime.getURL(`${name}.js`);
-    s.onload = function() {
-        this.remove();
-    };
-    (document.head || document.documentElement).appendChild(s);
+  var s = document.createElement('script');
+  s.src = chrome.runtime.getURL(`${name}.js`);
+  s.onload = function() {
+    this.remove();
+  };
+  (document.head || document.documentElement).appendChild(s);
 }
 
 
