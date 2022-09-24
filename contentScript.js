@@ -7,11 +7,11 @@ window.addEventListener("SetupComplete", function() {
       `}));
     }
     window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      T[Ct].theme_tbd1 = "tbd1";
+      T[Ct].theme_gufo = "Gufo's Theme";
       T[Ct].theme_tbd2 = "tbd2";
       T[Ct].theme_tbd3 = "tbd3";
       Et.settings.menu.pages[1].items[1].options.push(10,11,12);
-      Et.settings.menu.pages[1].items[1].labels.push('theme_tbd1','theme_tbd2','theme_tbd3');
+      Et.settings.menu.pages[1].items[1].labels.push('theme_gufo','theme_tbd2','theme_tbd3');
     `}));
   });
 })
