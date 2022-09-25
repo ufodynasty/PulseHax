@@ -4,11 +4,19 @@ let userSettings = {};
 chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
   userSettings = result.Settings;
   Object.keys(userSettings).forEach(function (key){
+    if(key == "darkmodetoggle") {
+      if(userSettings[key]) {
+        document.querySelectorAll("*").forEach(e => e.classList.toggle("dark-mode"));
+      }
+      return;
+    }
     let element = document.getElementById(key)
-    if(element.type == "checkbox") {
-      element.checked = userSettings[key];
-    } else {
-      element.value = userSettings[key];
+    if(element) {
+      if(element.type == "checkbox") {
+        element.checked = userSettings[key];
+      } else {
+        element.value = userSettings[key];
+      }
     }
   });
 });
@@ -76,7 +84,7 @@ document.getElementById("refresh").addEventListener("click", function() {
   refresh();
 });
 
-document.getElementById("darkmodetoggle").addEventListener("click", function() {
+document.getElementById("darkmodetoggle").addEventListener("click", function(e) {
   /*
   This code is my code. There is much code out there that is like it but this one is mine. It may not be the best code
   But this is the one that I wrote that actually worked.
@@ -85,6 +93,11 @@ document.getElementById("darkmodetoggle").addEventListener("click", function() {
   
   */
   document.querySelectorAll("*").forEach(e => e.classList.toggle("dark-mode"));
+  let ID = e.target.id;
+  userSettings[ID] = (userSettings[ID] ? false : true);
+  chrome.storage.sync.set({Settings:userSettings}, function() {
+    console.log(`${ID} is set to ${userSettings[ID]}`);
+  });
 });
 
 document.getElementById("ranked").addEventListener('click', function(e) {
