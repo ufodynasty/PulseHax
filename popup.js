@@ -1,11 +1,17 @@
 import { hslToHex, rgbToHsv } from './util.js';
 
 let userSettings = {};
-chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
+chrome.storage.sync.get({Settings:{Wave:false,additionalThemes:false,customTheme:{}}}, function(result) {
   userSettings = result.Settings;
+  console.log(userSettings);
   Object.keys(userSettings).forEach(function (key){
-    let element = document.getElementById(key)
-    if(element.type == "checkbox") {
+    let element = document.getElementById(key);
+    if(key == "customTheme") {
+      element.checked = userSettings.customTheme.active;
+      if(element.checked) {
+        document.getElementById("customThemeEditor").classList.add("active");
+      }
+    } else if(element.type == "checkbox") {
       element.checked = userSettings[key];
     } else {
       element.value = userSettings[key];
@@ -87,7 +93,7 @@ document.getElementById("darkmodetoggle").addEventListener("click", function() {
   darkmodetoggle();
 });
 
-document.getElementById("ranked").addEventListener('click', function(e) {
+document.getElementById("ranked").addEventListener("click", function(e) {
   e.preventDefault();
   execute(`Pt[Et.lvl.sel]`, function(response) {
     if(typeof response.response == "number") {
@@ -96,32 +102,94 @@ document.getElementById("ranked").addEventListener('click', function(e) {
     }
   });
 });
-document.getElementById("skipIntro").addEventListener('click', function(e) {
+document.getElementById("skipIntro").addEventListener("click", function(e) {
   execute(`zt.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
-document.getElementById("customThemes").addEventListener('click', function(e) {
+document.getElementById("additionalThemes").addEventListener("click", function(e) {
   if(e.target.checked) {
-    console.log("Is it working?");
     execute(`
-      T[Ct].theme_tbd1 = "tbd1";
+      T[Ct].theme_gufo = "Gufo's theme";
       T[Ct].theme_tbd2 = "tbd2";
       T[Ct].theme_tbd3 = "tbd3";
       Et.settings.menu.pages[1].items[1].options.push(10,11,12);
-      Et.settings.menu.pages[1].items[1].labels.push('theme_tbd1','theme_tbd2','theme_tbd3');
+      Et.settings.menu.pages[1].items[1].labels.push('theme_gufo','theme_tbd2','theme_tbd3');
     `);
   } else {
     execute(`
-      Et.settings.menu.pages[1].items[1].options = Et.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v <= 9});
-      Et.settings.menu.pages[1].items[1].labels = Et.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_tbd1','theme_tbd2','theme_tbd3'].includes(v)});
-      Et.settings.themeSel = Et.settings.themeSel > 9 ? 0 : Et.settings.themeSel;
+      Et.settings.menu.pages[1].items[1].options = Et.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![10,11,12].includes(v)});
+      Et.settings.menu.pages[1].items[1].labels = Et.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_tbd2','theme_tbd3'].includes(v)});
+      Et.settings.themeSel = [10,11,12].includes(Et.settings.themeSel) ? 0 : Et.settings.themeSel;
     `)
   }
   let ID = e.target.id;
   userSettings[ID] = e.target.checked;
   chrome.storage.sync.set({Settings:userSettings}, function() {
-    console.log(`${ID} is set to ${userSettings[ID]}`);
+  console.log(`${ID} is set to ${userSettings[ID]}`);
   });
 });
+document.getElementById("customTheme").addEventListener("click", function(e) {
+  if(e.target.checked) {
+    execute(`
+      T[Ct].theme_CUSTOM = "Custom Theme";
+      Et.settings.menu.pages[1].items[1].options.push(13);
+      Et.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      Et.settings.themeSel = 13;
+    `);
+    document.getElementById("customThemeEditor").classList.add("active");
+  } else {
+    execute(`
+      Et.settings.menu.pages[1].items[1].options = Et.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 13});
+      Et.settings.menu.pages[1].items[1].labels = Et.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
+      Et.settings.themeSel = Et.settings.themeSel == 13 ? 0 : Et.settings.themeSel;
+    `)
+    document.getElementById("customThemeEditor").classList.remove("active");
+  }
+  userSettings.customTheme.active = e.target.checked;
+  chrome.storage.sync.set({Settings:userSettings}, function() {
+    console.log(`Custom Theme is set to ${userSettings.customTheme.active}`);
+  });
+});
+document.getElementById("attributes").addEventListener("change", function(e) {
+  if(["main","text","overlayShade","shade","buttonDown","buttonUp","buttonText","textDown","select","modText","scrollbar","checkmark","dropdown"].includes(e.target.value)) {
+    document.getElementById("cThemeColor").classList.add("active");
+    document.getElementById("lightTheme").classList.remove("active");
+    document.getElementById("lightThemeLabel").classList.remove("active");
+    execute(`
+    Le[13].${e.target.value}
+    `,function(response) {
+      let rgb = response.response.levels;
+      console.log(rgb);
+        document.getElementById("cThemeColor").value = `#${rgb[0].toString(16).padStart(2, '0')}${rgb[1].toString(16).padStart(2, '0')}${rgb[2].toString(16).padStart(2, '0')}`
+      }
+    );
+  } else if(e.target.value == "lightTheme") {
+    document.getElementById("lightTheme").classList.add("active");
+    document.getElementById("lightThemeLabel").classList.add("active");
+    document.getElementById("cThemeColor").classList.remove("active");
+    execute(`
+    Le[13].lightTheme
+    `,function(response) {
+        document.getElementById("lightTheme").checked = response.response;
+      }
+    );
+  } else {
+    document.getElementById("cThemeColor").classList.remove("active");
+    document.getElementById("lightTheme").classList.remove("active");
+    document.getElementById("lightThemeLabel").classList.remove("active");
+  }
+});
+document.getElementById("cThemeColor").addEventListener("change", function() {
+if(userSettings.customTheme.active) {
+  let color = document.getElementById("cThemeColor").value;
+  let attribute = document.getElementById("attributes").value;
+  if(["main","text","overlayShade","shade","buttonDown","buttonUp","buttonText","textDown","select","modText","scrollbar","checkmark","dropdown"].includes(attribute)) {
+    userSettings.customTheme[attribute] =  color;
+    execute(`
+      Le[13].${attribute} = color(${color.substr(1).match(/../g).map(x=>+`0x${x}`)});
+    `)
+  }
+}
+})
 
 
 document.getElementById("selectInRange").addEventListener("click", function() {

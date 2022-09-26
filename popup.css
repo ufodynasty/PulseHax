@@ -24,6 +24,10 @@ h1 {
     color: #f0f0f0;
 }
 
+.active {
+    display: inline-block !important;
+}
+
 /*
 
 once there's a fix to make quicksand behave with the gradient for the header we can uncomment this
