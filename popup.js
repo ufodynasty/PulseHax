@@ -189,7 +189,13 @@ if(userSettings.customTheme.active) {
     `)
   }
 }
-})
+});
+document.getElementById("customThemeEditorLegend").addEventListener("click", function() {
+  document.getElementById("customThemeEditor").children[1].classList.toggle("active");
+  let legend = document.getElementById("customThemeEditor").children[0].innerHTML;
+  console.log(legend.slice(-1) == "⏶")
+  document.getElementById("customThemeEditor").children[0].innerHTML = legend.slice(-1) == "⏷" ? legend.slice(0,-1) + "⏶" : legend.slice(0,-1) + "⏷";
+});
 
 
 document.getElementById("selectInRange").addEventListener("click", function() {
@@ -197,7 +203,6 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   let lb = document.getElementById("lBound").value;
   let bValue = document.getElementById('bType').value;
   let chValue = document.getElementById('chType').value;
-
   execute(`zt.beat.sort(function (e, t) {return e[1] - t[1]});
   zt.timelineMode = "select";
   zt.selectedBeats = []
