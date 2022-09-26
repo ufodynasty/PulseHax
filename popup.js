@@ -130,7 +130,7 @@ document.getElementById("additionalThemes").addEventListener("click", function(e
 document.getElementById("customTheme").addEventListener("click", function(e) {
   if(e.target.checked) {
     execute(`
-      T[Ct].theme_CUSTOM = "Custom Theme";
+      T[Ct].theme_CUSTOM = "Custom theme";
       Et.settings.menu.pages[1].items[1].options.push(13);
       Et.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
       Et.settings.themeSel = 13;
@@ -158,8 +158,7 @@ document.getElementById("attributes").addEventListener("change", function(e) {
     Le[13].${e.target.value}
     `,function(response) {
       let rgb = response.response.levels;
-      console.log(rgb);
-        document.getElementById("cThemeColor").value = `#${rgb[0].toString(16).padStart(2, '0')}${rgb[1].toString(16).padStart(2, '0')}${rgb[2].toString(16).padStart(2, '0')}`
+      document.getElementById("cThemeColor").value = `#${rgb[0].toString(16).padStart(2, '0')}${rgb[1].toString(16).padStart(2, '0')}${rgb[2].toString(16).padStart(2, '0')}`
       }
     );
   } else if(e.target.value == "lightTheme") {
@@ -178,17 +177,35 @@ document.getElementById("attributes").addEventListener("change", function(e) {
     document.getElementById("lightThemeLabel").classList.remove("active");
   }
 });
-document.getElementById("cThemeColor").addEventListener("change", function() {
+document.getElementById("cThemeColor").addEventListener("change", function(e) {
 if(userSettings.customTheme.active) {
-  let color = document.getElementById("cThemeColor").value;
+  let color = e.target.value;
   let attribute = document.getElementById("attributes").value;
   if(["main","text","overlayShade","shade","buttonDown","buttonUp","buttonText","textDown","select","modText","scrollbar","checkmark","dropdown"].includes(attribute)) {
-    userSettings.customTheme[attribute] =  color;
+    userSettings.customTheme[attribute] = color;
     execute(`
       Le[13].${attribute} = color(${color.substr(1).match(/../g).map(x=>+`0x${x}`)});
     `)
+    chrome.storage.sync.set({Settings:userSettings}, function() {
+      console.log(`${attribute} is set to ${userSettings.customTheme[attribute]}`);
+    });
   }
 }
+});
+document.getElementById("lightTheme").addEventListener("click", function(e) {
+  if(userSettings.customTheme.active) {
+    let attribute = document.getElementById("attributes").value;
+    let value = e.target.checked;
+    if(attribute == "lightTheme") {
+      userSettings.customTheme[attribute] = value;
+      execute(`
+        Le[13].${attribute} = ${value};
+      `)
+      chrome.storage.sync.set({Settings:userSettings}, function() {
+        console.log(`${attribute} is set to ${userSettings.customTheme[attribute]}`);
+      });
+    }
+  }
 });
 document.getElementById("customThemeEditorLegend").addEventListener("click", function() {
   document.getElementById("customThemeEditor").children[1].classList.toggle("active");
