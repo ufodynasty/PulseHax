@@ -22,7 +22,36 @@
         <input type="checkbox" id="ranked" name="ranked">
         <label for="ranked">Ranked</label><br>
         <input type="checkbox" id="skipIntro" name="skipIntro">
-        <label for="skipIntro">Skip Intro</label>
+        <label for="skipIntro">Skip Intro</label><br>
+        <input type="checkbox" id="additionalThemes" name="additionalThemes">
+        <label for="additionalThemes">Additional Themes</label><br>
+        <input type="checkbox" id="customTheme" name="customTheme">
+        <label for="customTheme">Custom Theme</label>
+        <fieldset id = "customThemeEditor" style="display: none;">
+          <legend id = "customThemeEditorLegend">Custom Theme &#x23F7;</legend>
+          <div style="display: none;" class = "active">
+            <select name="attributes" id="attributes">
+              <option value="themeAttributes" disabled selected>Theme Attributes</option>
+              <option value="main">Main</option>
+              <option value="text">Text</option>
+              <option value="overlayShade">Overlay Shade</option>
+              <option value="shade">Shade</option>
+              <option value="buttonDown">Button Down</option>
+              <option value="buttonUp">Button Up</option>
+              <option value="buttonText">Button Text</option>
+              <option value="textDown">Text Down</option>
+              <option value="select">Select</option>
+              <option value="modText">Mod Text</option>
+              <option value="scrollbar">Scrollbar</option>
+              <option value="lightTheme">Light Theme</option>
+              <option value="checkmark">Checkmark</option>
+              <option value="dropdown">Drop Down</option>
+            </select>
+            <input type="checkbox" id="lightTheme" name="lightTheme" style="display: none;">
+            <label for="lightTheme" id = "lightThemeLabel" style="display: none;">Light Theme</label>
+            <input type="color" id = "cThemeColor" style="width: 100%; display: none;">
+          </div>
+        </fieldset>
       </form>
     </fieldset>
     <fieldset>

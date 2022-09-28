@@ -20,6 +20,11 @@ h1 {
     color: #f0f0f0;
 }
 
+.active {
+    display: inline-block !important;
+}
+
+/*
 h1.dark-mode {
   color:#232323
 }

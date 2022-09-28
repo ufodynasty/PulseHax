@@ -16,7 +16,6 @@
     "web_accessible_resources": [
       {
         "resources": [
-          "Wave.js",
           "Init.js"
         ],
         "matches": ["https://*.pulsus.cc/*"]
