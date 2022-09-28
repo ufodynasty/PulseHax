@@ -5,6 +5,12 @@ chrome.storage.sync.get({Settings:{Wave:false,additionalThemes:false,customTheme
   userSettings = result.Settings;
   console.log(userSettings);
   Object.keys(userSettings).forEach(function (key){
+    if(key == "darkmodetoggle") {
+      if(userSettings[key]) {
+        document.querySelectorAll("*").forEach(e => e.classList.toggle("dark-mode"));
+      }
+      return;
+    }
     let element = document.getElementById(key);
     if(key == "customTheme") {
       element.checked = userSettings.customTheme.active;
@@ -56,14 +62,6 @@ function refresh() {
   })
 }refresh();
 
-//This code is my code. There is much code out there that is like it but this one is mine. It may not be the best code
-//but this is the one that I wrote that actually worked.
-function darkmodetoggle() {
-  let DarkHeaderToggle = document.getElementById("pain");
-  DarkHeaderToggle.classList.toggle("header-dark-mode");
-  document.querySelectorAll("*:not(.pain)").forEach(e => e.classList.toggle("dark-mode"));
-}
-
 function refreshBeatMultiSelect(response) {
   if(document.getElementById('uBound').max == 0 && response.response.zt.beat.length != 0) {
     document.getElementById('uBound').max = response.response.zt.beat.length - 1;
@@ -89,8 +87,20 @@ document.getElementById("refresh").addEventListener("click", function() {
   refresh();
 });
 
-document.getElementById("darkmodetoggle").addEventListener("click", function() {
-  darkmodetoggle();
+document.getElementById("darkmodetoggle").addEventListener("click", function(e) {
+  /*
+  This code is my code. There is much code out there that is like it but this one is mine. It may not be the best code
+  But this is the one that I wrote that actually worked.
+  
+  - Musings of a pickle
+  
+  */
+  document.querySelectorAll("*").forEach(e => e.classList.toggle("dark-mode"));
+  let ID = e.target.id;
+  userSettings[ID] = (userSettings[ID] ? false : true);
+  chrome.storage.sync.set({Settings:userSettings}, function() {
+    console.log(`${ID} is set to ${userSettings[ID]}`);
+  });
 });
 
 document.getElementById("ranked").addEventListener("click", function(e) {
