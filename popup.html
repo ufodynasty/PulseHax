@@ -1,24 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US"></html>
+<meta charset="utf-8">
 <link href="popup.css" rel="stylesheet" type="text/css" />
-<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
 <script type="module" src="popup.js"></script>
 
-<div class="container">
-  <div>
-    <header><h1>Welcome to PulseHax o/</h1>
+
+<div>
+  <header><h1>Welcome to PulseHax o/</h1>
+  <div class="button">
     <input style="padding-bottom: 2px;" type="button" id="refresh" value="&#11118;" width="21px">
     <input style="padding-top: 3px;" type="button" id="darkmodetoggle" value="&#x25D0;" width="21px">
-    </div>
-    <br>
-    <fieldset>
-      <legend>Startup Features</legend> 
-      <form id = "startup" style="margin: 0px">
+  </div>
+</div>
+  <br>
+  <fieldset>
+    <legend>Startup Features</legend> 
+    <form id = "startup" style="margin: 0px">
+      <div class="checkmark">
         <input type="checkbox" id="Wave" name="Wave" checked>
         <label for="Wave">Wave</label>
+      </div>
       </form>
-    </fieldset>
-    <fieldset>
-      <legend>Menu Features</legend> 
-      <form id = "menu" style="margin: 0px">
+  </fieldset>
+  <fieldset>
+    <legend>Menu Features</legend> 
+    <form id = "menu" style="margin: 0px">
+      <div class="checkmark">
         <input type="checkbox" id="ranked" name="ranked">
         <label for="ranked">Ranked</label><br>
         <input type="checkbox" id="skipIntro" name="skipIntro">
@@ -27,74 +35,76 @@
         <label for="additionalThemes">Additional Themes</label><br>
         <input type="checkbox" id="customTheme" name="customTheme">
         <label for="customTheme">Custom Theme</label>
+      </div>
         <fieldset id = "customThemeEditor" style="display: none;">
-          <legend id = "customThemeEditorLegend">Custom Theme &#x23F7;</legend>
-          <div style="display: none;" class = "active">
-            <select name="attributes" id="attributes">
-              <option value="themeAttributes" disabled selected>Theme Attributes</option>
-              <option value="main">Main</option>
-              <option value="text">Text</option>
-              <option value="overlayShade">Overlay Shade</option>
-              <option value="shade">Shade</option>
-              <option value="buttonDown">Button Down</option>
-              <option value="buttonUp">Button Up</option>
-              <option value="buttonText">Button Text</option>
-              <option value="textDown">Text Down</option>
-              <option value="select">Select</option>
-              <option value="modText">Mod Text</option>
-              <option value="scrollbar">Scrollbar</option>
-              <option value="lightTheme">Light Theme</option>
-              <option value="checkmark">Checkmark</option>
-              <option value="dropdown">Drop Down</option>
-            </select>
-            <input type="checkbox" id="lightTheme" name="lightTheme" style="display: none;">
-            <label for="lightTheme" id = "lightThemeLabel" style="display: none;">Light Theme</label>
-            <input type="color" id = "cThemeColor" style="width: 100%; display: none;">
-          </div>
-        </fieldset>
-      </form>
-    </fieldset>
-    <fieldset>
-      <legend>Editor Features</legend> 
-      <form id = "massSelect">
-          <label for="lBound">Lower Bound</label>
-          <input type="number" id="lBound" name="lBound" min="0" max="0" step="1" style="width: 100px;"><br>
-          <label for="uBound">Upper Bound</label>
-          <input type="number" id="uBound" name="uBound" min="0" max="0" step="1" style="width: 100px;"><br>
-          <select id="bType">
-            <option value="bSelect" disabled selected>Beat type</option>
-            <option value="all">All</option>
-            <option value="beat">Beats</option>
-            <option value="hold">Holds</option>
+        <legend id = "customThemeEditorLegend" style="font-size:14px;">Custom Theme &#x23F7;</legend>
+        <div style="display: none;" class = "active">
+          <select name="attributes" id="attributes">
+            <option value="themeAttributes" disabled selected>Theme Attributes</option>
+            <option value="main">Main</option>
+            <option value="text">Text</option>
+            <option value="overlayShade">Overlay Shade</option>
+            <option value="shade">Shade</option>
+            <option value="buttonDown">Button Down</option>
+            <option value="buttonUp">Button Up</option>
+            <option value="buttonText">Button Text</option>
+            <option value="textDown">Text Down</option>
+            <option value="select">Select</option>
+            <option value="modText">Mod Text</option>
+            <option value="scrollbar">Scrollbar</option>
+            <option value="lightTheme">Light Theme</option>
+            <option value="checkmark">Checkmark</option>
+            <option value="dropdown">Drop Down</option>
           </select>
-          <select id="chType">
-            <option value="chSelect" disabled selected>Chord type</option>
-            <option value="all" >All</option>
-            <option value="1">Singles</option>
-            <option value="2">Doubles</option>
-            <option value="3+">Triples+</option>
-          </select>
-          <input type="button" id="selectInRange" value="Select in range">
-          <input type="button" id="deleteSelected" value="Delete selected beats">
-        </form>
-        <hr>
-        <form id = "colors">
-          <input type="color" id = "cBank1" style="width: 21px; height: 21px;">
-          <input type="color" id = "cBank2" style="width: 21px; height: 21px;">
-          <input type="color" id = "cBank3" style="width: 21px; height: 21px;">
-          <input type="color" id = "cBank4" style="width: 21px; height: 21px;">
-        </form>
-        <select name="banks" id="banks">
-          <option value="cBank1">Color bank 1</option>
-          <option value="cBank2">Color bank 2</option>
-          <option value="cBank3">Color bank 3</option>
-          <option value="cBank4">Color bank 4</option>
+          <input type="checkbox" id="lightTheme" name="lightTheme" style="display: none;">
+          <label for="lightTheme" id = "lightThemeLabel" style="display: none;">Light Theme</label>
+          <input type="color" id = "cThemeColor" style="width: 100%; display: none;">
+        </div>
+      </fieldset>
+    </form>
+  </fieldset>
+  <fieldset>
+    <legend>Editor Features</legend> 
+    <form id = "massSelect">
+        <label for="lBound">Lower Bound</label>
+        <input type="number" id="lBound" name="lBound" min="0" max="0" step="1" style="width: 100px;"><br>
+        <label for="uBound">Upper Bound</label>
+        <input type="number" id="uBound" name="uBound" min="0" max="0" step="1" style="width: 100px;"><br>
+        <select id="bType">
+          <option value="bSelect" disabled selected>Beat type</option>
+          <option value="all">All</option>
+          <option value="beat">Beats</option>
+          <option value="hold">Holds</option>
         </select>
-        <input type="button" id="getTBar" value="Get current color">
-        <input type="button" id="setTBar" value="Set current color">
-        <input type="button" id="getSBeat" value="Get selected color">
-        <input type="button" id="setSBeat" value="Set selected color">
-    </fieldset>
-    
-  </div>
-</div>
+        <select id="chType">
+          <option value="chSelect" disabled selected>Chord type</option>
+          <option value="all" >All</option>
+          <option value="1">Singles</option>
+          <option value="2">Doubles</option>
+          <option value="3+">Triples+</option>
+        </select>
+        <div class="button">
+          <input type="button" style="margin-top:1.5px; margin-bottom:1.5px;" id="selectInRange" value="Select in range">
+          <input type="button" style="margin-top:1.5px; margin-bottom:1.5px;" id="deleteSelected" value="Delete selected beats">
+        </div>
+        </form>
+      <hr>
+      <form id = "colors">
+        <input type="color" id = "cBank1" style="width: 21px; height: 21px;">
+        <input type="color" id = "cBank2" style="width: 21px; height: 21px;">
+        <input type="color" id = "cBank3" style="width: 21px; height: 21px;">
+        <input type="color" id = "cBank4" style="width: 21px; height: 21px;">
+      </form>
+      <select name="banks" id="banks">
+        <option value="cBank1">Color bank 1</option>
+        <option value="cBank2">Color bank 2</option>
+        <option value="cBank3">Color bank 3</option>
+        <option value="cBank4">Color bank 4</option>
+      </select>
+      <div class="button">
+        <input type="button" style="margin-top:1.5px; margin-bottom:1.5px;" id="getTBar" value="Get current color">
+        <input type="button" style="margin-top:1.5px; margin-bottom:1.5px;" id="setTBar" value="Set current color">
+        <input type="button" style="margin-top:1.5px; margin-bottom:1.5px;" id="getSBeat" value="Get selected color">
+        <input type="button" style="margin-top:1.5px; margin-bottom:1.5px;" id="setSBeat" value="Set selected color">
+      </div>
+      </fieldset>
