@@ -16,7 +16,8 @@
     "web_accessible_resources": [
       {
         "resources": [
-          "Init.js"
+          "Init.js",
+          "assets/retry.wav"
         ],
         "matches": ["https://*.pulsus.cc/*"]
       }

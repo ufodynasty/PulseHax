@@ -78,6 +78,18 @@ window.addEventListener("SetupComplete", function() {
   });
 });
 
+// window.addEventListener("keydown", function(e) {
+//   if("Tab" === e.code){
+//       e.preventDefault();
+//       lowLag.play("retry",".5");
+//       zt.disMode = zt.paused ? 1 : 3,
+//       zt.retry = !0,
+//       zt.buttonHover[0] /= 2,
+//       Et.lvl.prevPlay = zt.song,
+//       zt.songVol = 100;
+//   }
+// }, !0);
+
 window.addEventListener("InjectedScriptEval", function(evt) {
   try {
     response = JSON.parse(JSON.stringify(eval(evt.detail) ?? null, getCircularReplacer()));
