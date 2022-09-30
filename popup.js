@@ -67,6 +67,8 @@ function refreshBeatMultiSelect(response) {
     document.getElementById('uBound').max = response.response.zt.beat.length - 1;
     document.getElementById('uBound').value = document.getElementById('uBound').max;
     document.getElementById('lBound').value = 0;
+    document.getElementById('selectedBeatsMin').innerHTML = response.response.zt.selectedBeats.length > 0 ? `Min Selected:${Math.min(...response.response.zt.selectedBeats)}` : ``;
+    document.getElementById('selectedBeatsMax').innerHTML = response.response.zt.selectedBeats.length > 0 ? `Max Selected:${Math.max(...response.response.zt.selectedBeats)}` : ``;
   }
   if(document.getElementById('lBound').max != Math.min(document.getElementById('uBound').value,response.response.zt.beat.length - 1)){
     document.getElementById('lBound').max = Math.min(document.getElementById('uBound').value,response.response.zt.beat.length);
@@ -236,7 +238,7 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   zt.selectedBeats = []
   for (i=${lb}; i <= ${ub}; i++){
     if(${!(bValue == 'bSelect' || chValue == 'chSelect')}) {
-      if(${(chValue == "1" || chValue == "2") ? "i+1 < zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1]" : chValue == "3+" ? "i+1 < zt.beat.length && zt.beat[i][1] == zt.beat[i+1][1]" : "true"}) {
+      if(${(chValue == "1" || chValue == "2") ? "i+1 > zt.beat.length || zt.beat[i][1] != zt.beat[i+1][1]" : chValue == "3+" ? "i+1 < zt.beat.length && zt.beat[i][1] == zt.beat[i+1][1]" : "true"}) {
         if(${(chValue == "2" || chValue == "3+") ? "i > 0 && zt.beat[i][1] == zt.beat[i-1][1]" : chValue == "1" ? "i > 0 && zt.beat[i][1] != zt.beat[i-1][1]" : "true"}){
           if(${bValue == "beat" ? "!zt.beat[i][5]" : bValue == "hold" ? "zt.beat[i][5]" : "true"}){
             zt.selectedBeats.push(i);

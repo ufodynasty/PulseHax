@@ -36,6 +36,9 @@ window.addEventListener("SetupComplete", function() {
       }
     });
   });
+  window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
+    lowLag.load("${chrome.runtime.getURL("/assets/retry.wav")}", "retry")
+  `}));
 })
 
 
