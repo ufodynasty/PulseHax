@@ -13,7 +13,7 @@ window.addEventListener("SetupComplete", function() {
         //W[gt].theme_tbd3 = "tbd3";
         +`
         ft.settings.menu.pages[1].items[1].options.push(10, 11);
-        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'ttheme_floopy');
+        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy');
       `}));
     }
     if(result.Settings.customTheme.active) {
