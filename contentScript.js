@@ -3,35 +3,35 @@ window.addEventListener("SetupComplete", function() {
   chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
     if(result.Settings.Wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      Pe.wave = 1;
+      h.wave = 1;
       `}));
     }
     if(result.Settings.additionalThemes) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-        T[Ct].theme_gufo = "Gufo's theme";`
-        //T[Ct].theme_tbd2 = "tbd2";
-        //T[Ct].theme_tbd3 = "tbd3";
+        W[gt].theme_gufo = "Gufo's theme";
+        W[gt].theme_floopy = "Floopy's theme";`
+        //W[gt].theme_tbd3 = "tbd3";
         +`
-        Et.settings.menu.pages[1].items[1].options.push(10);
-        Et.settings.menu.pages[1].items[1].labels.push('theme_gufo');
+        ft.settings.menu.pages[1].items[1].options.push(10, 11);
+        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'ttheme_floopy');
       `}));
     }
     if(result.Settings.customTheme.active) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      T[Ct].theme_CUSTOM = "Custom theme";
-      Et.settings.menu.pages[1].items[1].options.push(13);
-      Et.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      W[gt].theme_CUSTOM = "Custom theme";
+      ft.settings.menu.pages[1].items[1].options.push(13);
+      ft.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
       `}));
     }
     Object.keys(result.Settings.customTheme).forEach(function (key){
       console.log(key + ":" +result.Settings.customTheme[key])
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Le[13].${key} = color(${result.Settings.customTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Ge[13].${key} = color(${result.Settings.customTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `}));
       } else if (key == "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Le[13].${key} = ${result.Settings.customTheme[key]};
+          Ge[13].${key} = ${result.Settings.customTheme[key]};
         `}));
       }
     });

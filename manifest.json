@@ -1,6 +1,6 @@
 {
-    "name": "Hacksus",
-    "version": "0.4.0",
+    "name": "PulseHax",
+    "version": "0.4.1",
     "description": "Hacking pulsus has never been so easy",
     "permissions": ["storage", "tabs"],
     "host_permissions": ["https://*.pulsus.cc/*"],
@@ -24,9 +24,9 @@
     ],
     "action": {
       "default_icon": {
-        "32": "assets/PulsusHax.png"
+        "32": "assets/PulseHax.png"
       },
-      "default_title": "Hacksus",
+      "default_title": "PulseHax",
       "default_popup": "popup.html"
     },
     "manifest_version": 3

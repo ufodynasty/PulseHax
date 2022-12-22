@@ -1,21 +1,25 @@
-Zn.musicTime = function () {
+jn.musicTime = function() {
   var e;
-  1 === soundManager.getSoundById('menuMusic').playState && (soundManager.stop('menuMusic'), soundManager.setVolume(zt.song, Et.settings.musicVolume)),
-  !1 === zt.edit && (!1 === zt.preLevelStart && (zt.preLevelStart = millis()), 5000 <= millis() - zt.preLevelStart + (zt.songOffset + zt.mods.offset + Et.settings.offset) && !zt.songPlaying && !zt.paused ? (St[zt.song].rate(zt.mods.bpm), St[zt.song].volume(Et.settings.musicVolume / 100), e = St[zt.song].play(), St[zt.song].seek((zt.songOffset + zt.mods.offset + Et.settings.offset) / 1000 + ((zt.skipIntro ? zt.beat[0][1] : 0) * zt.mods.bpm / (zt.bpm / 60)) - 5, e), zt.songPlaying = !0) : zt.paused && (St[zt.song].pause(), zt.songPlaying = !1)),
-  zt.edit || !1 !== zt.songEnded || St[zt.song].on('end', function () {
-    zt.songEnded = [
-      millis(),
-      St[zt.song].duration
-    ]
+  1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"),
+  soundManager.setVolume(ut.song, ft.settings.musicVolume)),
+  !1 === ut.edit && (!1 === ut.preLevelStart && (ut.preLevelStart = millis()),
+  5e3 <= millis() - ut.preLevelStart + (ut.songOffset + ut.mods.offset + ft.settings.offset) && !ut.songPlaying && !ut.paused ? (wt[ut.song].rate(ut.mods.bpm),
+  wt[ut.song].volume(ft.settings.musicVolume / 100),
+  e = wt[ut.song].play(),
+  wt[ut.song].seek((ut.songOffset + ut.mods.offset + ft.settings.offset) / 1e3 - 5, e),
+  ut.songPlaying = !0) : ut.paused && (wt[ut.song].pause(),
+  ut.songPlaying = !1)),
+  ut.edit || !1 !== ut.songEnded || wt[ut.song].on("end", function() {
+      ut.songEnded = [millis(), wt[ut.song].duration]
   }),
-  !1 !== zt.edit || zt.paused || 1 !== zt.disMode || (!1 !== zt.songPlaying || !1 !== ye && 'hidden' !== ye || !1 === zt.preLevelStart ? ( - 1000 < ((e = ((!1 === zt.songEnded ? St[zt.song].seek() : St[zt.song].duration() + (!1 === zt.songEnded ? 0 : (millis() - zt.songEnded[0]) / 1000 * zt.mods.bpm)) - (zt.songOffset + zt.mods.offset + Et.settings.offset) / 1000) * (zt.bpm / 60) / zt.mods.bpm) - zt.time) * zt.mods.bpm / (zt.bpm / 60) || 'set' === zt.time) && (zt.time = e) : zt.time = (millis() - zt.preLevelStart - 5000) / 1000 * (zt.bpm / 60) / zt.mods.bpm)
+  !1 !== ut.edit || ut.paused || 1 !== ut.disMode || (!1 !== ut.songPlaying || !1 !== Ie && "hidden" !== Ie || !1 === ut.preLevelStart ? (-1e3 < ((e = ((!1 === ut.songEnded ? wt[ut.song].seek() : wt[ut.song].duration() + (!1 === ut.songEnded ? 0 : (millis() - ut.songEnded[0]) / 1e3 * ut.mods.bpm)) - (ut.songOffset + ut.mods.offset + ft.settings.offset) / 1e3) * (ut.bpm / 60) / ut.mods.bpm) - ut.time) * ut.mods.bpm / (ut.bpm / 60) || "set" === ut.time) && (ut.time = e) : ut.time = (millis() - ut.preLevelStart - 5e3) / 1e3 * (ut.bpm / 60) / ut.mods.bpm)
 }
 
-eval(Ln.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
+eval(Zn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
 window.addEventListener("SetupComplete", function() {
-  zt.skipIntro = false;
+  ut.skipIntro = false;
   console.log("Setup is done");
-  Le.push({
+  Ge.push({
     main: color(0, 0, 0),
     text: color(64, 255, 64),
     overlayShade: color(16, 16, 16),
@@ -31,21 +35,21 @@ window.addEventListener("SetupComplete", function() {
     checkmark: color(75, 175, 255),
     dropdown: color(24, 24, 24)
   },{
-    main: color(35, 50, 60),
+    main: color(20, 20, 20),
     text: color(255, 255, 255),
-    overlayShade: color(32, 45, 54),
-    shade: color(20, 35, 45),
-    buttonDown: color(240, 240, 240),
-    buttonUp: color(255, 255, 255),
-    buttonText: color(0, 0, 0),
-    textDown: color(200, 200, 200),
-    select: color(60, 50, 35),
-    modText: color(255, 175, 0),
-    scrollbar: color(255, 255, 255),
-    lightTheme: !1,
-    checkmark: color(0, 175, 255),
-    dropdown: color(225, 225, 225)
-  },{
+    overlayShade: color(10, 10, 10),
+    shade: color(20, 20, 20),
+    buttonDown: color(50, 50, 50),
+    buttonUp: color(75, 75, 75),
+    buttonText: color(255, 255, 255),
+    textDown: color(150, 150, 150),
+    select: color(75, 75, 75),
+    modText: color(220, 150, 150),
+    scrollbar: color(255, 100, 100),
+    lightTheme: 1,
+    checkmark: color(255, 100, 100),
+    dropdown: color(50, 50, 50)
+    },{
     main: color(35, 50, 60),
     text: color(255, 255, 255),
     overlayShade: color(32, 45, 54),
@@ -82,11 +86,11 @@ window.addEventListener("SetupComplete", function() {
 //   if("Tab" === e.code){
 //       e.preventDefault();
 //       lowLag.play("retry",".5");
-//       zt.disMode = zt.paused ? 1 : 3,
-//       zt.retry = !0,
-//       zt.buttonHover[0] /= 2,
-//       Et.lvl.prevPlay = zt.song,
-//       zt.songVol = 100;
+//       ut.disMode = ut.paused ? 1 : 3,
+//       ut.retry = !0,
+//       ut.buttonHover[0] /= 2,
+//       ft.lvl.prevPlay = ut.song,
+//       ut.songVol = 100;
 //   }
 // }, !0);
 
