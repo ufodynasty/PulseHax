@@ -54,7 +54,8 @@ function execute(request,func = () => {}) {
 }
 
 function refresh() {
-  execute("response = {ut:ut, v:v, lvlSel:b(mt[ft.lvl.sel], 'id')", function(response) {
+  execute("response = {ut:ut, v:v, lvlSel:b(mt[ft.lvl.sel], 'id')}", function(response) {
+    console.log(response);
     refreshBeatMultiSelect(response);
     refreshRanked(response);
     refreshSkip(response);
@@ -239,7 +240,7 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   for (i=${lb}; i <= ${ub}; i++){
     if(${!(bValue == 'bSelect' || chValue == 'chSelect')}) {
       if(${(chValue == "1" || chValue == "2") ? "i+1 > ut.beat.length || ut.beat[i][1] != ut.beat[i+1][1]" : chValue == "3+" ? "i+1 < ut.beat.length && ut.beat[i][1] == ut.beat[i+1][1]" : "true"}) {
-        if(${(chValue == "2" || chValue == "3+") ? "i > 0 && ut.beat[i][1] == ut.beat[i-1][1]" : chValue == "1" ? "i > 0 && ut.beat[i][1] != ut.beat[i-1][1]" : "true"}){
+        if(${chValue == "1" ? "i-1 < 0 || ut.beat[i][1] != ut.beat[i-1][1]" : chValue == "2" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1] && (i-2 < 0 || ut.beat[i][1] != ut.beat[i-2][1])" : chValue == "3+" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1]" : "true"}){
           if(${bValue == "beat" ? "!ut.beat[i][5]" : bValue == "hold" ? "ut.beat[i][5]" : "true"}){
             ut.selectedBeats.push(i);
             ${chValue == "2" || chValue == "3+" ? "ut.selectedBeats.push(i-1);" : ""}

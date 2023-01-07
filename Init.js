@@ -82,17 +82,18 @@ window.addEventListener("SetupComplete", function() {
   });
 });
 
-// window.addEventListener("keydown", function(e) {
-//   if("Tab" === e.code){
-//       e.preventDefault();
-//       lowLag.play("retry",".5");
-//       ut.disMode = ut.paused ? 1 : 3,
-//       ut.retry = !0,
-//       ut.buttonHover[0] /= 2,
-//       ft.lvl.prevPlay = ut.song,
-//       ut.songVol = 100;
-//   }
-// }, !0);
+window.addEventListener("keydown", function(e) {
+  e.preventDefault();
+  if("Tab" === e.code){
+      ut.effectsCache.vignette += 15
+      lowLag.play("retry",".5");
+      ut.disMode = 1,
+      ut.retry = !0,
+      ut.buttonHover[0] /= 2,
+      ft.lvl.prevPlay = ut.song,
+      ut.songVol = 100;
+  }
+}, !0);
 
 window.addEventListener("InjectedScriptEval", function(evt) {
   try {
