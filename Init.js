@@ -84,7 +84,8 @@ window.addEventListener("SetupComplete", function() {
 
 window.addEventListener("keydown", function(e) {
   e.preventDefault();
-  if("Tab" === e.code){
+  if("Tab" === e.code && !1 === ut.edit && 1 === ut.disMode){
+      wt[ut.song].pause()
       ut.effectsCache.vignette += 15
       lowLag.play("retry",".5");
       ut.disMode = 1,

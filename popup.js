@@ -245,11 +245,12 @@ document.getElementById("selectInRange").addEventListener("click", function() {
             ut.selectedBeats.push(i);
             ${chValue == "2" || chValue == "3+" ? "ut.selectedBeats.push(i-1);" : ""}
             ${chValue == "3+" ? "ut.selectedBeats.push(i+1);" : ""}
-            }
           }
         }
       }
     }
+  }
+  ut.selectedBeats = [...new Set(ut.selectedBeats)];
   `)
   document.getElementById("uBound").value = document.getElementById("uBound").max
   document.getElementById("lBound").vaule = document.getElementById("lBound").min
@@ -260,6 +261,31 @@ document.getElementById("deleteSelected").addEventListener("click", function() {
     ut.beat = ut.beat.filter((v,i,a) => {return !ut.selectedBeats.includes(i)})
     ut.selectedBeats = [];
   `)
+});
+
+function applyMap(map) {
+  execute(`
+  let map = [${map}]
+  ut.beat.forEach((b,i) => {
+    if(ut.selectedBeats.includes(i)) {
+      b[0] = map[b[0]]
+    }
+  })
+  `)
+}
+
+
+document.getElementById("flipV").addEventListener("click", function() {
+  applyMap([6,7,8,3,4,5,0,1,2])
+});
+document.getElementById("flipH").addEventListener("click", function() {
+  applyMap([2,1,0,5,4,3,8,7,6])
+});
+document.getElementById("rotateCW").addEventListener("click", function() {
+  applyMap([2,5,8,1,4,7,0,3,6])
+});
+document.getElementById("rotateCCW").addEventListener("click", function() {
+  applyMap([6,3,0,7,4,1,8,5,2])
 });
 
 document.getElementById("getTBar").addEventListener("click", function() {
