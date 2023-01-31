@@ -1,18 +1,14 @@
-jn.musicTime = function() {
+jn.musicTime = function () {
   var e;
-  1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"),
-  soundManager.setVolume(ut.song, ft.settings.musicVolume)),
-  !1 === ut.edit && (!1 === ut.preLevelStart && (ut.preLevelStart = millis()),
-  5e3 <= millis() - ut.preLevelStart + (ut.songOffset + ut.mods.offset + ft.settings.offset) && !ut.songPlaying && !ut.paused ? (wt[ut.song].rate(ut.mods.bpm),
-  wt[ut.song].volume(ft.settings.musicVolume / 100),
-  e = wt[ut.song].play(),
-  wt[ut.song].seek((ut.songOffset + ut.mods.offset + ft.settings.offset) / 1e3 - 5, e),
-  ut.songPlaying = !0) : ut.paused && (wt[ut.song].pause(),
-  ut.songPlaying = !1)),
-  ut.edit || !1 !== ut.songEnded || wt[ut.song].on("end", function() {
-      ut.songEnded = [millis(), wt[ut.song].duration]
+  1 === soundManager.getSoundById('menuMusic').playState && (soundManager.stop('menuMusic'), soundManager.setVolume(ut.song, ft.settings.musicVolume)),
+  !1 === ut.edit && (!1 === ut.preLevelStart && (ut.preLevelStart = millis()), 5000 <= millis() - ut.preLevelStart + (ut.songOffset + ut.mods.offset + ft.settings.offset) && !ut.songPlaying && !ut.paused ? (wt[ut.song].rate(ut.mods.bpm), wt[ut.song].volume(ft.settings.musicVolume / 100), e = wt[ut.song].play(), wt[ut.song].seek((ut.songOffset + ut.mods.offset + ft.settings.offset) / 1000 + ((ut.skipIntro ? ut.beat[0][1] : 0) * ut.mods.bpm / (ut.bpm / 60)) - 5, e), ut.songPlaying = !0) : ut.paused && (wt[ut.song].pause(), ut.songPlaying = !1)),
+  ut.edit || !1 !== ut.songEnded || wt[ut.song].on('end', function () {
+    ut.songEnded = [
+      millis(),
+      wt[ut.song].duration
+    ]
   }),
-  !1 !== ut.edit || ut.paused || 1 !== ut.disMode || (!1 !== ut.songPlaying || !1 !== Ie && "hidden" !== Ie || !1 === ut.preLevelStart ? (-1e3 < ((e = ((!1 === ut.songEnded ? wt[ut.song].seek() : wt[ut.song].duration() + (!1 === ut.songEnded ? 0 : (millis() - ut.songEnded[0]) / 1e3 * ut.mods.bpm)) - (ut.songOffset + ut.mods.offset + ft.settings.offset) / 1e3) * (ut.bpm / 60) / ut.mods.bpm) - ut.time) * ut.mods.bpm / (ut.bpm / 60) || "set" === ut.time) && (ut.time = e) : ut.time = (millis() - ut.preLevelStart - 5e3) / 1e3 * (ut.bpm / 60) / ut.mods.bpm)
+  !1 !== ut.edit || ut.paused || 1 !== ut.disMode || (!1 !== ut.songPlaying || !1 !== Ie && 'hidden' !== Ie || !1 === ut.preLevelStart ? ( - 1000 < ((e = ((!1 === ut.songEnded ? wt[ut.song].seek() : wt[ut.song].duration() + (!1 === ut.songEnded ? 0 : (millis() - ut.songEnded[0]) / 1000 * ut.mods.bpm)) - (ut.songOffset + ut.mods.offset + ft.settings.offset) / 1000) * (ut.bpm / 60) / ut.mods.bpm) - ut.time) * ut.mods.bpm / (ut.bpm / 60) || 'set' === ut.time) && (ut.time = e) : ut.time = (millis() - ut.preLevelStart - 5000) / 1000 * (ut.bpm / 60) / ut.mods.bpm)
 }
 
 eval(Zn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
