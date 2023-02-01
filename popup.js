@@ -309,6 +309,10 @@ document.getElementById("getTBar").addEventListener("click", function() {
   execute(`[ut.beatColor, ut.beatSaturation, ut.beatBrightness]`,function(response){
     if(response.response) {
       document.getElementById(document.getElementById('banks').value).value = hslToHex(response.response[0]*360/255,response.response[1]*100/255,response.response[2]*50/255);
+      userSettings[document.getElementById('banks').value] = document.getElementById(document.getElementById('banks').value).value;
+      chrome.storage.sync.set({Settings:userSettings}, function() {
+        console.log(`${document.getElementById('banks').value} is set to ${userSettings[document.getElementById('banks').value]}`);
+      });
     }
   })
 });
@@ -324,6 +328,10 @@ document.getElementById("getSBeat").addEventListener("click", function() {
     `,function(response){
     if(response.response) {
       document.getElementById(document.getElementById('banks').value).value = hslToHex(response.response[0]*360/255,response.response[1]*100/255,response.response[2]*50/255);
+      userSettings[document.getElementById('banks').value] = document.getElementById(document.getElementById('banks').value).value;
+      chrome.storage.sync.set({Settings:userSettings}, function() {
+        console.log(`${document.getElementById('banks').value} is set to ${userSettings[document.getElementById('banks').value]}`);
+      });
     }
   })
 });
