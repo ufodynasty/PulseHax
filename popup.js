@@ -256,7 +256,7 @@ document.getElementById("selectInRange").addEventListener("click", function() {
             }
           }
         } else {
-          if(${(chValue == "1" || chValue == "2") ? "i+1 > ut.beat.length || ut.beat[i][1] != ut.beat[i+1][1]" : chValue == "3+" ? "i+1 < ut.beat.length && ut.beat[i][1] == ut.beat[i+1][1]" : "true"}) {
+          if(${(chValue == "1" || chValue == "2") ? "i+1 >= ut.beat.length || ut.beat[i][1] != ut.beat[i+1][1]" : chValue == "3+" ? "i+1 < ut.beat.length && ut.beat[i][1] == ut.beat[i+1][1]" : "true"}) {
             if(${chValue == "1" ? "i-1 < 0 || ut.beat[i][1] != ut.beat[i-1][1]" : chValue == "2" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1] && (i-2 < 0 || ut.beat[i][1] != ut.beat[i-2][1])" : chValue == "3+" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1]" : "true"}){
               ut.selectedBeats.push(i);
               ${chValue == "2" || chValue == "3+" ? "ut.selectedBeats.push(i-1);" : ""}
