@@ -70,6 +70,7 @@ function refreshBeatMultiSelect(response) {
     document.getElementById('lBound').value = 0;
     document.getElementById('selectedBeatsMin').innerHTML = response.response.ut.selectedBeats.length > 0 ? `Min Selected:${Math.min(...response.response.ut.selectedBeats)}` : ``;
     document.getElementById('selectedBeatsMax').innerHTML = response.response.ut.selectedBeats.length > 0 ? `Max Selected:${Math.max(...response.response.ut.selectedBeats)}` : ``;
+    document.getElementById('qdenom').value = 1/response.response.ut.snap;
   }
   if(document.getElementById('lBound').max != Math.min(document.getElementById('uBound').value,response.response.ut.beat.length - 1)){
     document.getElementById('lBound').max = Math.min(document.getElementById('uBound').value,response.response.ut.beat.length);
@@ -234,17 +235,33 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   let lb = document.getElementById("lBound").value;
   let bValue = document.getElementById('bType').value;
   let chValue = document.getElementById('chType').value;
+  let q = 1/4;
   execute(`ut.beat.sort(function (e, t) {return e[1] - t[1]});
   ut.timelineMode = "select";
   ut.selectedBeats = []
-  for (i=${lb}; i <= ${ub}; i++){
+  for (let i=${lb}; i <= ${ub}; i++){
     if(${!(bValue == 'bSelect' || chValue == 'chSelect')}) {
-      if(${(chValue == "1" || chValue == "2") ? "i+1 > ut.beat.length || ut.beat[i][1] != ut.beat[i+1][1]" : chValue == "3+" ? "i+1 < ut.beat.length && ut.beat[i][1] == ut.beat[i+1][1]" : "true"}) {
-        if(${chValue == "1" ? "i-1 < 0 || ut.beat[i][1] != ut.beat[i-1][1]" : chValue == "2" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1] && (i-2 < 0 || ut.beat[i][1] != ut.beat[i-2][1])" : chValue == "3+" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1]" : "true"}){
-          if(${bValue == "beat" ? "!ut.beat[i][5]" : bValue == "hold" ? "ut.beat[i][5]" : "true"}){
+      if(${bValue == "beat" ? "!ut.beat[i][5]" : bValue == "hold" ? "ut.beat[i][5]" : "true"}){
+        if(${chValue == "quant"}){
+          if((i-1 >= 0 && (Math.abs((ut.beat[i][1]-ut.beat[i-1][1])*ut.beat[i][9]/120-${q}) < 10*Number.EPSILON || Math.abs((ut.beat[i][1]-ut.beat[i-1][1])*ut.beat[i][9]/120-${q}) < 10*Number.EPSILON)) || (i+1 < ut.beat.length && (Math.abs((ut.beat[i+1][1]-ut.beat[i][1])*ut.beat[i][9]/120-${q}) < 10*Number.EPSILON || Math.abs((ut.beat[i+1][1]-ut.beat[i][1])*ut.beat[i+1][9]/120-${q}) < 10*Number.EPSILON))) {
             ut.selectedBeats.push(i);
-            ${chValue == "2" || chValue == "3+" ? "ut.selectedBeats.push(i-1);" : ""}
-            ${chValue == "3+" ? "ut.selectedBeats.push(i+1);" : ""}
+            let j = 1;
+            while(i-j >= 0 && ut.beat[i][1] == ut.beat[i-j][1]) {
+              ut.selectedBeats.push(i-j);
+              j++;
+            }
+            while(i+1 < ut.beat.length && ut.beat[i][1] == ut.beat[i+1][1]) {
+              ut.selectedBeats.push(i+1);
+              i++;
+            }
+          }
+        } else {
+          if(${(chValue == "1" || chValue == "2") ? "i+1 > ut.beat.length || ut.beat[i][1] != ut.beat[i+1][1]" : chValue == "3+" ? "i+1 < ut.beat.length && ut.beat[i][1] == ut.beat[i+1][1]" : "true"}) {
+            if(${chValue == "1" ? "i-1 < 0 || ut.beat[i][1] != ut.beat[i-1][1]" : chValue == "2" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1] && (i-2 < 0 || ut.beat[i][1] != ut.beat[i-2][1])" : chValue == "3+" ? "i-1 >= 0 && ut.beat[i][1] == ut.beat[i-1][1]" : "true"}){
+              ut.selectedBeats.push(i);
+              ${chValue == "2" || chValue == "3+" ? "ut.selectedBeats.push(i-1);" : ""}
+              ${chValue == "3+" ? "ut.selectedBeats.push(i+1);" : ""}
+            }
           }
         }
       }
@@ -327,4 +344,12 @@ document.forms.colors.onchange = (e) => {
   chrome.storage.sync.set({Settings:userSettings}, function() {
     console.log(`${ID} is set to ${userSettings[ID]}`);
   });
+}
+
+document.getElementById('chType').onchange = () => {
+  if(document.getElementById('chType').value == "quant") {
+    document.getElementById("qdiv").classList.add("active");
+  } else {
+    document.getElementById("qdiv").classList.remove("active");
+  }
 }

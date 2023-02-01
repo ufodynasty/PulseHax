@@ -68,12 +68,21 @@
             <option value="hold">Holds</option>
           </select>
           <select id="chType">
-            <option value="chSelect" disabled selected>Chord type</option>
+            <option value="chSelect" disabled selected>Pattern Type</option>
             <option value="all" >All</option>
+            <option value="quant">Snap</option>
             <option value="1">Singles</option>
             <option value="2">Doubles</option>
             <option value="3+">Triples+</option>
           </select>
+          <div id = "qdiv"style="display: none;">
+            <label for="qinput">Snap</label>
+            <div id = "qinput">
+              <input type="number" id="qnum" name="qnum" min="1" step="1" value = "1" style="width: 40px;"><div style = "display:inline; text-align:center;"> / </div>
+              <input type="number" id="qdenom" name="qdenom" min="1" step="1" style="width: 40px;">
+              <br>
+            </div>
+          </div>
           <input type="button" id="selectInRange" value="Select in range">
           <input type="button" id="deleteSelected" value="Delete selected beats">
           <input style="padding-bottom: 2px;" type="button" id="flipV" value="&#11021;" width="21px">
