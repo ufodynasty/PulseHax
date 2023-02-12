@@ -1,6 +1,6 @@
 inject("Init");
 window.addEventListener("SetupComplete", function() {
-  chrome.storage.sync.get({Settings:{Wave:false}}, function(result) {
+  chrome.storage.local.get({Settings:{Wave:false},CustomTheme:{}}, function(result) {
     if(result.Settings.Wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
       h.wave = 1;
@@ -9,29 +9,28 @@ window.addEventListener("SetupComplete", function() {
     if(result.Settings.additionalThemes) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
         W[gt].theme_gufo = "Gufo's theme";
-        W[gt].theme_floopy = "Floopy's theme";`
-        //W[gt].theme_tbd3 = "tbd3";
-        +`
-        ft.settings.menu.pages[1].items[1].options.push(10, 11);
-        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy');
+        W[gt].theme_floopy = "Floopy's theme";
+        W[gt].theme_shia = "Shia's theme";
+        ft.settings.menu.pages[1].items[1].options.push(10, 11, 12);
+        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia');
       `}));
     }
-    if(result.Settings.customTheme.active) {
+    if(result.Settings.customTheme) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
       W[gt].theme_CUSTOM = "Custom theme";
       ft.settings.menu.pages[1].items[1].options.push(13);
       ft.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
       `}));
     }
-    Object.keys(result.Settings.customTheme).forEach(function (key){
-      console.log(key + ":" +result.Settings.customTheme[key])
+    Object.keys(result.CustomTheme).forEach(function (key){
+      console.log(key + ":" + result.CustomTheme[key])
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ge[13].${key} = color(${result.Settings.customTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Ge[13].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `}));
       } else if (key == "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ge[13].${key} = ${result.Settings.customTheme[key]};
+          Ge[13].${key} = ${result.CustomTheme[key]};
         `}));
       }
     });

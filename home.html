@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <link href="popup.css" rel="stylesheet" type="text/css">
+    <script src="jszip.min.js"></script>
+    <script src="util.js" defer></script>
+    <script src="home.js" defer></script>
+  </head>
+  <body>
+  <div class="topnav">
+    <a href="home.html" class="curr">Home</a>
+    <a href="editor.html">Editor</a>
+    <a href="themes.html">Theme</a>
+  </div>
+    <h1>Welcome to PulseHax o/</h1>
+    <input style="padding-top: 3px;" type="button" id="darkmodetoggle" value="&#x25D0;">
+    </div>
+    <br>
+    <fieldset>
+      <legend>Startup Features</legend> 
+      <form id = "startup" style="margin: 0px">
+        <input type="checkbox" id="Wave" name="Wave" checked>
+        <label for="Wave">Wave</label><br>
+        <input type="checkbox" id="skipIntro" name="skipIntro">
+        <label for="skipIntro">Skip Intro</label><br>
+      </form>
+      <input type="checkbox" id="additionalThemes" name="additionalThemes">
+      <label for="additionalThemes">Additional Themes</label><br>
+      <input type="checkbox" id="customTheme" name="customTheme">
+      <label for="customTheme">Custom Theme</label>
+    </fieldset>
+    <fieldset>
+      <legend>Level Manipulation</legend> 
+      <form id = "menu" style="margin: 0px">
+        <label for="SelectedId">Level Selected</label>
+        <input type="text" id="SelectedId" style = "pointer-events:none;"><br><br>
+        <input type="button" id="lvlCopy" value="Copy Level" disabled>
+        <input type="button" id="lvlExport" value="Export Level" disabled>
+        <input type="button" id="lvlImport" value="Import Level">
+        <div id="fileError" style="display:none">
+          <div style = "display:inline; text-align:left; color:#ff0000; font-size:10px;">Invalid File</div>
+        </div>
+        <input type="file" id="lvlImportAction" accept=".pls" style="display:none">
+      </form>
+    </fieldset>
+  </body>
+</html>

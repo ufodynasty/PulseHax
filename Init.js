@@ -13,21 +13,21 @@ jn.musicTime = function () {
 
 eval(Zn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
 window.addEventListener("SetupComplete", function() {
-  ut.skipIntro = false;
+    
   console.log("Setup is done");
   Ge.push({
     main: color(0, 0, 0),
     text: color(64, 255, 64),
     overlayShade: color(16, 16, 16),
     shade: color(0, 0, 0),
-    buttonDown: color(32, 32, 32),
-    buttonUp: color(48, 48, 48),
+    buttonDown: color(48, 48, 48),
+    buttonUp: color(64, 64, 64),
     buttonText: color(64, 255, 64),
     textDown: color(32, 128, 32),
     select: color(30, 30, 30),
     modText: color(75, 175, 255),
     scrollbar: color(75, 175, 255),
-    lightTheme: !1,
+    lightTheme: 1,
     checkmark: color(75, 175, 255),
     dropdown: color(24, 24, 24)
   },{
@@ -46,21 +46,21 @@ window.addEventListener("SetupComplete", function() {
     checkmark: color(255, 100, 100),
     dropdown: color(50, 50, 50)
     },{
-    main: color(35, 50, 60),
+    main: color(10, 10, 10),
     text: color(255, 255, 255),
-    overlayShade: color(32, 45, 54),
-    shade: color(20, 35, 45),
-    buttonDown: color(240, 240, 240),
-    buttonUp: color(255, 255, 255),
-    buttonText: color(0, 0, 0),
-    textDown: color(200, 200, 200),
-    select: color(60, 50, 35),
-    modText: color(255, 175, 0),
-    scrollbar: color(255, 255, 255),
-    lightTheme: !1,
-    checkmark: color(0, 175, 255),
-    dropdown: color(225, 225, 225)
-  },{
+    overlayShade: color(10, 10, 10),
+    shade: color(20, 20, 20),
+    buttonDown: color(50, 50, 50),
+    buttonUp: color(75, 75, 75),
+    buttonText: color(255, 255, 255),
+    textDown: color(150, 150, 150),
+    select: color(75, 75, 75),
+    modText: color(180, 100, 255),
+    scrollbar: color(180, 100, 255),
+    lightTheme: 1,
+    checkmark: color(180, 100, 255),
+    dropdown: color(180, 100, 255)
+    },{
     main: color(35, 50, 60),
     text: color(255, 255, 255),
     overlayShade: color(32, 45, 54),
@@ -80,7 +80,7 @@ window.addEventListener("SetupComplete", function() {
 
 window.addEventListener("keydown", function(e) {
   e.preventDefault();
-  if("Tab" === e.code && !1 === ut.edit && 1 === ut.disMode){
+  if("Tab" === e.code && !1 === ut.edit && 1 === ut.disMode && Qe === "game"){
       wt[ut.song].pause()
       ut.effectsCache.vignette += 15
       lowLag.play("retry",".5");
@@ -96,6 +96,7 @@ window.addEventListener("InjectedScriptEval", function(evt) {
   try {
     response = JSON.parse(JSON.stringify(eval(evt.detail) ?? null, getCircularReplacer()));
   } catch(error) {
+    console.log(error);
     response = undefined;
   }
   var test = new CustomEvent("InjectedScriptResponse", {detail: response});

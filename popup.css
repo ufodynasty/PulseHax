@@ -11,8 +11,20 @@ h1 {
         #ff0040
     );
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-stroke: 0.2em transparent;
-    padding-left: 10px;
+    padding-left: 12.5%;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+body{
+    width:200px;
+}
+
+.dark-mode:disabled {
+    color:#6e6e6e;
 }
 
 .dark-mode {
@@ -21,19 +33,120 @@ h1 {
 }
 
 .active {
-    display: inline-block !important;
+    display: block !important;
+}
+.topnav {
+    margin: -8px;
+    margin-bottom: 0px;
+    overflow: hidden;
+    background-color: #ffffff;
+    position: relative;
+}
+.topnav a.dark-mode {
+    background: #232323;
+}
+.topnav a {
+    float: left;
+    color: #000000;
+    width: 33.3%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+}
+.topnav a.dark-mode {
+    color: #ffffff;
 }
 
-/*
+.topnav a.curr {
+    background-color: #04aa6d;
+    color: white;
+}
+
+.topnav a:hover {
+background-color: #ddd;
+color: black;
+}
+
+legend {
+    font-size: 13px;
+}
+
+option {
+    background-color: rgb(200, 200, 200);
+    text-align: center;
+}
+
+select {
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(200, 200, 200);
+    margin-top: 1.5px;
+    margin-bottom: 1.5px;
+    width:100%;
+}
+
+select:hover {
+    background-color: rgb(150, 150, 150);
+}
+
+input {
+    border:none;
+    background-color: rgb(200, 200, 200);
+    border-radius: 4px;
+    margin-top: 1.5px;
+    margin-bottom: 1.5px;
+    width: 100%;
+}
+input:hover {
+    background-color: rgb(150, 150, 150);
+} input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+-moz-appearance: textfield;
+margin: 0;
+}
+input[type=checkbox] {
+    width:auto;
+}
+
+.dark-mode {
+    background-color: #232323;
+    color: #f0f0f0;
+}
+
 h1.dark-mode {
-  color:#232323
+    color:#232323
 }
 
-/*
-TODO
-once there's a fix to make quicksand behave with the gradient for the header we can uncomment this
-
-body{
-    font-family:"Quicksand";
+option.dark-mode {
+    background-color: rgb(50, 50, 50)
 }
-*/
+
+select.dark-mode {
+    background-color: rgb(50, 50, 50);
+}
+
+input.dark-mode {
+    background-color: rgb(50, 50, 50);
+}
+input:hover.dark-mode {
+    background-color: rgb(100, 100, 100);
+}
+
+select:hover.dark-mode {
+    background-color: rgb(100, 100, 100);
+}
+
+.rf_button {
+    line-height: 25px;
+}
+
+form{
+    margin-bottom:0px;
+}
+
+label{
+    pointer-events:none;
+}
