@@ -20,8 +20,8 @@ window.addEventListener("SetupComplete", function() {
     text: color(64, 255, 64),
     overlayShade: color(16, 16, 16),
     shade: color(0, 0, 0),
-    buttonDown: color(48, 48, 48),
-    buttonUp: color(64, 64, 64),
+    buttonDown: color(32, 32, 32),
+    buttonUp: color(48, 48, 48),
     buttonText: color(64, 255, 64),
     textDown: color(32, 128, 32),
     select: color(30, 30, 30),
@@ -99,8 +99,8 @@ window.addEventListener("InjectedScriptEval", function(evt) {
     console.log(error);
     response = undefined;
   }
-  var test = new CustomEvent("InjectedScriptResponse", {detail: response});
-  window.dispatchEvent(test);
+  var responseEvent = new CustomEvent("InjectedScriptResponse", {detail: response});
+  window.dispatchEvent(responseEvent);
 }, false);
 
 const getCircularReplacer = () => {

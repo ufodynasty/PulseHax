@@ -1,5 +1,5 @@
-document.forms.startup.onchange = testsync;
-function testsync(e) {
+
+document.forms.startup.onchange = (e) => {
   const checked = e.target;
   let ID = e.target.id;
   if (checked.checked) {

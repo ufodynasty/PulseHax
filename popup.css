@@ -22,6 +22,19 @@ body::-webkit-scrollbar{
 body{
     width:200px;
 }
+:root{ 
+    scrollbar-width: none 
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
 
 .dark-mode:disabled {
     color:#6e6e6e;
@@ -148,5 +161,6 @@ form{
 }
 
 label{
+    font-size:12px;
     pointer-events:none;
 }

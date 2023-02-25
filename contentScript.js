@@ -47,8 +47,8 @@ chrome.runtime.onMessage.addListener((obj,sender, response) => {
 				response( {response: evt.detail})
 				return false;
 		},{once: true});
-		var test = new CustomEvent("InjectedScriptEval", {detail: obj.payload});
-		window.dispatchEvent(test);
+		var evalEvent = new CustomEvent("InjectedScriptEval", {detail: obj.payload});
+		window.dispatchEvent(evalEvent);
 	}
 	return false;
 });
