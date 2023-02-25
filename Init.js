@@ -10,18 +10,26 @@ jn.musicTime = function () {
   }),
   !1 !== ut.edit || ut.paused || 1 !== ut.disMode || (!1 !== ut.songPlaying || !1 !== Ie && 'hidden' !== Ie || !1 === ut.preLevelStart ? ( - 1000 < ((e = ((!1 === ut.songEnded ? wt[ut.song].seek() : wt[ut.song].duration() + (!1 === ut.songEnded ? 0 : (millis() - ut.songEnded[0]) / 1000 * ut.mods.bpm)) - (ut.songOffset + ut.mods.offset + ft.settings.offset) / 1000) * (ut.bpm / 60) / ut.mods.bpm) - ut.time) * ut.mods.bpm / (ut.bpm / 60) || 'set' === ut.time) && (ut.time = e) : ut.time = (millis() - ut.preLevelStart - 5000) / 1000 * (ut.bpm / 60) / ut.mods.bpm)
 }
+C.credits = function() {
+  var e = width > height ? width / 64 : height / 64
+    , t = (textAlign(CENTER, CENTER),
+  fill(G.text),
+  [at("credits_client", gt), "TetroGem", at("credits_server", gt), V(["TetroGem", "Epicness", "Quintec"]), at("credits_programming", gt), "cg505", at("credits_security", gt), "Quintec", at("credits_art", gt), at("credits_and", gt, "TetroGem", "Alexandre Declos"), at("credits_translation_de", gt), "Scath", at("credits_translation_es", gt), "Zemyro", at("credits_translation_fr", gt), at("credits_and", gt, "Alexandre Declos", "Zemyro"), at("credits_translation_ru", gt), at("credits_and", gt, "ConfiG", "Shiairo31"), at("credits_translation_nl", gt), "sbeve", at("credits_translation_th", gt), "oserottoNeko", at("credits_translation_ro", gt), "Stqrm26", at("credits_patreon", gt), V(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",V(["Mt.Gufo","Pickleman","shianara","floopy"])])
+    , i = (height - height / 16) / (t.length + 2);
+  textSize(i);
+  for (var o = 0; o < t.length; o++)
+      zt(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
+}
 
 eval(Zn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
 window.addEventListener("SetupComplete", function() {
-    
-  console.log("Setup is done");
   Ge.push({
     main: color(0, 0, 0),
     text: color(64, 255, 64),
     overlayShade: color(16, 16, 16),
     shade: color(0, 0, 0),
-    buttonDown: color(48, 48, 48),
-    buttonUp: color(64, 64, 64),
+    buttonDown: color(32, 32, 32),
+    buttonUp: color(48, 48, 48),
     buttonText: color(64, 255, 64),
     textDown: color(32, 128, 32),
     select: color(30, 30, 30),
@@ -79,8 +87,9 @@ window.addEventListener("SetupComplete", function() {
 });
 
 window.addEventListener("keydown", function(e) {
-  e.preventDefault();
-  if("Tab" === e.code && !1 === ut.edit && 1 === ut.disMode && Qe === "game"){
+  if("Tab" === e.code){
+    e.preventDefault();
+    if(!1 === ut.edit && 1 === ut.disMode && Qe === "game"){
       wt[ut.song].pause()
       ut.effectsCache.vignette += 15
       lowLag.play("retry",".5");
@@ -89,6 +98,7 @@ window.addEventListener("keydown", function(e) {
       ut.buttonHover[0] /= 2,
       ft.lvl.prevPlay = ut.song,
       ut.songVol = 100;
+    }
   }
 }, !0);
 
@@ -99,8 +109,8 @@ window.addEventListener("InjectedScriptEval", function(evt) {
     console.log(error);
     response = undefined;
   }
-  var test = new CustomEvent("InjectedScriptResponse", {detail: response});
-  window.dispatchEvent(test);
+  var evalEvent = new CustomEvent("InjectedScriptResponse", {detail: response});
+  window.dispatchEvent(evalEvent);
 }, false);
 
 const getCircularReplacer = () => {

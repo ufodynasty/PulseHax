@@ -1,7 +1,6 @@
 let userSettings = {};
 chrome.storage.local.get({Settings:{Wave:false,additionalThemes:false,customTheme:false}}, function(result) {
   userSettings = result.Settings;
-  console.log(userSettings);
   Object.keys(userSettings).forEach(function (key){
     if(key == "darkmodetoggle") {
       if(userSettings[key]) {
@@ -21,14 +20,13 @@ chrome.storage.local.get({Settings:{Wave:false,additionalThemes:false,customThem
   });
 });
 
-function execute(request,func = () => {}) {
+function execute(request,responseHandler = () => {}) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-    chrome.tabs.sendMessage(tabs[0].id, {payload: request}, function(response) {
-      func(response);
+    chrome.tabs.sendMessage(tabs[0].id, {type: "exec", content: request}, function(response) {
+      responseHandler(response);
       return false;
     });  
   });
-  
 }
 
 function hslToHex(h, s, l) {

@@ -23,7 +23,6 @@ window.addEventListener("SetupComplete", function() {
       `}));
     }
     Object.keys(result.CustomTheme).forEach(function (key){
-      console.log(key + ":" + result.CustomTheme[key])
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
           Ge[13].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
@@ -42,14 +41,16 @@ window.addEventListener("SetupComplete", function() {
 
 
 chrome.runtime.onMessage.addListener((obj,sender, response) => {
-	if(obj.payload) {
+	if(obj.type == "exec", obj.content) {
 		window.addEventListener("InjectedScriptResponse", function(evt) {
-				response( {response: evt.detail})
-				return false;
+      response( {response: evt.detail})
+      return false;
 		},{once: true});
-		var test = new CustomEvent("InjectedScriptEval", {detail: obj.payload});
-		window.dispatchEvent(test);
-	}
+		let responseEvent = new CustomEvent("InjectedScriptEval", {detail: obj.content});
+		window.dispatchEvent(responseEvent);
+	} else if(obj.type == "ping") {
+    response("pong")
+  }
 	return false;
 });
 

@@ -4,9 +4,6 @@
     "description": "Hacking pulsus has never been so easy",
     "permissions": ["storage", "tabs"],
     "host_permissions": ["https://pulsus.cc/*"],
-    "background": {
-      "service_worker": "background.js"
-    },
     "content_scripts": [
       {
         "matches": ["https://pulsus.cc/*"],
@@ -27,7 +24,7 @@
         "32": "assets/PulseHax.png"
       },
       "default_title": "PulseHax",
-      "default_popup": "home.html"
+      "default_popup": "popup.html"
     },
     "manifest_version": 3
 }

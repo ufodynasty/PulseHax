@@ -2,18 +2,20 @@ h1 {
     color: #f0f0f0;
     background: linear-gradient(
         to Right, 
-        #ff5757, 
-        #ffb53f, 
         #fff100,
         #9ae900,
         #15ffe1,
         #816aff,
-        #ff0040
+        #ff0040,
+        #ffb53f, 
+        #fff100,
+        #9ae900,
+        #15ffe1
     );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-stroke: 0.2em transparent;
-    padding-left: 12.5%;
+    text-align: center;
 }
 
 body::-webkit-scrollbar{
@@ -21,6 +23,7 @@ body::-webkit-scrollbar{
 }
 body{
     width:200px;
+    background-color: #f0f0f0;
 }
 
 .dark-mode:disabled {
@@ -39,7 +42,7 @@ body{
     margin: -8px;
     margin-bottom: 0px;
     overflow: hidden;
-    background-color: #ffffff;
+    background-color: #f0f0f0;
     position: relative;
 }
 .topnav a.dark-mode {

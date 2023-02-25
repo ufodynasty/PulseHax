@@ -1,5 +1,4 @@
-document.forms.startup.onchange = testsync;
-function testsync(e) {
+document.forms.startup.onchange = (e) => {
   const checked = e.target;
   let ID = e.target.id;
   if (checked.checked) {
@@ -33,7 +32,7 @@ document.getElementById("darkmodetoggle").addEventListener("click", function(e) 
 });
 
 function refresh() {
-  execute("response = {ut:ut, v:v, Qe:Qe, lvlSel:mt[ft.lvl.sel], onlineLvlSel:b(mt[ft.lvl.sel], 'id')}", function(response) {
+  execute("response = {ut:ut, v:v, Qe:Qe, lvlSel:mt[ft.lvl.sel], onlineLvlSel:w(mt[ft.lvl.sel], 'id')}", function(response) {
     refreshSkip(response);
     refreshSelected(response);
     refreshExport(response);

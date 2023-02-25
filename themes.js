@@ -18,7 +18,6 @@ let defaultTheme = {
 }
 chrome.storage.local.get({CustomTheme:defaultTheme}, function(result) {
   customTheme = result.CustomTheme;
-  console.log(customTheme);
   Object.keys(customTheme).forEach(function (key){
     let element = document.getElementById("custom" + key.charAt(0).toUpperCase() + key.slice(1));
     if(element) {

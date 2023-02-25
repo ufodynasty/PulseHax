@@ -46,23 +46,26 @@ function refreshBounds(response) {
     }
     
   } else {
-    document.getElementById('uBound').min = 0
-    document.getElementById('lBound').min = 0
-    document.getElementById('uBound').max = 0
-    document.getElementById('lBound').max = 0
-    document.getElementById('uBound').value = ""
-    document.getElementById('lBound').value = ""
+    document.getElementById('uBound').min = 0;
+    document.getElementById('lBound').min = 0;
+    document.getElementById('uBound').max = 0;
+    document.getElementById('lBound').max = 0;
+    document.getElementById('uBound').value = "";
+    document.getElementById('lBound').value = "";
   }
-  if(response.response.ut.editorMode == 0) {
+  if(response.response.ut.editorMode == 0 && response.response.ut.selectedBeats.length != 0) {
     document.getElementById('selectedBeatsMin').value = Math.min(...response.response.ut.selectedBeats);
     document.getElementById('selectedBeatsMax').value = Math.max(...response.response.ut.selectedBeats);
-  } else {
+  } else if(response.response.ut.editorMode == 1 && response.response.ut.effectMultiSel.length != 0){
     document.getElementById('selectedBeatsMin').value = Math.min(...response.response.ut.effectMultiSel);
     document.getElementById('selectedBeatsMax').value = Math.max(...response.response.ut.effectMultiSel);
+  } else {
+    document.getElementById('selectedBeatsMin').value = "";
+    document.getElementById('selectedBeatsMax').value = "";
   }
   if(!response.response.ut.edit) {
-    document.getElementById('uBound').value = ""
-    document.getElementById('lBound').value = ""
+    document.getElementById('uBound').value = "";
+    document.getElementById('lBound').value = "";
   }
 }
 
@@ -106,7 +109,7 @@ document.getElementById("selectInRange").addEventListener("click", function() {
   let lb = document.getElementById("lBound").value;
   let bValue = document.getElementById('bType').value;
   let chValue = document.getElementById('chType').value;
-  let q = document.getElementById('qnum').value/document.getElementById('qdenom').value;;
+  let q = document.getElementById('qnum').value/document.getElementById('qdenom').value;
   if(!(bValue == 'bSelect' || chValue == 'chSelect')) {
     execute(`ut.beat.sort(function (e, t) {return e[1] - t[1]});
     ut.timelineMode = "select";
@@ -115,7 +118,7 @@ document.getElementById("selectInRange").addEventListener("click", function() {
       for (let i=${lb}; i <= ${ub}; i++){
         if(${bValue == "beat" ? "!ut.beat[i][5]" : bValue == "hold" ? "ut.beat[i][5]" : "true"}){
           if(${chValue == "quant"}){
-            if((i-1 >= 0 && (Math.abs((ut.beat[i][1]-ut.beat[i-1][1])*ut.beat[i][9]/120-${q}) < 10*Number.EPSILON || Math.abs((ut.beat[i][1]-ut.beat[i-1][1])*ut.beat[i][9]/120-${q}) < 10*Number.EPSILON)) || (i+1 < ut.beat.length && (Math.abs((ut.beat[i+1][1]-ut.beat[i][1])*ut.beat[i][9]/120-${q}) < 10*Number.EPSILON || Math.abs((ut.beat[i+1][1]-ut.beat[i][1])*ut.beat[i+1][9]/120-${q}) < 10*Number.EPSILON))) {
+            if((i-1 >= 0 && (Math.abs((ut.beat[i][1]-ut.beat[i-1][1])*ut.beat[i][9]/120-${q}) < 1e-10 || Math.abs((ut.beat[i][1]-ut.beat[i-1][1])*ut.beat[i-1][9]/120-${q}) < 1e-10)) || (i+1 < ut.beat.length && (Math.abs((ut.beat[i+1][1]-ut.beat[i][1])*ut.beat[i][9]/120-${q}) < 1e-10 || Math.abs((ut.beat[i+1][1]-ut.beat[i][1])*ut.beat[i+1][9]/120-${q}) < 1e-10))) {
               ut.selectedBeats.push(i);
               let j = 1;
               while(i-j >= 0 && ut.beat[i][1] == ut.beat[i-j][1]) {
