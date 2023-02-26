@@ -10,10 +10,10 @@
 - Mindblock the start of maps faster than ever with a <b>quick retry</b> key bound to tab!
 - ... and much, much more!
 
-> At this time, <b>_PulxeHax is only compatible with Chromium based browsers, plus limited functionality for Firefox_</b>, however, that was purely unintentional and may be subject to change. 
+> At this time, <b>PulxeHax is only compatible with Chromium based browsers</b>, _plus limited functionality for Firefox, however, that was purely unintentional and may be subject to change_. 
 
 ## <b>Running Pulsehax</b>
-1. Either download and extract the PulseHax.zip archive, or clone the repository.  
+1. Either download and extract the [PulseHax.zip](PulseHax0.5.1.zip) archive, or clone the repository.  
 
 1. In order to add PulseHax to Chrome, navigate to your Chrome settings, then select "Extensions" from the left hand side bar, and enable "Developer mode" in the upper right hand corner.
 
