@@ -1,21 +1,31 @@
 # PulseHax
-Hacking pulsus has never been easier
-So you want to run PulseHax. Its actually pretty easy! At this time PulxeHax is only compatible with chromium based browsers. At the moment, there is limited functionality for firefox however that was purely unintentional and may be subject to change. 
+### _Hacking pulsus has never been easier_
 
-To use PulseHax, first either download and extract the PulseHax.zip archive or clone the repository.  
+## <b>Features</b>
+- <b>Copy Ranked levels</b> locally and look at the patterns in the editor!
+- <b>Create a practice difficulty</b> of a difficult section of a chart in 4 total clicks!
+- Collaborate with others on your next megacolab by <b>downloading your level file</b> and sending it to a partner to edit. All without leaking your WIP map to the online server!
+- Create multiple difficulties for your effects charts by <b>copying effects across maps</b> in 3 total clicks!
+- <b>Create your own custom theme</b> and show off your artistic creativity with every score post!
+- Mindblock the start of maps faster than ever with a <b>quick retry</b> key bound to tab!
+- ... and much, much more!
 
+> At this time, <b>_PulxeHax is only compatible with Chromium based browsers, plus limited functionality for Firefox_</b>, however, that was purely unintentional and may be subject to change. 
 
-Next in order to add PulseHax to Chrome, navigate to chrome settings, then select extensions from the left hand side bar, and enable developer mode in the upper right hand corner.
+## <b>Running Pulsehax</b>
+1. Either download and extract the PulseHax.zip archive, or clone the repository.  
 
-Finally select load unpacked from the upper left selections, and navigate to the PulseHax directory when prompted. And you're done!
+1. In order to add PulseHax to Chrome, navigate to your Chrome settings, then select "Extensions" from the left hand side bar, and enable "Developer mode" in the upper right hand corner.
 
-Eventually I would like to list this privately on the chrome web store to further ease installation, but there is a $5 fee to create a developer account that just isn't worth paying for the 5 total users I expect. 
-<hr>
+1. Finally, select "Load unpacked" from the upper left selections, and navigate to the PulseHax directory when prompted. And you're done!
 
-By downloading PulseHax, you agree to the following terms of service.
+Eventually, I would like to list this privately on the Chrome Web Store to further ease installation, but there is a $5 fee to create a developer account that just isn't worth paying for the 5 total users I expect. 
 
-You won't use my tools to do bad things. Over the development process we've added many safeguards to prevent misuse but these TOS make misuse completely impossible since noone wouldd ever lie.
+## <b>Terms Of Service</b>
+By downloading PulseHax, you agree to the following terms of service:
 
-If people ask about any of the functions of PulseHax, refer them here. This entire project was designed as a means of sharing information and expanding the scope of gamma modifications.
+You won't use my tools to do bad things. Over the development process we've added many safeguards to prevent misuse but the TOS make misuse completely impossible since noone would eeeeever lie.
+
+If people ask about any of the functions of PulseHax, refer them here. This entire project was designed as a means of sharing information and expanding the scope of Gamma modifications.
 
 Don't repackage my code and sell it. Noone will buy it anyway. If you want to otherwise repackage and modify the code ask me and the answer will always be yes.
