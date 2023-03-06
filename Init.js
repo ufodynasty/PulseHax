@@ -48,10 +48,10 @@ window.addEventListener("SetupComplete", function() {
     buttonText: color(255, 255, 255),
     textDown: color(150, 150, 150),
     select: color(75, 75, 75),
-    modText: color(220, 150, 150),
-    scrollbar: color(255, 100, 100),
+    modText: color(225, 225, 225),
+    scrollbar: color(225, 225, 225),
     lightTheme: 1,
-    checkmark: color(255, 100, 100),
+    checkmark: color(225, 225, 225),
     dropdown: color(50, 50, 50)
     },{
     main: color(10, 10, 10),
