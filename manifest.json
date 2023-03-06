@@ -3,10 +3,10 @@
     "version": "0.5.1",
     "description": "Hacking pulsus has never been so easy",
     "permissions": ["storage", "tabs"],
-    "host_permissions": ["https://pulsus.cc/*"],
+    "host_permissions": ["https://pulsus.cc/*","https://www.pulsus.cc/*"],
     "content_scripts": [
       {
-        "matches": ["https://pulsus.cc/*"],
+        "matches": ["https://pulsus.cc/*","https://www.pulsus.cc/*"],
         "js": ["contentScript.js"]
       }
     ],
@@ -16,7 +16,7 @@
           "Init.js",
           "assets/retry.wav"
         ],
-        "matches": ["https://pulsus.cc/*"]
+        "matches": ["https://pulsus.cc/*","https://www.pulsus.cc/*"]
       }
     ],
     "action": {
