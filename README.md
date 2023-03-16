@@ -28,4 +28,4 @@ You won't use my tools to do bad things. Over the development process we've adde
 
 If people ask about any of the functions of PulseHax, refer them here. This entire project was designed as a means of sharing information and expanding the scope of Gamma modifications.
 
-Don't repackage my code and sell it. Noone will buy it anyway. If you want to otherwise repackage and modify the code ask me and the answer will always be yes.
+Don't repackage my code and sell it. No one will buy it anyway. If you want to otherwise repackage and modify the code ask me and the answer will always be yes.
