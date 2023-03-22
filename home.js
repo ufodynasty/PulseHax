@@ -82,11 +82,10 @@ document.getElementById("lvlCopy").addEventListener("click", function() {
   }`
   )
 })
-
+let zip = new JSZip();
 document.getElementById("lvlExport").addEventListener("click", function() {
   execute(`mt[ft.lvl.sel]`, function(response) {
-    let zip = new JSZip();
-    zip.file(`${response.response.title}.json`, JSON.stringify(response.response));
+    zip.file(`${response.response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response.response));
     zip.generateAsync({type:"blob",compression: "DEFLATE"}).then(function (blob) {
       const a = document.createElement("a");
       const url = window.URL.createObjectURL(blob);
@@ -101,21 +100,22 @@ document.getElementById("lvlImport").addEventListener("click", function() {
   document.getElementById("lvlImportAction").click();
 })
 document.getElementById("lvlImportAction").addEventListener("change",function() {
-  if(/\.pls$/.exec(document.getElementById("lvlImportAction").value)){
-    let zip = new JSZip();
-    zip.loadAsync(document.getElementById("lvlImportAction").files[0])
-    .then(function(zip) {
-      zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
-        let vtest = JSON.parse(fileData);
-        if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) { //Add section validation once support ticket is resolved.
-          execute(`vt.saved.push(${fileData}); vt.search = vt.saved`)
-        } else {
-          document.getElementById("fileError").classList.add("active");
-        }
-      })
-    });
-  } else {
-    document.getElementById("fileError").classList.add("active");
+  for(file of document.getElementById("lvlImportAction").files){
+    if(/\.pls$/.exec(file.name)){
+      zip.loadAsync(file)
+      .then(function(zip) {
+        zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
+          let vtest = JSON.parse(fileData);
+          if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
+            execute(`vt.saved.push(${fileData}); vt.search = vt.saved`)
+          } else {
+            document.getElementById("fileError").classList.add("active");
+          }
+        })
+      });
+    } else {
+      document.getElementById("fileError").classList.add("active");
+    }
   }
 })
 document.getElementById("additionalThemes").addEventListener("click", function(e) {
