@@ -82,8 +82,8 @@ document.getElementById("lvlCopy").addEventListener("click", function() {
   }`
   )
 })
-let zip = new JSZip();
 document.getElementById("lvlExport").addEventListener("click", function() {
+  let zip = new JSZip();
   execute(`mt[ft.lvl.sel]`, function(response) {
     zip.file(`${response.response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response.response));
     zip.generateAsync({type:"blob",compression: "DEFLATE"}).then(function (blob) {
@@ -101,9 +101,15 @@ document.getElementById("lvlImport").addEventListener("click", function() {
 })
 document.getElementById("lvlImportAction").addEventListener("change",function() {
   for(file of document.getElementById("lvlImportAction").files){
+    let zip = new JSZip();
     if(/\.pls$/.exec(file.name)){
       zip.loadAsync(file)
       .then(function(zip) {
+        console.log(file)
+        console.log("file")
+        console.log(Object.keys(zip.files)[0])
+        console.log("keys")
+        console.log(Object.keys(zip.files))
         zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
           let vtest = JSON.parse(fileData);
           if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
