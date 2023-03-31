@@ -232,7 +232,7 @@ document.getElementById("beatBuff").addEventListener("click", function() {
 })
 document.getElementById("beatBuffPaste").addEventListener("click", function() {
   execute(`
-    JSON.parse(\`${JSON.stringify(Buffers.beat).replace(/\\/g, '\\\\')}\`).forEach((beat) => {
+    JSON.parse(\`${JSON.stringify(Buffers.beat).replace(/\\/g, '\\\\').replace(/\`/g, '\\\`')}\`).forEach((beat) => {
     ut.beat.push(beat);
   })`)
   Buffers.beat = [];
@@ -291,7 +291,7 @@ document.getElementById("sectionBuff").addEventListener("click", function() {
 })
 document.getElementById("sectionBuffPaste").addEventListener("click", function() {
   execute(`
-    JSON.parse(\`${JSON.stringify(Buffers.section).replace(/\\/g, '\\\\')}\`).forEach((section) => {
+    JSON.parse(\`${JSON.stringify(Buffers.section).replace(/\\/g, '\\\\').replace(/\`/g, '\\\`')}\`).forEach((section) => {
       ut.sections.push(section);
     })
   `)
