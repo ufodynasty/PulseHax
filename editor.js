@@ -261,7 +261,7 @@ document.getElementById("effectBuff").addEventListener("click", function() {
 })
 document.getElementById("effectBuffPaste").addEventListener("click", function() {
   execute(`
-    JSON.parse(\`${JSON.stringify(Buffers.effect).replace(/\\/g, '\\\\')}\`).forEach((effect) => {
+    JSON.parse(\`${JSON.stringify(Buffers.effect).replace(/\\/g, '\\\\').replace(/\`/g, '\\\`')}\`).forEach((effect) => {
       ut.effects.push(effect);
     })
   `)
