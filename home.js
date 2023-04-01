@@ -43,6 +43,9 @@ function refresh() {
 function refreshSkip(response){
   document.getElementById("skipIntro").checked = response.response.ut.skipIntro;
 }
+function refreshMute(response){
+  document.getElementById("disableMenuMusic").checked = response.response.ut.disableMenuMusic;
+}
 function refreshExport(response){
   document.getElementById("lvlExport").disabled = (typeof response.response.lvlSel == "number" || response.response.Qe != "menu");
 }
@@ -66,6 +69,10 @@ function refreshSelected(response) {
 
 document.getElementById("skipIntro").addEventListener("click", function() {
   execute(`ut.skipIntro = ${document.getElementById("skipIntro").checked}`);
+});
+document.getElementById("disableMenuMusic").addEventListener("click", function() {
+  execute(`ut.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}`);
+  console.log(document.getElementById("disableMenuMusic").checked)
 });
 
 document.getElementById("lvlCopy").addEventListener("click", function() {

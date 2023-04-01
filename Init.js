@@ -10,6 +10,27 @@ jn.musicTime = function () {
   }),
   !1 !== ut.edit || ut.paused || 1 !== ut.disMode || (!1 !== ut.songPlaying || !1 !== Ie && 'hidden' !== Ie || !1 === ut.preLevelStart ? ( - 1000 < ((e = ((!1 === ut.songEnded ? wt[ut.song].seek() : wt[ut.song].duration() + (!1 === ut.songEnded ? 0 : (millis() - ut.songEnded[0]) / 1000 * ut.mods.bpm)) - (ut.songOffset + ut.mods.offset + ft.settings.offset) / 1000) * (ut.bpm / 60) / ut.mods.bpm) - ut.time) * ut.mods.bpm / (ut.bpm / 60) || 'set' === ut.time) && (ut.time = e) : ut.time = (millis() - ut.preLevelStart - 5000) / 1000 * (ut.bpm / 60) / ut.mods.bpm)
 }
+Ji = function () {
+  soundManager.setup({
+      onready: function() {
+          var e = soundManager.createSound({
+              id: "menuMusic",
+              url: 0 === ft.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : ft.settings.menuMusic
+          });
+          if(!ut.disableMenuMusic) {
+              soundManager.play("menuMusic", {
+                  onfinish: function() {
+                      Ji()
+                  }
+              })
+          }
+          ft.loopPlayState = e.playState
+      },
+      ontimeout: function() {
+          alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error menuMusic")
+      }
+  })
+}
 C.credits = function() {
   var e = width > height ? width / 64 : height / 64
     , t = (textAlign(CENTER, CENTER),

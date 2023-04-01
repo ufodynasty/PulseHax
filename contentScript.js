@@ -1,9 +1,14 @@
 inject("Init");
 window.addEventListener("SetupComplete", function() {
-  chrome.storage.local.get({Settings:{Wave:false},CustomTheme:{}}, function(result) {
-    if(result.Settings.Wave) {
+  chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{}}, function(result) {
+    if(result.Settings.wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
       h.wave = 1;
+      `}));
+    }
+    if(result.Settings.disableMenuMusic) {
+      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
+      ut.disableMenuMusic = true;
       `}));
     }
     if(result.Settings.additionalThemes) {
