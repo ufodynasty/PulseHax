@@ -1,5 +1,5 @@
 let userSettings = {};
-chrome.storage.local.get({Settings:{Wave:false,additionalThemes:false,customTheme:false}}, function(result) {
+chrome.storage.local.get({Settings:{wave:false,additionalThemes:false,customTheme:false}}, function(result) {
   userSettings = result.Settings;
   Object.keys(userSettings).forEach(function (key){
     if(key == "darkmodetoggle") {
