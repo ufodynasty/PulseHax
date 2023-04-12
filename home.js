@@ -137,14 +137,15 @@ document.getElementById("additionalThemes").addEventListener("click", function(e
       W[gt].theme_gufo = "Gufo's theme";
       W[gt].theme_floopy = "Floopy's theme";
       W[gt].theme_shia = "Shia's theme";
-      ft.settings.menu.pages[1].items[1].options.push(10, 11, 12);
-      ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia');
+      W[gt].theme_lilyyy = "Lilyyy's theme";
+      ft.settings.menu.pages[1].items[1].options.push(10, 11, 12, 13);
+      ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy');
     `);
   } else {
     execute(`
-      ft.settings.menu.pages[1].items[1].options = ft.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![10,11,12].includes(v)});
-      ft.settings.menu.pages[1].items[1].labels = ft.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia'].includes(v)});
-      ft.settings.themeSel = [10,11,12].includes(ft.settings.themeSel) ? 0 : ft.settings.themeSel;
+      ft.settings.menu.pages[1].items[1].options = ft.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![10,11,12,13].includes(v)});
+      ft.settings.menu.pages[1].items[1].labels = ft.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia','theme_lilyyy'].includes(v)});
+      ft.settings.themeSel = [10,11,12,13].includes(ft.settings.themeSel) ? 0 : ft.settings.themeSel;
     `)
   }
   let ID = e.target.id;
@@ -157,15 +158,15 @@ document.getElementById("customTheme").addEventListener("click", function(e) {
   if(e.target.checked) {
     execute(`
       W[gt].theme_CUSTOM = "Custom theme";
-      ft.settings.menu.pages[1].items[1].options.push(13);
+      ft.settings.menu.pages[1].items[1].options.push(14);
       ft.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
-      ft.settings.themeSel = 13;
+      ft.settings.themeSel = 14;
     `);
   } else {
     execute(`
-      ft.settings.menu.pages[1].items[1].options = ft.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 13});
+      ft.settings.menu.pages[1].items[1].options = ft.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 14});
       ft.settings.menu.pages[1].items[1].labels = ft.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
-      ft.settings.themeSel = ft.settings.themeSel == 13 ? 0 : ft.settings.themeSel;
+      ft.settings.themeSel = ft.settings.themeSel == 14 ? 0 : ft.settings.themeSel;
     `)
   }
   userSettings.customTheme = e.target.checked;
