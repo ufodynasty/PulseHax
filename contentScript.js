@@ -17,25 +17,26 @@ window.addEventListener("SetupComplete", function() {
         W[gt].theme_floopy = "Floopy's theme";
         W[gt].theme_shia = "Shia's theme";
         W[gt].theme_lilyyy = "Lilyyy's theme";
-        ft.settings.menu.pages[1].items[1].options.push(10, 11, 12, 13);
-        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy');
+        W[gt].theme_axye = "Axye's theme";
+        ft.settings.menu.pages[1].items[1].options.push(10, 11, 12, 13, 14);
+        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
       `}));
     }
     if(result.Settings.customTheme) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
       W[gt].theme_CUSTOM = "Custom theme";
-      ft.settings.menu.pages[1].items[1].options.push(14);
+      ft.settings.menu.pages[1].items[1].options.push(15);
       ft.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
       `}));
     }
     Object.keys(result.CustomTheme).forEach(function (key){
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ge[14].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Ge[15].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `}));
       } else if (key == "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ge[14].${key} = ${result.CustomTheme[key]};
+          Ge[15].${key} = ${result.CustomTheme[key]};
         `}));
       }
     });
