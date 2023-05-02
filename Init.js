@@ -105,6 +105,21 @@ window.addEventListener("SetupComplete", function() {
     checkmark: color(225, 77, 255),
     dropdown: color(234, 128, 255)
     },{
+      main: color(31, 12, 21),
+      text: color(244, 234, 179),
+      overlayShade: color(83, 34, 42),
+      shade: color(63, 24, 32),
+      buttonDown: color(238, 134, 89),
+      buttonUp: color(255, 213, 122),
+      buttonText: color(31, 12, 21),
+      textDown: color(225, 186, 132),
+      select: color(143, 60, 45),
+      modText: color(255, 51, 51),
+      scrollbar: color(255, 213, 122),
+      lightTheme: 1,
+      checkmark: color(127, 41, 71),
+      dropdown: color(226, 120, 75),
+    },{
     main: color(35, 50, 60),
     text: color(255, 255, 255),
     overlayShade: color(32, 45, 54),
