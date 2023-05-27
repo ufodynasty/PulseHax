@@ -13,15 +13,19 @@
     <fieldset>
       <legend>Selection</legend>
       <form id = "massSelect">
-        <label for="selectedBeatsMin">Min Selected</label>
-        <input type="number" id="selectedBeatsMin" style = "pointer-events:none;">
-        <label for="selectedBeatsMax">Max Selected</label>
-        <input type="number" id="selectedBeatsMax" style = "pointer-events:none;">
-        <label for="lBound">Lower Bound</label>
-        <input type="number" id="lBound" name="lBound" min="0" max="0" step="1">
-        <label for="uBound">Upper Bound</label>
-        <input type="number" id="uBound" name="uBound" min="0" max="0" step="1">
-        <div id = "qdiv"style="display: none;">
+        <label for="selectedBeats">Selected</label>
+        <div id = "selectedBeats">
+          <input type="number" id="selectedBeatsMin" style="width: 40px;">
+          <div style = "display:inline; text-align:center;"> to </div>
+          <input type="number" id="selectedBeatsMax" style="width: 40px;">
+        </div>
+        <label for="bounds">Bounds</label>
+        <div id="bounds">
+          <input type="number" id="lBound" name="lBound" min="0" max="0" step="1" style="width: 40px;">
+          <div style = "display:inline; text-align:center;"> to </div>
+          <input type="number" id="uBound" name="uBound" min="0" max="0" step="1" style="width: 40px;">
+        </div>
+        <div id = "qdiv" style="display: none;">
           <label for="qinput">Snap</label>
           <div id = "qinput">
             <input type="number" id="qnum" name="qnum" min="1" step="1" value = "1" style="width: 40px;">
