@@ -221,6 +221,18 @@ document.getElementById("rotateCCW").addEventListener("click", function() {
   refresh()
 });
 
+/*
+  haha, i have no idea what i'm doing!
+  - axye
+*/
+document.getElementById("customSnapDiv").addEventListener("change", function() {
+  let div = document.getElementById("customSnapDiv").value;
+  execute(`
+    ut.snap = 1 / ${div}
+    `).
+  refresh();
+})
+
 document.getElementById("beatBuff").addEventListener("click", function() {
   execute(`ut.selectedBeats.map((x) => ut.beat[x])`,function(response) {
     Buffers.beat = response.response;
