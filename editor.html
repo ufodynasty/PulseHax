@@ -13,14 +13,14 @@
     <fieldset>
       <legend>Selection</legend>
       <form id = "massSelect">
-        <label for="selectedBeatsMin">Selected</label>
-        <div>
+        <label for="selectedBeats">Selected</label>
+        <div id = "selectedBeats">
           <input type="number" id="selectedBeatsMin" style="width: 40px;">
           <div style = "display:inline; text-align:center;"> to </div>
           <input type="number" id="selectedBeatsMax" style="width: 40px;">
         </div>
-        <label for="lBound">Bounds</label>
-        <div>
+        <label for="bounds">Bounds</label>
+        <div id="bounds">
           <input type="number" id="lBound" name="lBound" min="0" max="0" step="1" style="width: 40px;">
           <div style = "display:inline; text-align:center;"> to </div>
           <input type="number" id="uBound" name="uBound" min="0" max="0" step="1" style="width: 40px;">
@@ -66,6 +66,21 @@
           </div>
         </div>
       </form>
+    </fieldset>
+    <fieldset>
+      <legend>Edit</legend>
+      <div>
+        <label for="customSnap">Custom Snap</label>
+        <div id = "customSnap">
+          <a>1</a>
+          <div style = "display:inline; text-align:center;"> / </div>
+          <input type="number" id="customSnapDiv" name="customSnapDiv" min="1" step="1" style="width: 30px;">
+        </div>
+        <label for="customSpd">Custom Playback Rate</label>
+        <div>
+          <input type="number" id="customSpd" name="customSpd" min="0.001" style="width: 50px;">
+        </div>
+      </div>
     </fieldset>
     <fieldset>
       <legend>Buffers</legend>
