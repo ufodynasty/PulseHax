@@ -233,6 +233,14 @@ document.getElementById("customSnapDiv").addEventListener("change", function() {
   refresh();
 })
 
+document.getElementById("customSpd").addEventListener("change", function() {
+  let rate = document.getElementById("customSpd").value;
+  execute(`
+  ut.playbackRate = ${rate}
+  `).
+  refresh();
+})
+
 document.getElementById("beatBuff").addEventListener("click", function() {
   execute(`ut.selectedBeats.map((x) => ut.beat[x])`,function(response) {
     Buffers.beat = response.response;
