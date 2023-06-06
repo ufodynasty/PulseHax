@@ -13,15 +13,19 @@
     <fieldset>
       <legend>Selection</legend>
       <form id = "massSelect">
-        <label for="selectedBeatsMin">Min Selected</label>
-        <input type="number" id="selectedBeatsMin" style = "pointer-events:none;">
-        <label for="selectedBeatsMax">Max Selected</label>
-        <input type="number" id="selectedBeatsMax" style = "pointer-events:none;">
-        <label for="lBound">Lower Bound</label>
-        <input type="number" id="lBound" name="lBound" min="0" max="0" step="1">
-        <label for="uBound">Upper Bound</label>
-        <input type="number" id="uBound" name="uBound" min="0" max="0" step="1">
-        <div id = "qdiv"style="display: none;">
+        <label for="selectedBeats">Selected</label>
+        <div id = "selectedBeats">
+          <input type="number" id="selectedBeatsMin" style="width: 40px;">
+          <div style = "display:inline; text-align:center;"> to </div>
+          <input type="number" id="selectedBeatsMax" style="width: 40px;">
+        </div>
+        <label for="bounds">Bounds</label>
+        <div id="bounds">
+          <input type="number" id="lBound" name="lBound" min="0" max="0" step="1" style="width: 40px;">
+          <div style = "display:inline; text-align:center;"> to </div>
+          <input type="number" id="uBound" name="uBound" min="0" max="0" step="1" style="width: 40px;">
+        </div>
+        <div id = "qdiv" style="display: none;">
           <label for="qinput">Snap</label>
           <div id = "qinput">
             <input type="number" id="qnum" name="qnum" min="1" step="1" value = "1" style="width: 40px;">
@@ -30,7 +34,7 @@
           </div>
         </div>
         <select id="bType">
-          <option value="bSelect" disabled selected>Beat type</option>
+          <option value="bSelect" disabled selected>Beat Type</option>
           <option value="all">All</option>
           <option value="beat">Beats</option>
           <option value="hold">Holds</option>
@@ -47,7 +51,7 @@
         <input type="button" id="selectInRange" value="Select in Range">
         <input type="button" id="deleteSelected" value="Delete Selection">
         <input type="button" id="createPracticeDiff" value="Create Practice Level">
-        <div style = "display:table; width:100%;">
+        <div style = "display:table; width:100%; border-spacing: 2px;">
           <div style = "display:table-cell;">
             <input type="button" id="flipV" value="&#11021;" class="rf_button">
           </div>
@@ -62,6 +66,21 @@
           </div>
         </div>
       </form>
+    </fieldset>
+    <fieldset>
+      <legend>Edit</legend>
+      <div>
+        <label for="customSnap">Custom Snap</label>
+        <div id = "customSnap">
+          <a>1</a>
+          <div style = "display:inline; text-align:center;"> / </div>
+          <input type="number" id="customSnapDiv" name="customSnapDiv" min="1" step="1" style="width: 30px;">
+        </div>
+        <label for="customSpd">Custom Playback Rate</label>
+        <div>
+          <input type="number" id="customSpd" name="customSpd" min="0.001" style="width: 50px;">
+        </div>
+      </div>
     </fieldset>
     <fieldset>
       <legend>Buffers</legend>
@@ -89,7 +108,7 @@
     </fieldset>
     <fieldset>
       <legend>Color Banks</legend>
-      <form id = "colors" style = "display:table; width:100%;">
+      <form id = "colors" style = "display:table; width:100%; border-spacing: 2px;">
         <div style = "display:table-cell;">
           <input type="color" id = "cBank1">
         </div>
@@ -110,12 +129,12 @@
         </div>
       </form>
       <select name="banks" id="banks">
-        <option value="cBank1">Color bank 1</option>
-        <option value="cBank2">Color bank 2</option>
-        <option value="cBank3">Color bank 3</option>
-        <option value="cBank4">Color bank 4</option>
-        <option value="cBank5">Color bank 5</option>
-        <option value="cBank6">Color bank 6</option>
+        <option value="cBank1">Color Bank 1</option>
+        <option value="cBank2">Color Bank 2</option>
+        <option value="cBank3">Color Bank 3</option>
+        <option value="cBank4">Color Bank 4</option>
+        <option value="cBank5">Color Bank 5</option>
+        <option value="cBank6">Color Bank 6</option>
       </select>
       <input type="button" id="getTBar" value="Get current color">
       <input type="button" id="setTBar" value="Set current color">

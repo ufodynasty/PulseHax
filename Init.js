@@ -35,7 +35,7 @@ C.credits = function() {
   var e = width > height ? width / 64 : height / 64
     , t = (textAlign(CENTER, CENTER),
   fill(G.text),
-  [at("credits_client", gt), "TetroGem", at("credits_server", gt), V(["TetroGem", "Epicness", "Quintec"]), at("credits_programming", gt), "cg505", at("credits_security", gt), "Quintec", at("credits_art", gt), at("credits_and", gt, "TetroGem", "Alexandre Declos"), at("credits_translation_de", gt), "Scath", at("credits_translation_es", gt), "Zemyro", at("credits_translation_fr", gt), at("credits_and", gt, "Alexandre Declos", "Zemyro"), at("credits_translation_ru", gt), at("credits_and", gt, "ConfiG", "Shiairo31"), at("credits_translation_nl", gt), "sbeve", at("credits_translation_th", gt), "oserottoNeko", at("credits_translation_ro", gt), "Stqrm26", at("credits_patreon", gt), V(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",V(["Mt.Gufo","Pickleman","shianara","floopy"])])
+  [at("credits_client", gt), "TetroGem", at("credits_server", gt), V(["TetroGem", "Epicness", "Quintec"]), at("credits_programming", gt), "cg505", at("credits_security", gt), "Quintec", at("credits_art", gt), at("credits_and", gt, "TetroGem", "Alexandre Declos"), at("credits_translation_de", gt), "Scath", at("credits_translation_es", gt), "Zemyro", at("credits_translation_fr", gt), at("credits_and", gt, "Alexandre Declos", "Zemyro"), at("credits_translation_ru", gt), at("credits_and", gt, "ConfiG", "Shiairo31"), at("credits_translation_nl", gt), "sbeve", at("credits_translation_th", gt), "oserottoNeko", at("credits_translation_ro", gt), "Stqrm26", at("credits_patreon", gt), V(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",V(["Mt.Gufo","Pickleman","shianara","floopy","Axzye"])])
     , i = (height - height / 16) / (t.length + 2);
   textSize(i);
   for (var o = 0; o < t.length; o++)
@@ -104,6 +104,21 @@ window.addEventListener("SetupComplete", function() {
     lightTheme: 1,
     checkmark: color(225, 77, 255),
     dropdown: color(234, 128, 255)
+    },{
+      main: color(31, 12, 21),
+      text: color(244, 234, 179),
+      overlayShade: color(83, 34, 42),
+      shade: color(63, 24, 32),
+      buttonDown: color(238, 134, 89),
+      buttonUp: color(255, 213, 122),
+      buttonText: color(31, 12, 21),
+      textDown: color(225, 186, 132),
+      select: color(143, 60, 45),
+      modText: color(255, 51, 51),
+      scrollbar: color(255, 213, 122),
+      lightTheme: 1,
+      checkmark: color(127, 41, 71),
+      dropdown: color(226, 120, 75),
     },{
     main: color(35, 50, 60),
     text: color(255, 255, 255),

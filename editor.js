@@ -221,6 +221,26 @@ document.getElementById("rotateCCW").addEventListener("click", function() {
   refresh()
 });
 
+/*
+  haha, i have no idea what i'm doing!
+  - axye
+*/
+document.getElementById("customSnapDiv").addEventListener("change", function() {
+  let div = document.getElementById("customSnapDiv").value;
+  execute(`
+    ut.snap = 1 / ${div}
+    `).
+  refresh();
+})
+
+document.getElementById("customSpd").addEventListener("change", function() {
+  let rate = document.getElementById("customSpd").value;
+  execute(`
+  ut.playbackRate = ${rate}
+  `).
+  refresh();
+})
+
 document.getElementById("beatBuff").addEventListener("click", function() {
   execute(`ut.selectedBeats.map((x) => ut.beat[x])`,function(response) {
     Buffers.beat = response.response;
