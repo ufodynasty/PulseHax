@@ -1,40 +1,42 @@
-Mn.musicTime = function() {
+eval(Vn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
+window.addEventListener("SetupComplete", function() {
+  Mn.musicTime = function() {
     var e;
     1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(Ot.song, zt.settings.musicVolume)), !1 === Ot.edit && (!1 === Ot.preLevelStart && (Ot.preLevelStart = millis()), 5e3 <= millis() - Ot.preLevelStart + (Ot.songOffset + Ot.mods.offset + zt.settings.offset) && !Ot.songPlaying && !Ot.paused ? (Ht[Ot.song].rate(Ot.mods.bpm), Ht[Ot.song].volume(zt.settings.musicVolume / 100), e = Ht[Ot.song].play(), Ht[Ot.song].seek((Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3 + ((Ot.skipIntro ? Ot.beat[0][1] : 0) * Ot.mods.bpm / (Ot.bpm / 60)) - 5, e), Ot.songPlaying = !0) : Ot.paused && (Ht[Ot.song].pause(), Ot.songPlaying = !1)), Ot.edit || !1 !== Ot.songEnded || Ht[Ot.song].on("end", function() {
         Ot.songEnded = [millis(), Ht[Ot.song].duration]
     }), !1 !== Ot.edit || Ot.paused || 1 !== Ot.disMode || (!1 !== Ot.songPlaying || !1 !== ye && "hidden" !== ye || !1 === Ot.preLevelStart ? (-1e3 < ((e = ((!1 === Ot.songEnded ? Ht[Ot.song].seek() : Ht[Ot.song].duration() + (!1 === Ot.songEnded ? 0 : (millis() - Ot.songEnded[0]) / 1e3 * Ot.mods.bpm)) - (Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3) * (Ot.bpm / 60) / Ot.mods.bpm) - Ot.time) * Ot.mods.bpm / (Ot.bpm / 60) || "set" === Ot.time) && (Ot.time = e) : Ot.time = (millis() - Ot.preLevelStart - 5e3) / 1e3 * (Ot.bpm / 60) / Ot.mods.bpm)
-}
-function Ki() {
-  soundManager.setup({
-      onready: function() {
-          var e = soundManager.createSound({
-              id: "menuMusic",
-              url: 0 === zt.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : zt.settings.menuMusic
-          });
-          if(!Ot.disableMenuMusic) {
-            soundManager.play("menuMusic", {
-                onfinish: function() {
-                    Ki()
-                }
-            }), zt.loopPlayState = e.playState
-          }
-      },
-      ontimeout: function() {
-          alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error menuMusic")
-      }
-  })
-}
-er.credits = function() {
-  var e = width > height ? width / 64 : height / 64;
-  textAlign(CENTER, CENTER), fill(We.text);
-  var t = [pt("credits_client", yt), "TetroGem", pt("credits_server", yt), Q(["TetroGem", "Epicness", "Quintec"]), pt("credits_programming", yt), "cg505", pt("credits_security", yt), "Quintec", pt("credits_art", yt), pt("credits_and", yt, "TetroGem", "Alexandre Declos"), pt("credits_translation_de", yt), "Scath", pt("credits_translation_es", yt), "Zemyro", pt("credits_translation_fr", yt), pt("credits_and", yt, "Alexandre Declos", "Zemyro"), pt("credits_translation_ru", yt), pt("credits_and", yt, "ConfiG", "Shiairo31"), pt("credits_translation_nl", yt), "sbeve", pt("credits_translation_th", yt), "oserottoNeko", pt("credits_translation_ro", yt), "Stqrm26", pt("credits_patreon", yt), Q(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",Q(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
-      i = (height - height / 16) / (t.length + 2);
-  textSize(i);
-  for (var o = 0; o < t.length; o++) Pi(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
-}
+  }
 
-eval(Vn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
-window.addEventListener("SetupComplete", function() {
+  Ki = function() {
+    soundManager.setup({
+        onready: function() {
+            var e = soundManager.createSound({
+                id: "menuMusic",
+                url: 0 === zt.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : zt.settings.menuMusic
+            });
+            if(!Ot.disableMenuMusic) {
+              soundManager.play("menuMusic", {
+                  onfinish: function() {
+                      Ki()
+                  }
+              }), zt.loopPlayState = e.playState
+            }
+        },
+        ontimeout: function() {
+            alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error menuMusic")
+        }
+    })
+  }
+
+  er.credits = function() {
+    var e = width > height ? width / 64 : height / 64;
+    textAlign(CENTER, CENTER), fill(We.text);
+    var t = [pt("credits_client", yt), "TetroGem", pt("credits_server", yt), Q(["TetroGem", "Epicness", "Quintec"]), pt("credits_programming", yt), "cg505", pt("credits_security", yt), "Quintec", pt("credits_art", yt), pt("credits_and", yt, "TetroGem", "Alexandre Declos"), pt("credits_translation_de", yt), "Scath", pt("credits_translation_es", yt), "Zemyro", pt("credits_translation_fr", yt), pt("credits_and", yt, "Alexandre Declos", "Zemyro"), pt("credits_translation_ru", yt), pt("credits_and", yt, "ConfiG", "Shiairo31"), pt("credits_translation_nl", yt), "sbeve", pt("credits_translation_th", yt), "oserottoNeko", pt("credits_translation_ro", yt), "Stqrm26", pt("credits_patreon", yt), Q(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",Q(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
+        i = (height - height / 16) / (t.length + 2);
+    textSize(i);
+    for (var o = 0; o < t.length; o++) Pi(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
+  }
+
   Le.push({
     main: color(35, 50, 60),
     text: color(255, 255, 255),
@@ -136,7 +138,7 @@ window.addEventListener("keydown", function(e) {
       Ot.effectsCache.vignette = 15
       lowLag.play("retry",".5");
       Ot.disMode = 1,
-      Ot.retry = 1,
+      Ot.retry = !0,
       Ot.buttonHover[0] /= 2,
       zt.lvl.prevPlay = Ot.song,
       Ot.songVol = 100;
