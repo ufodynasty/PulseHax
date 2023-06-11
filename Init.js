@@ -4,21 +4,23 @@ Mn.musicTime = function() {
         Ot.songEnded = [millis(), Ht[Ot.song].duration]
     }), !1 !== Ot.edit || Ot.paused || 1 !== Ot.disMode || (!1 !== Ot.songPlaying || !1 !== ye && "hidden" !== ye || !1 === Ot.preLevelStart ? (-1e3 < ((e = ((!1 === Ot.songEnded ? Ht[Ot.song].seek() : Ht[Ot.song].duration() + (!1 === Ot.songEnded ? 0 : (millis() - Ot.songEnded[0]) / 1e3 * Ot.mods.bpm)) - (Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3) * (Ot.bpm / 60) / Ot.mods.bpm) - Ot.time) * Ot.mods.bpm / (Ot.bpm / 60) || "set" === Ot.time) && (Ot.time = e) : Ot.time = (millis() - Ot.preLevelStart - 5e3) / 1e3 * (Ot.bpm / 60) / Ot.mods.bpm)
 }
-function Li() {
+function Ki() {
   soundManager.setup({
       onready: function() {
-          soundManager.createSound({
-              id: Li,
-              url: "/client/resources/sound/pulsusOpen.mp3"
+          var e = soundManager.createSound({
+              id: "menuMusic",
+              url: 0 === zt.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : zt.settings.menuMusic
           });
           if(!Ot.disableMenuMusic) {
-            soundManager.play(Li, {
-                onfinish: function() {}
-            })
+            soundManager.play("menuMusic", {
+                onfinish: function() {
+                    Ki()
+                }
+            }), zt.loopPlayState = e.playState
           }
       },
       ontimeout: function() {
-          alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error openSound")
+          alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error menuMusic")
       }
   })
 }
