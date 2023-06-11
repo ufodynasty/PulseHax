@@ -1,50 +1,54 @@
-jn.musicTime = function () {
-  var e;
-  1 === soundManager.getSoundById('menuMusic').playState && (soundManager.stop('menuMusic'), soundManager.setVolume(ut.song, ft.settings.musicVolume)),
-  !1 === ut.edit && (!1 === ut.preLevelStart && (ut.preLevelStart = millis()), 5000 <= millis() - ut.preLevelStart + (ut.songOffset + ut.mods.offset + ft.settings.offset) && !ut.songPlaying && !ut.paused ? (wt[ut.song].rate(ut.mods.bpm), wt[ut.song].volume(ft.settings.musicVolume / 100), e = wt[ut.song].play(), wt[ut.song].seek((ut.songOffset + ut.mods.offset + ft.settings.offset) / 1000 + ((ut.skipIntro ? ut.beat[0][1] : 0) * ut.mods.bpm / (ut.bpm / 60)) - 5, e), ut.songPlaying = !0) : ut.paused && (wt[ut.song].pause(), ut.songPlaying = !1)),
-  ut.edit || !1 !== ut.songEnded || wt[ut.song].on('end', function () {
-    ut.songEnded = [
-      millis(),
-      wt[ut.song].duration
-    ]
-  }),
-  !1 !== ut.edit || ut.paused || 1 !== ut.disMode || (!1 !== ut.songPlaying || !1 !== Ie && 'hidden' !== Ie || !1 === ut.preLevelStart ? ( - 1000 < ((e = ((!1 === ut.songEnded ? wt[ut.song].seek() : wt[ut.song].duration() + (!1 === ut.songEnded ? 0 : (millis() - ut.songEnded[0]) / 1000 * ut.mods.bpm)) - (ut.songOffset + ut.mods.offset + ft.settings.offset) / 1000) * (ut.bpm / 60) / ut.mods.bpm) - ut.time) * ut.mods.bpm / (ut.bpm / 60) || 'set' === ut.time) && (ut.time = e) : ut.time = (millis() - ut.preLevelStart - 5000) / 1000 * (ut.bpm / 60) / ut.mods.bpm)
+Mn.musicTime = function() {
+    var e;
+    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(Ot.song, zt.settings.musicVolume)), !1 === Ot.edit && (!1 === Ot.preLevelStart && (Ot.preLevelStart = millis()), 5e3 <= millis() - Ot.preLevelStart + (Ot.songOffset + Ot.mods.offset + zt.settings.offset) && !Ot.songPlaying && !Ot.paused ? (Ht[Ot.song].rate(Ot.mods.bpm), Ht[Ot.song].volume(zt.settings.musicVolume / 100), e = Ht[Ot.song].play(), Ht[Ot.song].seek((Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3 + ((Ot.skipIntro ? Ot.beat[0][1] : 0) * Ot.mods.bpm / (Ot.bpm / 60)) - 5, e), Ot.songPlaying = !0) : Ot.paused && (Ht[Ot.song].pause(), Ot.songPlaying = !1)), Ot.edit || !1 !== Ot.songEnded || Ht[Ot.song].on("end", function() {
+        Ot.songEnded = [millis(), Ht[Ot.song].duration]
+    }), !1 !== Ot.edit || Ot.paused || 1 !== Ot.disMode || (!1 !== Ot.songPlaying || !1 !== ye && "hidden" !== ye || !1 === Ot.preLevelStart ? (-1e3 < ((e = ((!1 === Ot.songEnded ? Ht[Ot.song].seek() : Ht[Ot.song].duration() + (!1 === Ot.songEnded ? 0 : (millis() - Ot.songEnded[0]) / 1e3 * Ot.mods.bpm)) - (Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3) * (Ot.bpm / 60) / Ot.mods.bpm) - Ot.time) * Ot.mods.bpm / (Ot.bpm / 60) || "set" === Ot.time) && (Ot.time = e) : Ot.time = (millis() - Ot.preLevelStart - 5e3) / 1e3 * (Ot.bpm / 60) / Ot.mods.bpm)
 }
-Ji = function () {
+function Li() {
   soundManager.setup({
       onready: function() {
-          var e = soundManager.createSound({
-              id: "menuMusic",
-              url: 0 === ft.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : ft.settings.menuMusic
+          soundManager.createSound({
+              id: Li,
+              url: "/client/resources/sound/pulsusOpen.mp3"
           });
-          if(!ut.disableMenuMusic) {
-              soundManager.play("menuMusic", {
-                  onfinish: function() {
-                      Ji()
-                  }
-              })
+          if(!Ot.disableMenuMusic) {
+            soundManager.play(Li, {
+                onfinish: function() {}
+            })
           }
-          ft.loopPlayState = e.playState
       },
       ontimeout: function() {
-          alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error menuMusic")
+          alert("Switch to a better browser you memehead\nSeriously though, if you're seeing this message, contact us at pulsusgame@gmail.com with error openSound")
       }
   })
 }
-C.credits = function() {
-  var e = width > height ? width / 64 : height / 64
-    , t = (textAlign(CENTER, CENTER),
-  fill(G.text),
-  [at("credits_client", gt), "TetroGem", at("credits_server", gt), V(["TetroGem", "Epicness", "Quintec"]), at("credits_programming", gt), "cg505", at("credits_security", gt), "Quintec", at("credits_art", gt), at("credits_and", gt, "TetroGem", "Alexandre Declos"), at("credits_translation_de", gt), "Scath", at("credits_translation_es", gt), "Zemyro", at("credits_translation_fr", gt), at("credits_and", gt, "Alexandre Declos", "Zemyro"), at("credits_translation_ru", gt), at("credits_and", gt, "ConfiG", "Shiairo31"), at("credits_translation_nl", gt), "sbeve", at("credits_translation_th", gt), "oserottoNeko", at("credits_translation_ro", gt), "Stqrm26", at("credits_patreon", gt), V(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",V(["Mt.Gufo","Pickleman","shianara","floopy","Axzye"])])
-    , i = (height - height / 16) / (t.length + 2);
+er.credits = function() {
+  var e = width > height ? width / 64 : height / 64;
+  textAlign(CENTER, CENTER), fill(We.text);
+  var t = [pt("credits_client", yt), "TetroGem", pt("credits_server", yt), Q(["TetroGem", "Epicness", "Quintec"]), pt("credits_programming", yt), "cg505", pt("credits_security", yt), "Quintec", pt("credits_art", yt), pt("credits_and", yt, "TetroGem", "Alexandre Declos"), pt("credits_translation_de", yt), "Scath", pt("credits_translation_es", yt), "Zemyro", pt("credits_translation_fr", yt), pt("credits_and", yt, "Alexandre Declos", "Zemyro"), pt("credits_translation_ru", yt), pt("credits_and", yt, "ConfiG", "Shiairo31"), pt("credits_translation_nl", yt), "sbeve", pt("credits_translation_th", yt), "oserottoNeko", pt("credits_translation_ro", yt), "Stqrm26", pt("credits_patreon", yt), Q(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",Q(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
+      i = (height - height / 16) / (t.length + 2);
   textSize(i);
-  for (var o = 0; o < t.length; o++)
-      zt(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
+  for (var o = 0; o < t.length; o++) Pi(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
 }
 
-eval(Zn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
+eval(Vn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
 window.addEventListener("SetupComplete", function() {
-  Ge.push({
+  Le.push({
+    main: color(35, 50, 60),
+    text: color(255, 255, 255),
+    overlayShade: color(32, 45, 54),
+    shade: color(20, 35, 45),
+    buttonDown: color(240, 240, 240),
+    buttonUp: color(255, 255, 255),
+    buttonText: color(0, 0, 0),
+    textDown: color(200, 200, 200),
+    select: color(60, 50, 35),
+    modText: color(255, 175, 0),
+    scrollbar: color(255, 255, 255),
+    lightTheme: !1,
+    checkmark: color(0, 175, 255),
+    dropdown: color(225, 225, 225)
+  },{
     main: color(0, 0, 0),
     text: color(64, 255, 64),
     overlayShade: color(16, 16, 16),
@@ -105,50 +109,35 @@ window.addEventListener("SetupComplete", function() {
     checkmark: color(225, 77, 255),
     dropdown: color(234, 128, 255)
     },{
-      main: color(31, 12, 21),
-      text: color(244, 234, 179),
-      overlayShade: color(83, 34, 42),
-      shade: color(63, 24, 32),
-      buttonDown: color(238, 134, 89),
-      buttonUp: color(255, 213, 122),
-      buttonText: color(31, 12, 21),
-      textDown: color(225, 186, 132),
-      select: color(143, 60, 45),
-      modText: color(255, 51, 51),
-      scrollbar: color(255, 213, 122),
-      lightTheme: 1,
-      checkmark: color(127, 41, 71),
-      dropdown: color(226, 120, 75),
-    },{
-    main: color(35, 50, 60),
-    text: color(255, 255, 255),
-    overlayShade: color(32, 45, 54),
-    shade: color(20, 35, 45),
-    buttonDown: color(240, 240, 240),
-    buttonUp: color(255, 255, 255),
-    buttonText: color(0, 0, 0),
-    textDown: color(200, 200, 200),
-    select: color(60, 50, 35),
-    modText: color(255, 175, 0),
-    scrollbar: color(255, 255, 255),
-    lightTheme: !1,
-    checkmark: color(0, 175, 255),
-    dropdown: color(225, 225, 225)
-  });
+    main: color(31, 12, 21),
+    text: color(244, 234, 179),
+    overlayShade: color(83, 34, 42),
+    shade: color(63, 24, 32),
+    buttonDown: color(238, 134, 89),
+    buttonUp: color(255, 213, 122),
+    buttonText: color(31, 12, 21),
+    textDown: color(225, 186, 132),
+    select: color(143, 60, 45),
+    modText: color(255, 51, 51),
+    scrollbar: color(255, 213, 122),
+    lightTheme: 1,
+    checkmark: color(127, 41, 71),
+    dropdown: color(226, 120, 75)
+    });
 });
 
 window.addEventListener("keydown", function(e) {
   if("Tab" === e.code){
     e.preventDefault();
-    if(!1 === ut.edit && 1 === ut.disMode && Qe === "game"){
-      wt[ut.song].pause()
-      ut.effectsCache.vignette += 15
+    if(!1 === Ot.edit && 1 === Ot.disMode && be === "game"){
+      Ht[Ot.song].pause()
+      Ot.effectsCache.vignette = 15
       lowLag.play("retry",".5");
-      ut.disMode = 1,
-      ut.retry = !0,
-      ut.buttonHover[0] /= 2,
-      ft.lvl.prevPlay = ut.song,
-      ut.songVol = 100;
+      Ot.disMode = 1,
+      Ot.retry = 1,
+      Ot.buttonHover[0] /= 2,
+      zt.lvl.prevPlay = Ot.song,
+      Ot.songVol = 100;
     }
   }
 }, !0);

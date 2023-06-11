@@ -32,7 +32,7 @@ document.getElementById("darkmodetoggle").addEventListener("click", function(e) 
 });
 
 function refresh() {
-  execute("response = {ut:ut, v:v, Qe:Qe, lvlSel:mt[ft.lvl.sel], onlineLvlSel:w(mt[ft.lvl.sel], 'id')}", function(response) {
+  execute("response = {Ot:Ot, He:He, be:be, lvlSel:xt[zt.lvl.sel], onlineLvlSel:Co(xt[zt.lvl.sel], 'id')}", function(response) {
     refreshSkip(response);
     refreshSelected(response);
     refreshExport(response);
@@ -41,21 +41,21 @@ function refresh() {
 }refresh();
 
 function refreshSkip(response){
-  document.getElementById("skipIntro").checked = response.response.ut.skipIntro;
+  document.getElementById("skipIntro").checked = response.response.Ot.skipIntro;
 }
 function refreshMute(response){
-  document.getElementById("disableMenuMusic").checked = response.response.ut.disableMenuMusic;
+  document.getElementById("disableMenuMusic").checked = response.response.Ot.disableMenuMusic;
 }
 function refreshExport(response){
-  document.getElementById("lvlExport").disabled = (typeof response.response.lvlSel == "number" || response.response.Qe != "menu");
+  document.getElementById("lvlExport").disabled = (typeof response.response.lvlSel == "number" || response.response.be != "menu");
 }
 function refreshCopy(response){
   if(typeof response.response.lvlSel == "number") {
-    execute(`Io(mt[ft.lvl.sel]) == 2`,(r)=>{
-      document.getElementById("lvlCopy").disabled = !r.response || response.response.Qe != "menu";
+    execute(`ko(xt[zt.lvl.sel]) == 2`,(r)=>{
+      document.getElementById("lvlCopy").disabled = !r.response || response.response.be != "menu";
     })
   } else {;
-    document.getElementById("lvlCopy").disabled = !response.response.lvlSel || response.response.Qe != "menu"
+    document.getElementById("lvlCopy").disabled = !response.response.lvlSel || response.response.be != "menu"
   }
 }
 function refreshSelected(response) {
@@ -68,30 +68,30 @@ function refreshSelected(response) {
 }
 
 document.getElementById("skipIntro").addEventListener("click", function() {
-  execute(`ut.skipIntro = ${document.getElementById("skipIntro").checked}`);
+  execute(`Ot.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
 document.getElementById("disableMenuMusic").addEventListener("click", function() {
-  execute(`ut.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}`);
+  execute(`Ot.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}`);
   console.log(document.getElementById("disableMenuMusic").checked)
 });
 
 document.getElementById("lvlCopy").addEventListener("click", function() {
   execute(`
-  if(typeof mt[ft.lvl.sel] == "number"){
-    ko(mt[ft.lvl.sel]);
-    vt.saved[vt.saved.length-1].stars = un(mt[ft.lvl.sel]);
+  if(typeof xt[zt.lvl.sel] == "number"){
+    No(xt[zt.lvl.sel]);
+    Pt.saved[Pt.saved.length-1].stars = fn(xt[zt.lvl.sel]);
   } else {
-    vt.saved.push(P(mt[ft.lvl.sel]));
-    vt.saved[vt.saved.length-1].title += "(copy)";
+    Pt.saved.push(x(xt[zt.lvl.sel]));
+    Pt.saved[Pt.saved.length-1].title += "(copy)";
   }
-  if(ft.lvl.tab == 0) {
-    vt.search = vt.saved;
+  if(zt.lvl.tab == 0) {
+    Pt.search = Pt.saved;
   }`
   )
 })
 document.getElementById("lvlExport").addEventListener("click", function() {
   let zip = new JSZip();
-  execute(`mt[ft.lvl.sel]`, function(response) {
+  execute(`xt[zt.lvl.sel]`, function(response) {
     zip.file(`${response.response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response.response));
     zip.generateAsync({type:"blob",compression: "DEFLATE"}).then(function (blob) {
       const a = document.createElement("a");
@@ -120,7 +120,7 @@ document.getElementById("lvlImportAction").addEventListener("change",function() 
         zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
           let vtest = JSON.parse(fileData);
           if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
-            execute(`vt.saved.push(${fileData}); vt.search = vt.saved`)
+            execute(`Pt.saved.push(${fileData}); Pt.search = Pt.saved`)
           } else {
             document.getElementById("fileError").classList.add("active");
           }
@@ -131,47 +131,47 @@ document.getElementById("lvlImportAction").addEventListener("change",function() 
     }
   }
 })
-document.getElementById("additionalThemes").addEventListener("click", function(e) {
+document.getElementById("customTheme").addEventListener("click", function(e) {
   if(e.target.checked) {
     execute(`
-      W[gt].theme_gufo = "Gufo's theme";
-      W[gt].theme_floopy = "Floopy's theme";
-      W[gt].theme_shia = "Shia's theme";
-      W[gt].theme_lilyyy = "Lilyyy's theme";
-      W[gt].theme_axye = "Axye's theme";
-      ft.settings.menu.pages[1].items[1].options.push(10, 11, 12, 13, 14);
-      ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+      H[yt].theme_CUSTOM = "Custom theme";
+      zt.settings.menu.pages[1].items[1].options.push(10);
+      zt.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      zt.settings.themeSel = 10;
     `);
   } else {
     execute(`
-      ft.settings.menu.pages[1].items[1].options = ft.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![10,11,12,13,14].includes(v)});
-      ft.settings.menu.pages[1].items[1].labels = ft.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia','theme_lilyyy','theme_axye'].includes(v)});
-      ft.settings.themeSel = [10,11,12,13,14].includes(ft.settings.themeSel) ? 0 : ft.settings.themeSel;
+      zt.settings.menu.pages[1].items[1].options = zt.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 10});
+      zt.settings.menu.pages[1].items[1].labels = zt.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
+      zt.settings.themeSel = zt.settings.themeSel == 10 ? 0 : zt.settings.themeSel;
+    `)
+  }
+  userSettings.customTheme = e.target.checked;
+  chrome.storage.local.set({Settings:userSettings}, function() {
+    console.log(`Custom Theme is set to ${userSettings.customTheme}`);
+  });
+});
+document.getElementById("additionalThemes").addEventListener("click", function(e) {
+  if(e.target.checked) {
+    execute(`
+      H[yt].theme_gufo = "Gufo's theme";
+      H[yt].theme_floopy = "Floopy's theme";
+      H[yt].theme_shia = "Shia's theme";
+      H[yt].theme_lilyyy = "Lilyyy's theme";
+      H[yt].theme_axye = "Axye's theme";
+      zt.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
+      zt.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+    `);
+  } else {
+    execute(`
+      zt.settings.menu.pages[1].items[1].options = zt.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![11,12,13,14,15].includes(v)});
+      zt.settings.menu.pages[1].items[1].labels = zt.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia','theme_lilyyy','theme_axye'].includes(v)});
+      zt.settings.themeSel = [11,12,13,14,15].includes(zt.settings.themeSel) ? 0 : zt.settings.themeSel;
     `)
   }
   let ID = e.target.id;
   userSettings[ID] = e.target.checked;
   chrome.storage.local.set({Settings:userSettings}, function() {
   console.log(`${ID} is set to ${userSettings[ID]}`);
-  });
-});
-document.getElementById("customTheme").addEventListener("click", function(e) {
-  if(e.target.checked) {
-    execute(`
-      W[gt].theme_CUSTOM = "Custom theme";
-      ft.settings.menu.pages[1].items[1].options.push(15);
-      ft.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
-      ft.settings.themeSel = 15;
-    `);
-  } else {
-    execute(`
-      ft.settings.menu.pages[1].items[1].options = ft.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 15});
-      ft.settings.menu.pages[1].items[1].labels = ft.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
-      ft.settings.themeSel = ft.settings.themeSel == 15 ? 0 : ft.settings.themeSel;
-    `)
-  }
-  userSettings.customTheme = e.target.checked;
-  chrome.storage.local.set({Settings:userSettings}, function() {
-    console.log(`Custom Theme is set to ${userSettings.customTheme}`);
   });
 });

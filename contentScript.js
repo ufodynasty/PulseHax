@@ -3,40 +3,40 @@ window.addEventListener("SetupComplete", function() {
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{}}, function(result) {
     if(result.Settings.wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      h.wave = 1;
+      Pe.wave = 1;
       `}));
     }
     if(result.Settings.disableMenuMusic) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      ut.disableMenuMusic = true;
-      `}));
-    }
-    if(result.Settings.additionalThemes) {
-      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-        W[gt].theme_gufo = "Gufo's theme";
-        W[gt].theme_floopy = "Floopy's theme";
-        W[gt].theme_shia = "Shia's theme";
-        W[gt].theme_lilyyy = "Lilyyy's theme";
-        W[gt].theme_axye = "Axye's theme";
-        ft.settings.menu.pages[1].items[1].options.push(10, 11, 12, 13, 14);
-        ft.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+      Ot.disableMenuMusic = true;
       `}));
     }
     if(result.Settings.customTheme) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      W[gt].theme_CUSTOM = "Custom theme";
-      ft.settings.menu.pages[1].items[1].options.push(15);
-      ft.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      H[yt].theme_CUSTOM = "Custom theme";
+      zt.settings.menu.pages[1].items[1].options.push(10);
+      zt.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      `}));
+    }
+    if(result.Settings.additionalThemes) {
+      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
+        H[yt].theme_gufo = "Gufo's theme";
+        H[yt].theme_floopy = "Floopy's theme";
+        H[yt].theme_shia = "Shia's theme";
+        H[yt].theme_lilyyy = "Lilyyy's theme";
+        H[yt].theme_axye = "Axye's theme";
+        zt.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
+        zt.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
       `}));
     }
     Object.keys(result.CustomTheme).forEach(function (key){
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ge[15].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Le[10].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `}));
       } else if (key == "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ge[15].${key} = ${result.CustomTheme[key]};
+          Le[10].${key} = ${result.CustomTheme[key]};
         `}));
       }
     });
