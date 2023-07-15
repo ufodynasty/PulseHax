@@ -3,7 +3,7 @@ window.addEventListener("SetupComplete", function() {
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{}}, function(result) {
     if(result.Settings.wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      Pe.wave = 1;
+      xe.wave = 1;
       `}));
     }
     if(result.Settings.disableMenuMusic) {
@@ -32,11 +32,11 @@ window.addEventListener("SetupComplete", function() {
     Object.keys(result.CustomTheme).forEach(function (key){
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Le[10].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Ke[10].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `}));
       } else if (key == "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Le[10].${key} = ${result.CustomTheme[key]};
+          Ke[10].${key} = ${result.CustomTheme[key]};
         `}));
       }
     });

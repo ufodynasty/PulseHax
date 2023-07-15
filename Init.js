@@ -1,13 +1,13 @@
-eval(Vn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
+eval(Yn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
 window.addEventListener("SetupComplete", function() {
-  Mn.musicTime = function() {
+  $n.musicTime = function() {
     var e;
     1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(Ot.song, zt.settings.musicVolume)), !1 === Ot.edit && (!1 === Ot.preLevelStart && (Ot.preLevelStart = millis()), 5e3 <= millis() - Ot.preLevelStart + (Ot.songOffset + Ot.mods.offset + zt.settings.offset) && !Ot.songPlaying && !Ot.paused ? (Ht[Ot.song].rate(Ot.mods.bpm), Ht[Ot.song].volume(zt.settings.musicVolume / 100), e = Ht[Ot.song].play(), Ht[Ot.song].seek((Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3 + ((Ot.skipIntro ? Ot.beat[0][1] : 0) * Ot.mods.bpm / (Ot.bpm / 60)) - 5, e), Ot.songPlaying = !0) : Ot.paused && (Ht[Ot.song].pause(), Ot.songPlaying = !1)), Ot.edit || !1 !== Ot.songEnded || Ht[Ot.song].on("end", function() {
         Ot.songEnded = [millis(), Ht[Ot.song].duration]
-    }), !1 !== Ot.edit || Ot.paused || 1 !== Ot.disMode || (!1 !== Ot.songPlaying || !1 !== ye && "hidden" !== ye || !1 === Ot.preLevelStart ? (-1e3 < ((e = ((!1 === Ot.songEnded ? Ht[Ot.song].seek() : Ht[Ot.song].duration() + (!1 === Ot.songEnded ? 0 : (millis() - Ot.songEnded[0]) / 1e3 * Ot.mods.bpm)) - (Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3) * (Ot.bpm / 60) / Ot.mods.bpm) - Ot.time) * Ot.mods.bpm / (Ot.bpm / 60) || "set" === Ot.time) && (Ot.time = e) : Ot.time = (millis() - Ot.preLevelStart - 5e3) / 1e3 * (Ot.bpm / 60) / Ot.mods.bpm)
+    }), !1 !== Ot.edit || Ot.paused || 1 !== Ot.disMode || (!1 !== Ot.songPlaying || !1 !== Ee && "hidden" !== Ee || !1 === Ot.preLevelStart ? (-1e3 < ((e = ((!1 === Ot.songEnded ? Ht[Ot.song].seek() : Ht[Ot.song].duration() + (!1 === Ot.songEnded ? 0 : (millis() - Ot.songEnded[0]) / 1e3 * Ot.mods.bpm)) - (Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3) * (Ot.bpm / 60) / Ot.mods.bpm) - Ot.time) * Ot.mods.bpm / (Ot.bpm / 60) || "set" === Ot.time) && (Ot.time = e) : Ot.time = (millis() - Ot.preLevelStart - 5e3) / 1e3 * (Ot.bpm / 60) / Ot.mods.bpm)
   }
 
-  Ki = function() {
+  Vi = function() {
     soundManager.setup({
         onready: function() {
             var e = soundManager.createSound({
@@ -17,7 +17,7 @@ window.addEventListener("SetupComplete", function() {
             if(!Ot.disableMenuMusic) {
               soundManager.play("menuMusic", {
                   onfinish: function() {
-                      Ki()
+                      Vi()
                   }
               }), zt.loopPlayState = e.playState
             }
@@ -28,7 +28,7 @@ window.addEventListener("SetupComplete", function() {
     })
   }
 
-  er.credits = function() {
+  hr.credits = function() {
     var e = width > height ? width / 64 : height / 64;
     textAlign(CENTER, CENTER), fill(We.text);
     var t = [pt("credits_client", yt), "TetroGem", pt("credits_server", yt), Q(["TetroGem", "Epicness", "Quintec"]), pt("credits_programming", yt), "cg505", pt("credits_security", yt), "Quintec", pt("credits_art", yt), pt("credits_and", yt, "TetroGem", "Alexandre Declos"), pt("credits_translation_de", yt), "Scath", pt("credits_translation_es", yt), "Zemyro", pt("credits_translation_fr", yt), pt("credits_and", yt, "Alexandre Declos", "Zemyro"), pt("credits_translation_ru", yt), pt("credits_and", yt, "ConfiG", "Shiairo31"), pt("credits_translation_nl", yt), "sbeve", pt("credits_translation_th", yt), "oserottoNeko", pt("credits_translation_ro", yt), "Stqrm26", pt("credits_patreon", yt), Q(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",Q(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
@@ -37,7 +37,7 @@ window.addEventListener("SetupComplete", function() {
     for (var o = 0; o < t.length; o++) Pi(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
   }
 
-  Le.push({
+  Ke.push({
     main: color(35, 50, 60),
     text: color(255, 255, 255),
     overlayShade: color(32, 45, 54),
@@ -133,7 +133,7 @@ window.addEventListener("SetupComplete", function() {
 window.addEventListener("keydown", function(e) {
   if("Tab" === e.code){
     e.preventDefault();
-    if(!1 === Ot.edit && 1 === Ot.disMode && be === "game"){
+    if(!1 === Ot.edit && 1 === Ot.disMode && we === "game"){
       Ht[Ot.song].pause()
       Ot.effectsCache.vignette = 15
       lowLag.play("retry",".5");

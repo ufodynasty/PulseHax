@@ -32,7 +32,7 @@ document.getElementById("darkmodetoggle").addEventListener("click", function(e) 
 });
 
 function refresh() {
-  execute("response = {Ot:Ot, He:He, be:be, lvlSel:xt[zt.lvl.sel], onlineLvlSel:Co(xt[zt.lvl.sel], 'id')}", function(response) {
+  execute("response = {Ot:Ot, Te:Te, we:we, lvlSel:xt[zt.lvl.sel], onlineLvlSel:Oo(xt[zt.lvl.sel], 'id')}", function(response) {
     refreshSkip(response);
     refreshSelected(response);
     refreshExport(response);
@@ -47,15 +47,15 @@ function refreshMute(response){
   document.getElementById("disableMenuMusic").checked = response.response.Ot.disableMenuMusic;
 }
 function refreshExport(response){
-  document.getElementById("lvlExport").disabled = (typeof response.response.lvlSel == "number" || response.response.be != "menu");
+  document.getElementById("lvlExport").disabled = (!response.response.lvlSel || typeof response.response.lvlSel == "number" || response.response.we != "menu");
 }
 function refreshCopy(response){
   if(typeof response.response.lvlSel == "number") {
-    execute(`ko(xt[zt.lvl.sel]) == 2`,(r)=>{
-      document.getElementById("lvlCopy").disabled = !r.response || response.response.be != "menu";
+    execute(`Fo(xt[zt.lvl.sel]) == 2`,(r)=>{
+      document.getElementById("lvlCopy").disabled = !r.response || response.response.we != "menu";
     })
   } else {;
-    document.getElementById("lvlCopy").disabled = !response.response.lvlSel || response.response.be != "menu"
+    document.getElementById("lvlCopy").disabled = !response.response.lvlSel || response.response.we != "menu"
   }
 }
 function refreshSelected(response) {
@@ -78,8 +78,8 @@ document.getElementById("disableMenuMusic").addEventListener("click", function()
 document.getElementById("lvlCopy").addEventListener("click", function() {
   execute(`
   if(typeof xt[zt.lvl.sel] == "number"){
-    No(xt[zt.lvl.sel]);
-    Pt.saved[Pt.saved.length-1].stars = fn(xt[zt.lvl.sel]);
+    Xo(xt[zt.lvl.sel]);
+    Pt.saved[Pt.saved.length-1].stars = wn(xt[zt.lvl.sel]);
   } else {
     Pt.saved.push(x(xt[zt.lvl.sel]));
     Pt.saved[Pt.saved.length-1].title += "(copy)";

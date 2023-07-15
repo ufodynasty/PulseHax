@@ -24,7 +24,7 @@ chrome.storage.local.get({Buffers:{beat:[],effect:[],section:[]}}, function(resu
 function refresh() {
   execute(`Ot.beat.sort(function (e, t) {return e[1] - t[1]});
     Ot.effects.sort(function(e, t) {return e.time - t.time});
-    response = {Ot, He, be}`, function(response) {
+    response = {Ot, Te, we}`, function(response) {
       refreshBounds(response);
       refreshDisabled(response);
   })
@@ -70,7 +70,7 @@ function refreshBounds(response) {
 }
 
 function refreshDisabled(response) {
-  let edit = !response.response.Ot.edit || response.response.be != "game";
+  let edit = !response.response.Ot.edit || response.response.we != "game";
   let editorMode = response.response.Ot.editorMode == 1;
   if(editorMode) {
     document.getElementById('bType').value = "all";
@@ -229,7 +229,7 @@ document.getElementById("customSnapDiv").addEventListener("change", function() {
   let div = document.getElementById("customSnapDiv").value;
   execute(`
     Ot.snap = 1 / ${div}
-    `).
+    `)
   refresh();
 })
 
@@ -237,7 +237,7 @@ document.getElementById("customSpd").addEventListener("change", function() {
   let rate = document.getElementById("customSpd").value;
   execute(`
   Ot.playbackRate = ${rate}
-  `).
+  `)
   refresh();
 })
 
