@@ -2,24 +2,24 @@ eval($n.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupCo
 window.addEventListener("SetupComplete", function() {
   ir.musicTime = function() {
     var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(zt.song, zt.settings.musicVolume)), !1 === zt.edit && (!1 === zt.preLevelStart && (zt.preLevelStart = millis()), 5e3 <= millis() - zt.preLevelStart + (zt.songOffset + zt.mods.offset + zt.settings.offset) && !zt.songPlaying && !zt.paused ? (Tt[zt.song].rate(zt.mods.bpm), Tt[zt.song].volume(zt.settings.musicVolume / 100), e = Tt[zt.song].play(), Tt[zt.song].seek((zt.songOffset + zt.mods.offset + zt.settings.offset) / 1e3 + ((zt.skipIntro ? zt.beat[0][1] : 0) * zt.mods.bpm / (zt.bpm / 60)) - 5, e), zt.songPlaying = !0) : zt.paused && (Tt[zt.song].pause(), zt.songPlaying = !1)), zt.edit || !1 !== zt.songEnded || Tt[zt.song].on("end", function() {
+    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(zt.song, Et.settings.musicVolume)), !1 === zt.edit && (!1 === zt.preLevelStart && (zt.preLevelStart = millis()), 5e3 <= millis() - zt.preLevelStart + (zt.songOffset + zt.mods.offset + Et.settings.offset) && !zt.songPlaying && !zt.paused ? (Tt[zt.song].rate(zt.mods.bpm), Tt[zt.song].volume(Et.settings.musicVolume / 100), e = Tt[zt.song].play(), Tt[zt.song].seek((zt.songOffset + zt.mods.offset + Et.settings.offset) / 1e3 + ((zt.skipIntro ? zt.beat[0][1] : 0) * zt.mods.bpm / (zt.bpm / 60)) - 5, e), zt.songPlaying = !0) : zt.paused && (Tt[zt.song].pause(), zt.songPlaying = !1)), zt.edit || !1 !== zt.songEnded || Tt[zt.song].on("end", function() {
         zt.songEnded = [millis(), Tt[zt.song].duration]
-    }), !1 !== zt.edit || zt.paused || 1 !== zt.disMode || (!1 !== zt.songPlaying || !1 !== te && "hidden" !== te || !1 === zt.preLevelStart ? (-1e3 < ((e = ((!1 === zt.songEnded ? Tt[zt.song].seek() : Tt[zt.song].duration() + (!1 === zt.songEnded ? 0 : (millis() - zt.songEnded[0]) / 1e3 * zt.mods.bpm)) - (zt.songOffset + zt.mods.offset + zt.settings.offset) / 1e3) * (zt.bpm / 60) / zt.mods.bpm) - zt.time) * zt.mods.bpm / (zt.bpm / 60) || "set" === zt.time) && (zt.time = e) : zt.time = (millis() - zt.preLevelStart - 5e3) / 1e3 * (zt.bpm / 60) / zt.mods.bpm)
+    }), !1 !== zt.edit || zt.paused || 1 !== zt.disMode || (!1 !== zt.songPlaying || !1 !== te && "hidden" !== te || !1 === zt.preLevelStart ? (-1e3 < ((e = ((!1 === zt.songEnded ? Tt[zt.song].seek() : Tt[zt.song].duration() + (!1 === zt.songEnded ? 0 : (millis() - zt.songEnded[0]) / 1e3 * zt.mods.bpm)) - (zt.songOffset + zt.mods.offset + Et.settings.offset) / 1e3) * (zt.bpm / 60) / zt.mods.bpm) - zt.time) * zt.mods.bpm / (zt.bpm / 60) || "set" === zt.time) && (zt.time = e) : zt.time = (millis() - zt.preLevelStart - 5e3) / 1e3 * (zt.bpm / 60) / zt.mods.bpm)
   }
 
-  Ki = function() {
+  Zi = function() {
     soundManager.setup({
         onready: function() {
             var e = soundManager.createSound({
                 id: "menuMusic",
-                url: 0 === zt.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : zt.settings.menuMusic
+                url: 0 === Et.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : Et.settings.menuMusic
             });
             if(!zt.disableMenuMusic) {
               soundManager.play("menuMusic", {
                   onfinish: function() {
-                      Ki()
+                      Zi()
                   }
-              }), zt.loopPlayState = e.playState
+              }), Et.loopPlayState = e.playState
             }
         },
         ontimeout: function() {
