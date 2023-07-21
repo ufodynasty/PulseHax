@@ -3,40 +3,40 @@ window.addEventListener("SetupComplete", function() {
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{}}, function(result) {
     if(result.Settings.wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      xe.wave = 1;
+      re.wave = 1;
       `}));
     }
     if(result.Settings.disableMenuMusic) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      Ot.disableMenuMusic = true;
+      zt.disableMenuMusic = true;
       `}));
     }
     if(result.Settings.customTheme) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      H[yt].theme_CUSTOM = "Custom theme";
-      zt.settings.menu.pages[1].items[1].options.push(10);
-      zt.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      T[Ct].theme_CUSTOM = "Custom theme";
+      Et.settings.menu.pages[1].items[1].options.push(10);
+      Et.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
       `}));
     }
     if(result.Settings.additionalThemes) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-        H[yt].theme_gufo = "Gufo's theme";
-        H[yt].theme_floopy = "Floopy's theme";
-        H[yt].theme_shia = "Shia's theme";
-        H[yt].theme_lilyyy = "Lilyyy's theme";
-        H[yt].theme_axye = "Axye's theme";
-        zt.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
-        zt.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+        T[Ct].theme_gufo = "Gufo's theme";
+        T[Ct].theme_floopy = "Floopy's theme";
+        T[Ct].theme_shia = "Shia's theme";
+        T[Ct].theme_lilyyy = "Lilyyy's theme";
+        T[Ct].theme_axye = "Axye's theme";
+        Et.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
+        Et.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
       `}));
     }
     Object.keys(result.CustomTheme).forEach(function (key){
       if(key != "active" && key != "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ke[10].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Ve[10].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `}));
       } else if (key == "lightTheme") {
         window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          Ke[10].${key} = ${result.CustomTheme[key]};
+          Ve[10].${key} = ${result.CustomTheme[key]};
         `}));
       }
     });

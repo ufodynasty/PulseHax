@@ -37,7 +37,7 @@ document.forms.customTheme.onchange = (e) => {
   let color = e.target.value
   customTheme[ID] = color;
   execute(`
-    Ke[10].${ID} = color(${color.substr(1).match(/../g).map(x=>+`0x${x}`)});
+    Ve[10].${ID} = color(${color.substr(1).match(/../g).map(x=>+`0x${x}`)});
   `)
   chrome.storage.local.set({CustomTheme:customTheme}, function() {
     console.log(`${ID} is set to ${customTheme[ID]}`);
@@ -48,7 +48,7 @@ document.getElementById("customLightTheme").addEventListener("click", function(e
   let toggle = e.target.value != "Light Theme";
   customTheme.lightTheme = toggle;
   execute(`
-    Ke[10].lightTheme = ${toggle};
+    Ve[10].lightTheme = ${toggle};
   `)
   e.target.value = toggle ? "Light Theme" : "Dark Theme";
   chrome.storage.local.set({CustomTheme:customTheme}, function() {
@@ -63,7 +63,7 @@ document.getElementById("resetCustomTheme").addEventListener("click", function(e
     if(key == "lightTheme") {
       if(userSettings.customTheme) {
         execute(`
-          Ke[10].${key} = ${customTheme[key]}
+          Ve[10].${key} = ${customTheme[key]}
         `)
       }
       if(!customTheme[key]) {
@@ -72,7 +72,7 @@ document.getElementById("resetCustomTheme").addEventListener("click", function(e
     } else {
       if(userSettings.customTheme) {
         execute(`
-          Ke[10].${key} = color(${customTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
+          Ve[10].${key} = color(${customTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
         `)
       }
       element.value = customTheme[key];
