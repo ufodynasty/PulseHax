@@ -1,25 +1,56 @@
-eval(Yn.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
+function completeSetup() {
+  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return En},set: (val) => {En = val}});
+  Object.defineProperty(globalThis, 'clevels', { get: () => {return xt},set: (val) => {xt = val}});
+  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Uo},set: (val) => {Uo = val}});
+  Object.defineProperty(globalThis, 'copyObject', { get: () => {return x},set: (val) => {x = val}});
+  Object.defineProperty(globalThis, 'fitText', { get: () => {return Bi},set: (val) => {Bi = val}});
+  Object.defineProperty(globalThis, 'game', { get: () => {return zt},set: (val) => {zt = val}});
+  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return Wo},set: (val) => {Wo = val}});
+  Object.defineProperty(globalThis, 'lang', { get: () => {return pt},set: (val) => {pt = val}});
+  Object.defineProperty(globalThis, 'langList', { get: () => {return Q},set: (val) => {Q = val}});
+  Object.defineProperty(globalThis, 'langSel', { get: () => {return Ct},set: (val) => {Ct = val}});
+  Object.defineProperty(globalThis, 'langs', { get: () => {return T},set: (val) => {T = val}});
+  Object.defineProperty(globalThis, 'levels', { get: () => {return Pt},set: (val) => {Pt = val}});
+  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Tt},set: (val) => {Tt = val}});
+  Object.defineProperty(globalThis, 'menu', { get: () => {return Et},set: (val) => {Et = val}});
+  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return Zi},set: (val) => {Zi = val}});
+  Object.defineProperty(globalThis, 'musicManager', { get: () => {return ir},set: (val) => {ir = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'nav', { get: () => {return lr},set: (val) => {lr = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return Bo},set: (val) => {Bo = val}});
+  Object.defineProperty(globalThis, 'screen', { get: () => {return M},set: (val) => {M = val}});
+  Object.defineProperty(globalThis, 'theme', { get: () => {return Ke},set: (val) => {Ke = val}});
+  Object.defineProperty(globalThis, 'themes', { get: () => {return Ve},set: (val) => {Ve = val}});
+  Object.defineProperty(globalThis, 'toLoad', { get: () => {return te},set: (val) => {te = val}});
+  Object.defineProperty(globalThis, 'user', { get: () => {return le},set: (val) => {le = val}});
+  Object.defineProperty(globalThis, 'welcome', { get: () => {return re},set: (val) => {re = val}});
+  window.dispatchEvent(new CustomEvent('SetupComplete'));
+}
+eval($n.toString().slice(0,-1) + 
+`
+completeSetup()
+}`);
+
 window.addEventListener("SetupComplete", function() {
-  $n.musicTime = function() {
+  musicManager.musicTime = function() {
     var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(Ot.song, zt.settings.musicVolume)), !1 === Ot.edit && (!1 === Ot.preLevelStart && (Ot.preLevelStart = millis()), 5e3 <= millis() - Ot.preLevelStart + (Ot.songOffset + Ot.mods.offset + zt.settings.offset) && !Ot.songPlaying && !Ot.paused ? (Ht[Ot.song].rate(Ot.mods.bpm), Ht[Ot.song].volume(zt.settings.musicVolume / 100), e = Ht[Ot.song].play(), Ht[Ot.song].seek((Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3 + ((Ot.skipIntro ? Ot.beat[0][1] : 0) * Ot.mods.bpm / (Ot.bpm / 60)) - 5, e), Ot.songPlaying = !0) : Ot.paused && (Ht[Ot.song].pause(), Ot.songPlaying = !1)), Ot.edit || !1 !== Ot.songEnded || Ht[Ot.song].on("end", function() {
-        Ot.songEnded = [millis(), Ht[Ot.song].duration]
-    }), !1 !== Ot.edit || Ot.paused || 1 !== Ot.disMode || (!1 !== Ot.songPlaying || !1 !== Ee && "hidden" !== Ee || !1 === Ot.preLevelStart ? (-1e3 < ((e = ((!1 === Ot.songEnded ? Ht[Ot.song].seek() : Ht[Ot.song].duration() + (!1 === Ot.songEnded ? 0 : (millis() - Ot.songEnded[0]) / 1e3 * Ot.mods.bpm)) - (Ot.songOffset + Ot.mods.offset + zt.settings.offset) / 1e3) * (Ot.bpm / 60) / Ot.mods.bpm) - Ot.time) * Ot.mods.bpm / (Ot.bpm / 60) || "set" === Ot.time) && (Ot.time = e) : Ot.time = (millis() - Ot.preLevelStart - 5e3) / 1e3 * (Ot.bpm / 60) / Ot.mods.bpm)
+    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
+        game.songEnded = [millis(), lvlHowl[game.song].duration]
+    }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
   }
 
-  Vi = function() {
+  menuMusic = function() {
     soundManager.setup({
         onready: function() {
             var e = soundManager.createSound({
                 id: "menuMusic",
-                url: 0 === zt.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : zt.settings.menuMusic
+                url: 0 === menu.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : menu.settings.menuMusic
             });
-            if(!Ot.disableMenuMusic) {
+            if(!game.disableMenuMusic) {
               soundManager.play("menuMusic", {
                   onfinish: function() {
-                      Vi()
+                      menuMusic()
                   }
-              }), zt.loopPlayState = e.playState
+              }), menu.loopPlayState = e.playState
             }
         },
         ontimeout: function() {
@@ -28,16 +59,16 @@ window.addEventListener("SetupComplete", function() {
     })
   }
 
-  hr.credits = function() {
-    var e = width > height ? width / 64 : height / 64;
-    textAlign(CENTER, CENTER), fill(We.text);
-    var t = [pt("credits_client", yt), "TetroGem", pt("credits_server", yt), Q(["TetroGem", "Epicness", "Quintec"]), pt("credits_programming", yt), "cg505", pt("credits_security", yt), "Quintec", pt("credits_art", yt), pt("credits_and", yt, "TetroGem", "Alexandre Declos"), pt("credits_translation_de", yt), "Scath", pt("credits_translation_es", yt), "Zemyro", pt("credits_translation_fr", yt), pt("credits_and", yt, "Alexandre Declos", "Zemyro"), pt("credits_translation_ru", yt), pt("credits_and", yt, "ConfiG", "Shiairo31"), pt("credits_translation_nl", yt), "sbeve", pt("credits_translation_th", yt), "oserottoNeko", pt("credits_translation_ro", yt), "Stqrm26", pt("credits_patreon", yt), Q(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",Q(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
-        i = (height - height / 16) / (t.length + 2);
-    textSize(i);
-    for (var o = 0; o < t.length; o++) Pi(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
+  nav.credits = function() {
+    var bufferSize = width > height ? width / 64 : height / 64;
+    textAlign(CENTER, CENTER), fill(theme.text);
+    var cred = [lang("credits_client", langSel), "TetroGem", lang("credits_server", langSel), langList(["TetroGem", "Epicness", "Quintec"]), lang("credits_programming", langSel), "cg505", lang("credits_security", langSel), "Quintec", lang("credits_art", langSel), lang("credits_and", langSel, "TetroGem", "Alexandre Declos"), lang("credits_translation_de", langSel), "Scath", lang("credits_translation_es", langSel), "Zemyro", lang("credits_translation_fr", langSel), lang("credits_and", langSel, "Alexandre Declos", "Zemyro"), lang("credits_translation_ru", langSel), lang("credits_and", langSel, "ConfiG", "Shiairo31"), lang("credits_translation_nl", langSel), "sbeve", lang("credits_translation_th", langSel), "oserottoNeko", lang("credits_translation_ro", langSel), "Stqrm26", lang("credits_patreon", langSel), langList(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax Development",langList(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
+        ts = (height - height / 16) / (cred.length + 2);
+    textSize(ts);
+    for (var i = 0; i < cred.length; i++) fitText(cred[i], width / 2, height / 2 + ts * (-cred.length / 2 + i) + ts / 2 + ts / 1.5 / 2, width - 2 * bufferSize, ts / (i % 2 == 0 ? 1 : 1.5), i % 2 == 0 && "bold")
   }
 
-  Ke.push({
+  themes.push({
     main: color(35, 50, 60),
     text: color(255, 255, 255),
     overlayShade: color(32, 45, 54),
@@ -133,15 +164,15 @@ window.addEventListener("SetupComplete", function() {
 window.addEventListener("keydown", function(e) {
   if("Tab" === e.code){
     e.preventDefault();
-    if(!1 === Ot.edit && 1 === Ot.disMode && we === "game"){
-      Ht[Ot.song].pause()
-      Ot.effectsCache.vignette = 15
+    if(!1 === game.edit && 1 === game.disMode && screen === "game"){
+      lvlHowl[game.song].pause()
+      game.effectsCache.vignette = 15
       lowLag.play("retry",".5");
-      Ot.disMode = 1,
-      Ot.retry = !0,
-      Ot.buttonHover[0] /= 2,
-      zt.lvl.prevPlay = Ot.song,
-      Ot.songVol = 100;
+      game.disMode = 1,
+      game.retry = !0,
+      game.buttonHover[0] /= 2,
+      menu.lvl.prevPlay = game.song,
+      game.songVol = 100;
     }
   }
 }, !0);
