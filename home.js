@@ -32,7 +32,11 @@ document.getElementById("darkmodetoggle").addEventListener("click", function(e) 
 });
 
 function refresh() {
+<<<<<<< HEAD
   execute("response = {zt:zt, le:le, M:M, lvlSel:xt[Et.lvl.sel], onlineLvlSel:Bo(xt[Et.lvl.sel], 'id')}", function(response) {
+=======
+  execute("response = {game, user, screen, lvlSel: clevels[menu.lvl.sel], onlineLvlSel: newGrabLevelMeta(clevels[menu.lvl.sel], 'id')}", function(response) {
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     refreshSkip(response);
     refreshSelected(response);
     refreshExport(response);
@@ -41,6 +45,7 @@ function refresh() {
 }refresh();
 
 function refreshSkip(response){
+<<<<<<< HEAD
   document.getElementById("skipIntro").checked = response.response.zt.skipIntro;
 }
 function refreshMute(response){
@@ -56,6 +61,23 @@ function refreshCopy(response){
     })
   } else {;
     document.getElementById("lvlCopy").disabled = !response.response.lvlSel || response.response.M != "menu"
+=======
+  document.getElementById("skipIntro").checked = response.response.game.skipIntro;
+}
+function refreshMute(response){
+  document.getElementById("disableMenuMusic").checked = response.response.game.disableMenuMusic;
+}
+function refreshExport(response){
+  document.getElementById("lvlExport").disabled = (!response.response.lvlSel || typeof response.response.lvlSel == "number" || response.response.screen != "menu");
+}
+function refreshCopy(response){
+  if(typeof response.response.lvlSel == "number") {
+    execute(`getLevelDownloadState(clevels[menu.lvl.sel]) == 2`,(r)=>{
+      document.getElementById("lvlCopy").disabled = !r.response || response.response.screen != "menu";
+    })
+  } else {;
+    document.getElementById("lvlCopy").disabled = !response.response.lvlSel || response.response.screen != "menu"
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
   }
 }
 function refreshSelected(response) {
@@ -68,15 +90,30 @@ function refreshSelected(response) {
 }
 
 document.getElementById("skipIntro").addEventListener("click", function() {
+<<<<<<< HEAD
   execute(`zt.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
 document.getElementById("disableMenuMusic").addEventListener("click", function() {
   execute(`zt.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}`);
   console.log(document.getElementById("disableMenuMusic").checked)
+=======
+  execute(`game.skipIntro = ${document.getElementById("skipIntro").checked}`);
+});
+document.getElementById("disableMenuMusic").addEventListener("click", function() {
+  execute(`
+  game.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}
+  if(game.disableMenuMusic) {
+    soundManager.stop("menuMusic")
+  } else {
+    menuMusic()
+  }
+  `);
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
 });
 
 document.getElementById("lvlCopy").addEventListener("click", function() {
   execute(`
+<<<<<<< HEAD
   if(typeof xt[Et.lvl.sel] == "number"){
     Uo(xt[Et.lvl.sel]);
     Pt.saved[Pt.saved.length-1].stars = En(xt[Et.lvl.sel]);
@@ -86,12 +123,27 @@ document.getElementById("lvlCopy").addEventListener("click", function() {
   }
   if(Et.lvl.tab == 0) {
     Pt.search = Pt.saved;
+=======
+  if(typeof clevels[menu.lvl.sel] == "number"){
+    copyLevel(clevels[menu.lvl.sel]);
+    levels.saved[levels.saved.length-1].stars = calcLevelStars(clevels[menu.lvl.sel]);
+  } else {
+    levels.saved.push(copyObject(clevels[menu.lvl.sel]));
+    levels.saved[levels.saved.length-1].title += "(copy)";
+  }
+  if(menu.lvl.tab == 0) {
+    levels.search = levels.saved;
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
   }`
   )
 })
 document.getElementById("lvlExport").addEventListener("click", function() {
   let zip = new JSZip();
+<<<<<<< HEAD
   execute(`xt[Et.lvl.sel]`, function(response) {
+=======
+  execute(`clevels[menu.lvl.sel]`, function(response) {
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     zip.file(`${response.response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response.response));
     zip.generateAsync({type:"blob",compression: "DEFLATE"}).then(function (blob) {
       const a = document.createElement("a");
@@ -120,7 +172,7 @@ document.getElementById("lvlImportAction").addEventListener("change",function() 
         zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
           let vtest = JSON.parse(fileData);
           if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
-            execute(`Pt.saved.push(${fileData}); Pt.search = Pt.saved`)
+            execute(`levels.saved.push(${fileData}); levels.search = levels.saved`)
           } else {
             document.getElementById("fileError").classList.add("active");
           }
@@ -134,6 +186,7 @@ document.getElementById("lvlImportAction").addEventListener("change",function() 
 document.getElementById("customTheme").addEventListener("click", function(e) {
   if(e.target.checked) {
     execute(`
+<<<<<<< HEAD
       T[Ct].theme_CUSTOM = "Custom theme";
       Et.settings.menu.pages[1].items[1].options.push(10);
       Et.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
@@ -144,6 +197,18 @@ document.getElementById("customTheme").addEventListener("click", function(e) {
       Et.settings.menu.pages[1].items[1].options = Et.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 10});
       Et.settings.menu.pages[1].items[1].labels = Et.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
       Et.settings.themeSel = Et.settings.themeSel == 10 ? 0 : Et.settings.themeSel;
+=======
+      langs[langSel].theme_CUSTOM = "Custom theme";
+      menu.settings.menu.pages[1].items[1].options.push(10);
+      menu.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      menu.settings.themeSel = 10;
+    `);
+  } else {
+    execute(`
+      menu.settings.menu.pages[1].items[1].options = menu.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 10});
+      menu.settings.menu.pages[1].items[1].labels = menu.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
+      menu.settings.themeSel = menu.settings.themeSel == 10 ? 0 : menu.settings.themeSel;
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     `)
   }
   userSettings.customTheme = e.target.checked;
@@ -154,6 +219,7 @@ document.getElementById("customTheme").addEventListener("click", function(e) {
 document.getElementById("additionalThemes").addEventListener("click", function(e) {
   if(e.target.checked) {
     execute(`
+<<<<<<< HEAD
       T[Ct].theme_gufo = "Gufo's theme";
       T[Ct].theme_floopy = "Floopy's theme";
       T[Ct].theme_shia = "Shia's theme";
@@ -167,6 +233,21 @@ document.getElementById("additionalThemes").addEventListener("click", function(e
       Et.settings.menu.pages[1].items[1].options = Et.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![11,12,13,14,15].includes(v)});
       Et.settings.menu.pages[1].items[1].labels = Et.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia','theme_lilyyy','theme_axye'].includes(v)});
       Et.settings.themeSel = [11,12,13,14,15].includes(Et.settings.themeSel) ? 0 : Et.settings.themeSel;
+=======
+      langs[langSel].theme_gufo = "Gufo's theme";
+      langs[langSel].theme_floopy = "Floopy's theme";
+      langs[langSel].theme_shia = "Shia's theme";
+      langs[langSel].theme_lilyyy = "Lilyyy's theme";
+      langs[langSel].theme_axye = "Axye's theme";
+      menu.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
+      menu.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+    `);
+  } else {
+    execute(`
+      menu.settings.menu.pages[1].items[1].options = menu.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![11,12,13,14,15].includes(v)});
+      menu.settings.menu.pages[1].items[1].labels = menu.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia','theme_lilyyy','theme_axye'].includes(v)});
+      menu.settings.themeSel = [11,12,13,14,15].includes(menu.settings.themeSel) ? 0 : menu.settings.themeSel;
+>>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     `)
   }
   let ID = e.target.id;
