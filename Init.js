@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-eval($n.toString().slice(0,-1) + ",window.dispatchEvent(new CustomEvent('SetupComplete'));}");
-window.addEventListener("SetupComplete", function() {
-  ir.musicTime = function() {
-    var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(zt.song, Et.settings.musicVolume)), !1 === zt.edit && (!1 === zt.preLevelStart && (zt.preLevelStart = millis()), 5e3 <= millis() - zt.preLevelStart + (zt.songOffset + zt.mods.offset + Et.settings.offset) && !zt.songPlaying && !zt.paused ? (Tt[zt.song].rate(zt.mods.bpm), Tt[zt.song].volume(Et.settings.musicVolume / 100), e = Tt[zt.song].play(), Tt[zt.song].seek((zt.songOffset + zt.mods.offset + Et.settings.offset) / 1e3 + ((zt.skipIntro ? zt.beat[0][1] : 0) * zt.mods.bpm / (zt.bpm / 60)) - 5, e), zt.songPlaying = !0) : zt.paused && (Tt[zt.song].pause(), zt.songPlaying = !1)), zt.edit || !1 !== zt.songEnded || Tt[zt.song].on("end", function() {
-        zt.songEnded = [millis(), Tt[zt.song].duration]
-    }), !1 !== zt.edit || zt.paused || 1 !== zt.disMode || (!1 !== zt.songPlaying || !1 !== te && "hidden" !== te || !1 === zt.preLevelStart ? (-1e3 < ((e = ((!1 === zt.songEnded ? Tt[zt.song].seek() : Tt[zt.song].duration() + (!1 === zt.songEnded ? 0 : (millis() - zt.songEnded[0]) / 1e3 * zt.mods.bpm)) - (zt.songOffset + zt.mods.offset + Et.settings.offset) / 1e3) * (zt.bpm / 60) / zt.mods.bpm) - zt.time) * zt.mods.bpm / (zt.bpm / 60) || "set" === zt.time) && (zt.time = e) : zt.time = (millis() - zt.preLevelStart - 5e3) / 1e3 * (zt.bpm / 60) / zt.mods.bpm)
-  }
-
-  Zi = function() {
-=======
 function completeSetup() {
   Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return En},set: (val) => {En = val}});
   Object.defineProperty(globalThis, 'clevels', { get: () => {return xt},set: (val) => {xt = val}});
@@ -51,21 +39,10 @@ window.addEventListener("SetupComplete", function() {
   }
 
   menuMusic = function() {
->>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     soundManager.setup({
         onready: function() {
             var e = soundManager.createSound({
                 id: "menuMusic",
-<<<<<<< HEAD
-                url: 0 === Et.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : Et.settings.menuMusic
-            });
-            if(!zt.disableMenuMusic) {
-              soundManager.play("menuMusic", {
-                  onfinish: function() {
-                      Zi()
-                  }
-              }), Et.loopPlayState = e.playState
-=======
                 url: 0 === menu.settings.menuMusic.length ? "/client/resources/sound/pulsusMenu.mp3" : menu.settings.menuMusic
             });
             if(!game.disableMenuMusic) {
@@ -74,7 +51,6 @@ window.addEventListener("SetupComplete", function() {
                       menuMusic()
                   }
               }), menu.loopPlayState = e.playState
->>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
             }
         },
         ontimeout: function() {
@@ -83,18 +59,6 @@ window.addEventListener("SetupComplete", function() {
     })
   }
 
-<<<<<<< HEAD
-  lr.credits = function() {
-    var e = width > height ? width / 64 : height / 64;
-    textAlign(CENTER, CENTER), fill(We.text);
-    var t = [pt("credits_client", Ct), "TetroGem", pt("credits_server", Ct), Q(["TetroGem", "Epicness", "Quintec"]), pt("credits_programming", Ct), "cg505", pt("credits_security", Ct), "Quintec", pt("credits_art", Ct), pt("credits_and", Ct, "TetroGem", "Alexandre Declos"), pt("credits_translation_de", Ct), "Scath", pt("credits_translation_es", Ct), "Zemyro", pt("credits_translation_fr", Ct), pt("credits_and", Ct, "Alexandre Declos", "Zemyro"), pt("credits_translation_ru", Ct), pt("credits_and", Ct, "ConfiG", "Shiairo31"), pt("credits_translation_nl", Ct), "sbeve", pt("credits_translation_th", Ct), "oserottoNeko", pt("credits_translation_ro", Ct), "Stqrm26", pt("credits_patreon", Ct), Q(["-Wiffles-", "cg505", "tokaku", "Aero", "ari", "Lae_", "Mungaru", "rice", "Tele_Crab", "Tree42", "AFasterSlowpoke", "Arvid707", "Cynth", "Generic", "ito", "sbeve", "sneaki"]),"PulseHax development",Q(["Mt.Gufo","Pickleman","shianara","floopy","Axye"])],
-        i = (height - height / 16) / (t.length + 2);
-    textSize(i);
-    for (var o = 0; o < t.length; o++) Pi(t[o], width / 2, height / 2 + i * (-t.length / 2 + o) + i / 2 + i / 1.5 / 2, width - 2 * e, i / (o % 2 == 0 ? 1 : 1.5), o % 2 == 0 && "bold")
-  }
-
-  Ve.push({
-=======
   nav.credits = function() {
     var bufferSize = width > height ? width / 64 : height / 64;
     textAlign(CENTER, CENTER), fill(theme.text);
@@ -105,7 +69,6 @@ window.addEventListener("SetupComplete", function() {
   }
 
   themes.push({
->>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     main: color(35, 50, 60),
     text: color(255, 255, 255),
     overlayShade: color(32, 45, 54),
@@ -201,17 +164,6 @@ window.addEventListener("SetupComplete", function() {
 window.addEventListener("keydown", function(e) {
   if("Tab" === e.code){
     e.preventDefault();
-<<<<<<< HEAD
-    if(!1 === zt.edit && 1 === zt.disMode && M === "game"){
-      Tt[zt.song].pause()
-      zt.effectsCache.vignette = 15
-      lowLag.play("retry",".5");
-      zt.disMode = 1,
-      zt.retry = !0,
-      zt.buttonHover[0] /= 2,
-      zt.lvl.prevPlay = zt.song,
-      zt.songVol = 100;
-=======
     if(!1 === game.edit && 1 === game.disMode && screen === "game"){
       lvlHowl[game.song].pause()
       game.effectsCache.vignette = 15
@@ -221,7 +173,6 @@ window.addEventListener("keydown", function(e) {
       game.buttonHover[0] /= 2,
       menu.lvl.prevPlay = game.song,
       game.songVol = 100;
->>>>>>> bbe15ae0ba06eff98a4529a7107e7c6b88be831e
     }
   }
 }, !0);
