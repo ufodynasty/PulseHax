@@ -18,18 +18,18 @@ window.addEventListener("SetupComplete", function() {
     }
     if(result.Settings.customTheme) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      langs[langSel].theme_CUSTOM = "Custom theme";
+      langs.en.theme_CUSTOM = "Custom theme";
       menu.settings.menu.pages[1].items[1].options.push(10);
       menu.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
       `}));
     }
     if(result.Settings.additionalThemes) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-        langs[langSel].theme_gufo = "Gufo's theme";
-        langs[langSel].theme_floopy = "Floopy's theme";
-        langs[langSel].theme_shia = "Shia's theme";
-        langs[langSel].theme_lilyyy = "Lilyyy's theme";
-        langs[langSel].theme_axye = "Axye's theme";
+        langs.en.theme_gufo = "Gufo's theme";
+        langs.en.theme_floopy = "Floopy's theme";
+        langs.en.theme_shia = "Shia's theme";
+        langs.en.theme_lilyyy = "Lilyyy's theme";
+        langs.en.theme_axye = "Axye's theme";
         menu.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
         menu.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
       `}));
