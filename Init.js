@@ -185,7 +185,7 @@ window.addEventListener("InjectedScriptEval", function(evt) {
   try {
     response = JSON.parse(JSON.stringify(eval(evt.detail) ?? null, getCircularReplacer()));
   } catch(error) {
-    console.log(error);
+    console.error(error);
     response = undefined;
   }
   var evalEvent = new CustomEvent("InjectedScriptResponse", {detail: response});
