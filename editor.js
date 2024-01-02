@@ -22,8 +22,14 @@ chrome.storage.local.get({Buffers:{beat:[],effect:[],section:[]}}, function(resu
 });
 
 function refresh() {
-  execute(`game.beat.sort(function (e, t) {return e[1] - t[1]});
-    game.effects.sort(function(e, t) {return e.time - t.time});
+  execute(`
+    if(!game.selectedBeats) {
+      game.beat.sort(function (e, t) {return e[1] - t[1]});
+    }
+    if(!game.effectSel && !game.effectMultiSel) {
+      game.effects.sort(function(e, t) {return e.time - t.time});
+    }
+    
     response = {game, user, screen}`, function(response) {
       refreshBounds(response);
       refreshDisabled(response);

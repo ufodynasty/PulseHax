@@ -43,9 +43,9 @@ function refresh() {
 function refreshSkip(response){
   document.getElementById("skipIntro").checked = response.response.game.skipIntro;
 }
-function refreshMute(response){
-  document.getElementById("disableMenuMusic").checked = response.response.game.disableMenuMusic;
-}
+// function refreshMute(response){
+//   document.getElementById("disableMenuMusic").checked = response.response.game.disableMenuMusic;
+// }
 function refreshExport(response){
   document.getElementById("lvlExport").disabled = (!response.response.lvlSel || typeof response.response.lvlSel == "number" || response.response.screen != "menu");
 }
@@ -70,16 +70,19 @@ function refreshSelected(response) {
 document.getElementById("skipIntro").addEventListener("click", function() {
   execute(`game.skipIntro = ${document.getElementById("skipIntro").checked}`);
 });
-document.getElementById("disableMenuMusic").addEventListener("click", function() {
-  execute(`
-  game.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}
-  if(game.disableMenuMusic) {
-    soundManager.stop("menuMusic")
-  } else {
-    menuMusic()
-  }
-  `);
-});
+
+// Feature removed in V 0.6.1 due to gamma 0.28.12 including a menu music volume option
+
+// document.getElementById("disableMenuMusic").addEventListener("click", function() {
+//   execute(`
+//   game.disableMenuMusic = ${document.getElementById("disableMenuMusic").checked}
+//   if(game.disableMenuMusic) {
+//     soundManager.stop("menuMusic")
+//   } else {
+//     menuMusic()
+//   }
+//   `);
+// });
 
 document.getElementById("lvlCopy").addEventListener("click", function() {
   execute(`
