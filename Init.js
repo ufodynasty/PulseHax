@@ -17,7 +17,7 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'musicManager', { get: () => {return ih},set: (val) => {ih = val}}); // This name is wrong
   Object.defineProperty(globalThis, 'nav', { get: () => {return p},set: (val) => {p = val}}); // This name is wrong
   Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return E},set: (val) => {E = val}});
-  Object.defineProperty(globalThis, 'screen', { get: () => {return Qe},set: (val) => {Qe= val}});
+  Object.defineProperty(globalThis, 'screen', { get: () => {return Qe},set: (val) => {Qe = val}});
   Object.defineProperty(globalThis, 'theme', { get: () => {return _},set: (val) => {_ = val}});
   Object.defineProperty(globalThis, 'themes', { get: () => {return Ye},set: (val) => {Ye = val}});
   Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ae},set: (val) => {Ae = val}});
