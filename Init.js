@@ -1,31 +1,31 @@
 function completeSetup() {
-  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return En},set: (val) => {En = val}});
-  Object.defineProperty(globalThis, 'clevels', { get: () => {return xt},set: (val) => {xt = val}});
-  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Uo},set: (val) => {Uo = val}});
-  Object.defineProperty(globalThis, 'copyObject', { get: () => {return x},set: (val) => {x = val}});
-  Object.defineProperty(globalThis, 'fitText', { get: () => {return Bi},set: (val) => {Bi = val}});
-  Object.defineProperty(globalThis, 'game', { get: () => {return zt},set: (val) => {zt = val}});
-  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return Wo},set: (val) => {Wo = val}});
-  Object.defineProperty(globalThis, 'lang', { get: () => {return pt},set: (val) => {pt = val}});
-  Object.defineProperty(globalThis, 'langList', { get: () => {return Q},set: (val) => {Q = val}});
-  Object.defineProperty(globalThis, 'langSel', { get: () => {return Ct},set: (val) => {Ct = val}});
-  Object.defineProperty(globalThis, 'langs', { get: () => {return T},set: (val) => {T = val}});
-  Object.defineProperty(globalThis, 'levels', { get: () => {return Pt},set: (val) => {Pt = val}});
-  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Tt},set: (val) => {Tt = val}});
-  Object.defineProperty(globalThis, 'menu', { get: () => {return Et},set: (val) => {Et = val}});
-  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return Zi},set: (val) => {Zi = val}});
-  Object.defineProperty(globalThis, 'musicManager', { get: () => {return ir},set: (val) => {ir = val}}); // This name is wrong
-  Object.defineProperty(globalThis, 'nav', { get: () => {return lr},set: (val) => {lr = val}}); // This name is wrong
-  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return Bo},set: (val) => {Bo = val}});
-  Object.defineProperty(globalThis, 'screen', { get: () => {return M},set: (val) => {M = val}});
-  Object.defineProperty(globalThis, 'theme', { get: () => {return Ke},set: (val) => {Ke = val}});
-  Object.defineProperty(globalThis, 'themes', { get: () => {return Ve},set: (val) => {Ve = val}});
-  Object.defineProperty(globalThis, 'toLoad', { get: () => {return te},set: (val) => {te = val}});
-  Object.defineProperty(globalThis, 'user', { get: () => {return le},set: (val) => {le = val}});
-  Object.defineProperty(globalThis, 'welcome', { get: () => {return re},set: (val) => {re = val}});
+  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return zn},set: (val) => {zn = val}});
+  Object.defineProperty(globalThis, 'clevels', { get: () => {return wt},set: (val) => {wt = val}}); 
+  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Uo},set: (val) => {Uo = val}}); 
+  Object.defineProperty(globalThis, 'copyObject', { get: () => {return d},set: (val) => {d = val}}); 
+  Object.defineProperty(globalThis, 'fitText', { get: () => {return xt},set: (val) => {xt = val}}); 
+  Object.defineProperty(globalThis, 'game', { get: () => {return pt},set: (val) => {pt = val}});
+  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return Lo},set: (val) => {Lo = val}});
+  Object.defineProperty(globalThis, 'lang', { get: () => {return gt},set: (val) => {gt = val}});
+  Object.defineProperty(globalThis, 'langList', { get: () => {return K},set: (val) => {K = val}});
+  Object.defineProperty(globalThis, 'langSel', { get: () => {return ut},set: (val) => {ut = val}});
+  Object.defineProperty(globalThis, 'langs', { get: () => {return W},set: (val) => {W = val}});
+  Object.defineProperty(globalThis, 'levels', { get: () => {return bt},set: (val) => {bt = val}});
+  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Et},set: (val) => {Et = val}});
+  Object.defineProperty(globalThis, 'menu', { get: () => {return mt},set: (val) => {mt = val}});
+  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return Ji},set: (val) => {Ji = val}});
+  Object.defineProperty(globalThis, 'musicManager', { get: () => {return ih},set: (val) => {ih = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'nav', { get: () => {return p},set: (val) => {p = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return E},set: (val) => {E = val}});
+  Object.defineProperty(globalThis, 'screen', { get: () => {return Qe},set: (val) => {Qe = val}});
+  Object.defineProperty(globalThis, 'theme', { get: () => {return _},set: (val) => {_ = val}});
+  Object.defineProperty(globalThis, 'themes', { get: () => {return Ye},set: (val) => {je = val}});
+  Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ae},set: (val) => {Ae = val}});
+  Object.defineProperty(globalThis, 'user', { get: () => {return y},set: (val) => {y = val}});
+  Object.defineProperty(globalThis, 'welcome', { get: () => {return h},set: (val) => {h = val}});
   window.dispatchEvent(new CustomEvent('SetupComplete'));
 }
-eval($n.toString().slice(0,-1) + 
+eval(eh.toString().slice(0,-1) + 
 `
 completeSetup()
 }`);
@@ -181,7 +181,7 @@ window.addEventListener("InjectedScriptEval", function(evt) {
   try {
     response = JSON.parse(JSON.stringify(eval(evt.detail) ?? null, getCircularReplacer()));
   } catch(error) {
-    console.log(error);
+    console.error(error);
     response = undefined;
   }
   var evalEvent = new CustomEvent("InjectedScriptResponse", {detail: response});

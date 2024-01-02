@@ -30,8 +30,8 @@ window.addEventListener("SetupComplete", function() {
         langs[langSel].theme_shia = "Shia's theme";
         langs[langSel].theme_lilyyy = "Lilyyy's theme";
         langs[langSel].theme_axye = "Axye's theme";
-        menu.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
-        menu.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+        mt.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
+        mt.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
       `}));
     }
     Object.keys(result.CustomTheme).forEach(function (key){
