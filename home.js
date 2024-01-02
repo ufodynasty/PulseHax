@@ -43,9 +43,9 @@ function refresh() {
 function refreshSkip(response){
   document.getElementById("skipIntro").checked = response.response.game.skipIntro;
 }
-function refreshMute(response){
-  document.getElementById("disableMenuMusic").checked = response.response.game.disableMenuMusic;
-}
+// function refreshMute(response){
+//   document.getElementById("disableMenuMusic").checked = response.response.game.disableMenuMusic;
+// }
 function refreshExport(response){
   document.getElementById("lvlExport").disabled = (!response.response.lvlSel || typeof response.response.lvlSel == "number" || response.response.screen != "menu");
 }
