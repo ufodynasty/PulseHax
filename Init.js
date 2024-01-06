@@ -179,7 +179,11 @@ window.addEventListener("keydown", function(e) {
       game.songVol = 100;
     }
   }
+  if("AltLeft" === e.code || "AltRight" === e.code){
+    e.preventDefault();
+  }
 }, !0);
+
 
 window.addEventListener("InjectedScriptEval", function(evt) {
   try {
