@@ -19,8 +19,8 @@ window.addEventListener("SetupComplete", function() {
     if(result.Settings.customTheme) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
       langs.en.theme_CUSTOM = "Custom theme";
-      menu.settings.menu.pages[1].items[1].options.push(10);
-      menu.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
+      menu.settings.menu.pages[0].items[2].options.push(10);
+      menu.settings.menu.pages[0].items[2].labels.push('theme_CUSTOM');
       `}));
     }
     if(result.Settings.additionalThemes) {

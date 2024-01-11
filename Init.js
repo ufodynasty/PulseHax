@@ -1,31 +1,31 @@
 function completeSetup() {
-  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return zn},set: (val) => {zn = val}});
-  Object.defineProperty(globalThis, 'clevels', { get: () => {return wt},set: (val) => {wt = val}});
-  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Uo},set: (val) => {Uo = val}});
-  Object.defineProperty(globalThis, 'copyObject', { get: () => {return d},set: (val) => {d = val}});
-  Object.defineProperty(globalThis, 'fitText', { get: () => {return xt},set: (val) => {xt = val}});
-  Object.defineProperty(globalThis, 'game', { get: () => {return pt},set: (val) => {pt = val}});
-  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return Lo},set: (val) => {Lo = val}});
-  Object.defineProperty(globalThis, 'lang', { get: () => {return gt},set: (val) => {gt = val}});
-  Object.defineProperty(globalThis, 'langList', { get: () => {return K},set: (val) => {K = val}});
-  Object.defineProperty(globalThis, 'langSel', { get: () => {return ut},set: (val) => {ut = val}});
-  Object.defineProperty(globalThis, 'langs', { get: () => {return W},set: (val) => {W = val}});
-  Object.defineProperty(globalThis, 'levels', { get: () => {return bt},set: (val) => {bt = val}});
-  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Et},set: (val) => {Et = val}});
-  Object.defineProperty(globalThis, 'menu', { get: () => {return mt},set: (val) => {mt = val}});
-  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return _i},set: (val) => {_i = val}});
-  Object.defineProperty(globalThis, 'musicManager', { get: () => {return ih},set: (val) => {ih = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return Pn},set: (val) => {Pn = val}});
+  Object.defineProperty(globalThis, 'clevels', { get: () => {return Ct},set: (val) => {Ct = val}});
+  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Ko},set: (val) => {Ko = val}});
+  Object.defineProperty(globalThis, 'copyObject', { get: () => {return U},set: (val) => {U = val}});
+  Object.defineProperty(globalThis, 'fitText', { get: () => {return Bt},set: (val) => {Bt = val}});
+  Object.defineProperty(globalThis, 'game', { get: () => {return bt},set: (val) => {bt = val}});
+  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return Vo},set: (val) => {Vo = val}});
+  Object.defineProperty(globalThis, 'lang', { get: () => {return ct},set: (val) => {ct = val}});
+  Object.defineProperty(globalThis, 'langList', { get: () => {return V},set: (val) => {V = val}});
+  Object.defineProperty(globalThis, 'langSel', { get: () => {return vt},set: (val) => {vt = val}});
+  Object.defineProperty(globalThis, 'langs', { get: () => {return D},set: (val) => {D = val}});
+  Object.defineProperty(globalThis, 'levels', { get: () => {return wt},set: (val) => {wt = val}});
+  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Ot},set: (val) => {Ot = val}});
+  Object.defineProperty(globalThis, 'menu', { get: () => {return pt},set: (val) => {pt = val}});
+  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return eo},set: (val) => {eo = val}});
+  Object.defineProperty(globalThis, 'musicManager', { get: () => {return hh},set: (val) => {hh = val}}); // This name is wrong
   Object.defineProperty(globalThis, 'nav', { get: () => {return p},set: (val) => {p = val}}); // This name is wrong
   Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return E},set: (val) => {E = val}});
-  Object.defineProperty(globalThis, 'screen', { get: () => {return Qe},set: (val) => {Qe = val}});
+  Object.defineProperty(globalThis, 'screen', { get: () => {return ke},set: (val) => {ke = val}});
   Object.defineProperty(globalThis, 'theme', { get: () => {return _},set: (val) => {_ = val}});
-  Object.defineProperty(globalThis, 'themes', { get: () => {return Ye},set: (val) => {Ye = val}});
-  Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ae},set: (val) => {Ae = val}});
+  Object.defineProperty(globalThis, 'themes', { get: () => {return Je},set: (val) => {Je = val}});
+  Object.defineProperty(globalThis, 'toLoad', { get: () => {return Xe},set: (val) => {Xe = val}});
   Object.defineProperty(globalThis, 'user', { get: () => {return y},set: (val) => {y = val}});
   Object.defineProperty(globalThis, 'welcome', { get: () => {return h},set: (val) => {h = val}});
   window.dispatchEvent(new CustomEvent('SetupComplete'));
 }
-eval(eh.toString().slice(0,-1) + 
+eval(ih.toString().slice(0,-1) + 
 `
 completeSetup()
 }`);
