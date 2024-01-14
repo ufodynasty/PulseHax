@@ -1,11 +1,11 @@
-var s = document.createElement('script');
+let s = document.createElement('script');
 s.src = chrome.runtime.getURL(`Init.js`);
 s.onload = function() {
   this.remove();
 };
 (document.head || document.documentElement).appendChild(s);
 window.addEventListener("SetupComplete", function() {
-  chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{}}, function(result) {
+  chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{},plugins:[]}, function(result) {
     if(result.Settings.wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
       welcome.wave = 1;
@@ -45,6 +45,11 @@ window.addEventListener("SetupComplete", function() {
         `}));
       }
     });
+    for(i of result.plugins) {
+      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: i.script}));
+      i.active = true;
+    }
+    chrome.storage.local.set({plugins:result.plugins});
   });
   window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
     lowLag.load("${chrome.runtime.getURL("/assets/retry.wav")}", "retry")

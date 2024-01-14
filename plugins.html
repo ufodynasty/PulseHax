@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <link href="popup.css" rel="stylesheet" type="text/css">
+    <script src="jszip.min.js"></script>
+    <script src="util.js" defer></script>
+    <script src="plugins.js" defer></script>
+  </head>
+  <body>
+      <div class="topnav">
+        <a href="home.html">Home</a>
+        <a href="editor.html">Editor</a>
+        <a href="themes.html">Theme</a>
+        <a href="plugins.html" class="curr">Plugins</a>
+      </div>
+      <div id = "pluginManager" style = "padding-top: 10px;">
+        <input type="file" id="pluginImportAction" accept=".js" style="display:none">
+        <input type="button" id="pluginImport" value="Import Plugin">
+        <div id="refreshPluginsWs" style="display:none" class = "active">
+          <br>
+        </div>
+        <div id="refreshPlugins" style="display:none">
+          <div style = "display:inline; text-align:left; color:#ff8000; font-size:10px;">Restart Pulsus to apply changes.</div>
+        </div>
+      </div>
+  </body>
+</html>
