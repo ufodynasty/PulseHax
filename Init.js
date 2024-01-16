@@ -16,7 +16,7 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'menuMusic', { get: () => {return eo},set: (val) => {eo = val}});
   Object.defineProperty(globalThis, 'musicManager', { get: () => {return hr},set: (val) => {hr = val}}); // This name is wrong
   Object.defineProperty(globalThis, 'nav', { get: () => {return p},set: (val) => {p = val}}); // This name is wrong
-  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return Wt},set: (val) => {Wt = val}});
+  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return E},set: (val) => {E = val}});
   Object.defineProperty(globalThis, 'screen', { get: () => {return Re},set: (val) => {Re = val}});
   Object.defineProperty(globalThis, 'theme', { get: () => {return _},set: (val) => {_ = val}});
   Object.defineProperty(globalThis, 'themes', { get: () => {return je},set: (val) => {je = val}});
@@ -31,6 +31,33 @@ completeSetup()
 }`);
 
 window.addEventListener("SetupComplete", function() {
+  langs[langSel].edit_select_item_selectBetween = "Select All In-between";
+  langs[langSel].edit_select_item_selectBetween_sub = "Selects all beats in between the first selected beat and last selected beat."
+  eval(`hr.field.draw = ` + hr.field.draw.toString().slice(0, -1) + `
+    function selectInBetween() {
+        game.selectedBeats.sort((a, b) => a-b)
+        var lBound = game.selectedBeats[0];
+        var uBound = game.selectedBeats[game.selectedBeats.length-1];
+        if(lBound!==undefined && uBound!== undefined) {
+            for(let i = lBound; i<uBound; i++) {
+                if(game.beat[i]!==undefined && !game.selectedBeats.includes(i)) {
+                    game.selectedBeats.push(i)
+                }
+            }
+        }
+    }
+    if(game.selectedBeats.length>1 && game.beatNSM.pages[2] === undefined) {
+      game.beatNSM.pages.push({
+        title: "edit_select_quickSelect",
+        items: [{
+          type: "button",
+          name: "edit_select_item_selectBetween",
+          hint: "edit_select_item_selectBetween_sub",
+          event: ()=>selectInBetween()
+        }]
+      })
+    }
+  }`)
   musicManager.musicTime = function() {
     var e;
     1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
@@ -165,6 +192,43 @@ window.addEventListener("SetupComplete", function() {
     });
 });
 
+/*
+const lvlImportAction = document.createElement('input')
+lvlImportAction.type = 'file';
+lvlImportAction.accept = '.pls';
+lvlImportAction.multiple = 'true';
+lvlImportAction.style = 'display:none'
+lvlImportAction.addEventListener("change", () => {
+  for(file of lvlImportAction.files){
+      let zip = new JSZip();
+      if(/\.pls$/.exec(file.name)){
+          zip.loadAsync(file)
+          .then(function(zip) {
+          console.log(file)
+          console.log("file")
+          console.log(Object.keys(zip.files)[0])
+          console.log("keys")
+          console.log(Object.keys(zip.files))
+          zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
+              let vtest = JSON.parse(fileData);
+              if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
+              levels.saved.push(vtest); levels.search = levels.saved
+              } else {
+              console.error("File Import Error: Invalid File");
+              }
+          })
+          });
+      } else {
+          console.error("File Import Error: Invalid File");
+      }
+      }
+})
+document.body.appendChild(lvlImportAction)
+
+^ To add to inGamePort later
+*/
+let ctrlDown = false;
+let altDown = false
 window.addEventListener("keydown", function(e) {
   if("Tab" === e.code){
     e.preventDefault();
@@ -179,10 +243,52 @@ window.addEventListener("keydown", function(e) {
       game.songVol = 100;
     }
   }
-  if("AltLeft" === e.code || "AltRight" === e.code){
+  if(e.key === "Alt"){
     e.preventDefault();
+    altDown = true;
   }
+  if(altDown && ctrlDown){
+    if(e.key === 'c') {
+      if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && menu.screen === 'lvl') {
+        if(this.confirm(`Copy ${newGrabLevelMeta(clevels[menu.lvl.sel], "id").title}?`))
+          if(typeof clevels[menu.lvl.sel] == "number"){
+            copyLevel(clevels[menu.lvl.sel]);
+            levels.saved[levels.saved.length-1].stars = calcLevelStars(clevels[menu.lvl.sel]);
+          } else {
+            levels.saved.push(copyObject(clevels[menu.lvl.sel]));
+            levels.saved[levels.saved.length-1].title += "(copy)";
+          }
+          if(menu.lvl.tab == 0) {
+            levels.search = levels.saved;
+          }
+        }
+    } /* else if(e.key === 'e' && clevels[menu.lvl.sel].local && menu.screen === 'lvl') {
+      let zip = new JSZip();
+      let response = clevels[menu.lvl.sel];
+      zip.file(`${response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response));
+      zip.generateAsync({type:"blob",compression: "DEFLATE"}).then(function (blob) {
+        const a = document.createElement("a");
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = `${response.title}.pls`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    } else if(e.key === 'i' && menu.screen !== 'menu') {
+      lvlImportAction.click();
+    }
+    
+    ^^To add to inGamePort later
+    */
+  }
+  if(e.key === "Control") {ctrlDown = true}
+  if(e.key === "Alt") {altDown = true}
 }, !0);
+window.addEventListener("keyup", (e) => {
+  if(e.key==="Control"){ctrlDown=false}
+  if(e.key==="Alt"){altDown=false}
+})
+
 
 
 window.addEventListener("InjectedScriptEval", function(evt) {
