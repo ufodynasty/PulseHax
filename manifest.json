@@ -16,6 +16,7 @@
         "resources": [
           "Init.js",
           "assets/retry.wav",
+          "editorAddon.js",
           "*"
         ],
         "matches": ["https://pulsus.cc/*","https://www.pulsus.cc/*"]

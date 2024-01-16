@@ -3,7 +3,12 @@ s.src = chrome.runtime.getURL(`Init.js`);
 s.onload = function() {
   this.remove();
 };
-(document.head || document.documentElement).appendChild(s);
+let s1 = document.createElement('script');
+s1.src = chrome.runtime.getURL(`editorAddon.js`);
+s1.onload = function() {
+  this.remove();
+};
+(document.head || document.documentElement).append(s, s1);
 window.addEventListener("SetupComplete", function() {
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{},plugins:[]}, function(result) {
     if(result.Settings.wave) {
