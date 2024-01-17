@@ -32,7 +32,6 @@ completeSetup()
 }`);
 
 window.addEventListener("SetupComplete", function() {
-  document.title = "PulseHax"
   langs[langSel].edit_select_item_selectBetween = "Select All In-between";
   langs[langSel].edit_select_item_selectBetween_sub = "Selects all beats in between the first selected beat and last selected beat."
   eval(`hr.field.draw = ` + hr.field.draw.toString().slice(0, -1) + `

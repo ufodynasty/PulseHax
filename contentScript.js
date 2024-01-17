@@ -10,8 +10,6 @@ s1.onload = function() {
 };
 (document.head || document.documentElement).append(s, s1);
 window.addEventListener("SetupComplete", function() {
-  document.querySelector('link[rel*="icon"]').href = chrome.runtime.getURL("assets/icon.ico");
-
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{},plugins:[]}, function(result) {
     if(result.Settings.wave) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
@@ -62,6 +60,7 @@ window.addEventListener("SetupComplete", function() {
   });
   window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
     lowLag.load("${chrome.runtime.getURL("/assets/retry.wav")}", "retry");
+    game.pulseHaxLogo = "${chrome.runtime.getURL("/assets/icon.ico")}"
     img.pulseHax = loadImage("${chrome.runtime.getURL("/assets/icon.png")}")
   `}));
 })
