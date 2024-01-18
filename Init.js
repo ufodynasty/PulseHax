@@ -24,6 +24,11 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'toLoad', { get: () => {return Qe},set: (val) => {Qe = val}});
   Object.defineProperty(globalThis, 'user', { get: () => {return y},set: (val) => {y = val}});
   Object.defineProperty(globalThis, 'welcome', { get: () => {return r},set: (val) => {r = val}});
+  Object.defineProperty(globalThis, 'clickMenu', { get: () => {return ar},set: (val) => {ar = val}}); // This is wrong
+Object.defineProperty(globalThis, 'drawMenu', { get: () => {return p},set: (val) => {p = val}}); // This is wrong
+Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return vr},set: (val) => {vr = val}}); // This is wrong
+Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Go},set: (val) => {Go = val}});
+Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Rn},set: (val) => {Rn = val}});
   window.dispatchEvent(new CustomEvent('SetupComplete'));
 }
 eval(or.toString().slice(0,-1) + 
