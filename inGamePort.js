@@ -1,4 +1,9 @@
 window.addEventListener("SetupComplete", function() {
+Object.defineProperty(globalThis, 'clickMenu', { get: () => {return cs},set: (val) => {cs = val}}); // This is wrong
+Object.defineProperty(globalThis, 'drawMenu', { get: () => {return c},set: (val) => {c = val}}); // This is wrong
+Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return ws},set: (val) => {ws = val}}); // This is wrong
+Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
+Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
 
 // Set input elements for map and custom theme import
 const body = document.body;
@@ -77,9 +82,9 @@ pulseHax.langItems = {
     settings_skipIntro: "Skip Intro",
     settings_skipIntro_sub: "Skips long empty sections at the start of maps",
     settings_additionalThemes: "Additional Themes",
-    settings_additionalThemes_sub: `Adds extra themes to the "Theme" dropdown in Universal Settings`,
+    settings_additionalThemes_sub: `Adds extra themes to the "Theme" dropdown in Universal Settings (restart to apply changes)`,
     settings_changeTab: "Change Tab Name and Icon",
-    settings_changeTab_sub: "Changes the tab name and icon from Pulsus to PulseHax",
+    settings_changeTab_sub: "Changes the tab name and icon from Pulsus to PulseHax (restart to apply)",
     settings_customTheme_main: "Main",
     settings_customTheme_main_sub: "Sets the color of the main element",
     settings_customTheme_text: "Text",
@@ -113,7 +118,7 @@ pulseHax.langItems = {
     settings_customTheme_applyChanges: "Apply Changes",
     settings_customTheme_applyChanges_sub: "Applies the colors above to the \"Custom Theme\" option in Universal>Theme",
     settings_customTheme_name: "Custom Theme Name",
-    settings_customTheme_name_sub: "Sets a custom name for the \"Custom Theme\" setting in Universal>Theme",
+    settings_customTheme_name_sub: "Sets a custom name for the \"Custom Theme\" setting in Universal>Themes",
     settings_customTheme_export: "Export Custom Theme",
     settings_customTheme_export_sub: "Exports your Custom Theme into a .pls file",
     settings_customTheme_import: "Import Custom Theme",
@@ -195,7 +200,7 @@ function loadCustomTheme(obj=pulseHax.customTheme) {
         lightTheme: obj.lightTheme
     };
 };
-function saveCustomTheme() {
+function saveCustomTheme(obj) {
     return pulseHax.customTheme = {
         main: makeColorFormat(RGBToHSB(...themes[10].main.levels)),
         text: makeColorFormat(RGBToHSB(...themes[10].text.levels)),
@@ -307,15 +312,14 @@ themes.push({
 });
 
 // Set replace search parameters for function refactoring
-const newSettingsMenuReplace = `else if("color"===H.type){void 0===H.highlights&&(H.highlights=[0]),push(),translate(2*l,2.5*l/2);var y=(o-6*l)/3,O=u-2.5*l,O=(colorMode(H.mode),H.multiple?fill(ee(H.hues[0]),ee(H.saturations[0]),ee(H.brightnesses[0]),void 0===H.alphas?255:ee(H.alphas[0])):fill(ee(H.hue),ee(H.saturation),ee(H.brightness),void 0===H.alpha?255:ee(H.alpha)),stroke(255),strokeWeight(l),rect(0,0,y,O,O),H.multiple&&(fill(_.text),textAlign(CENTER,CENTER),noStroke(),Ft(Et("item_mixedValues",Pt),y/2,O/2,y-2*l,O/1.5)),pop(),push(),(o-6*l)/3*2),z=u-1.5*l;translate(O/2,z/2),translate((o-6*l)/3+4*l,1.5*l/2),At("rcenter",zt.get().x,zt.get().y,O,z)?H.highlights[0]+=It(1,H.highlights[0],.2):H.highlights[0]+=It(0,H.highlights[0],.2),scale(1+.025*H.highlights[0]),rectMode(CENTER),noStroke(),0<H.highlights[0].toFixed(3)&&(push(),translate(d*lerp(0,1,H.highlights[0]),g*lerp(0,1,H.highlights[0])),fill(0,100),rect(0,0,O,z),pop()),noStroke(),fill(lerpColor(_.buttonDown,_.buttonUp,H.highlights[0])),rect(0,0,O,z),fill(_.buttonText),Ft(Et("settings_editColor",Pt),0,0,O-2*l,z/1.5),this.clickEvents.push({hitbox:At("rcenter",zt.get().x,zt.get().y,O,z),item:H,event:function(e){e.highlights[0]/=5,Ni({hue:e.hue,saturation:e.saturation,brightness:e.brightness,alpha:e.alpha,loops:e.loops,smooth:e.smooth,mode:HSB,title:e.name,multiple:e.multiple,hues:e.hues,saturations:e.saturations,brightnesses:e.brightnesses,alphas:e.alphas})}}),pop()}`;
+const newSettingsMenuReplace = `else if("color"===H.type){void 0===H.highlights&&(H.highlights=[0]),push(),translate(2*l,2.5*l/2);var y=(o-6*l)/3,P=u-2.5*l,P=(colorMode(H.mode),H.multiple?fill(te(H.hues[0]),te(H.saturations[0]),te(H.brightnesses[0]),void 0===H.alphas?255:te(H.alphas[0])):fill(te(H.hue),te(H.saturation),te(H.brightness),void 0===H.alpha?255:te(H.alpha)),stroke(255),strokeWeight(l),rect(0,0,y,P,P),H.multiple&&(fill($.text),textAlign(CENTER,CENTER),noStroke(),Dt(Pt("item_mixedValues",xt),y/2,P/2,y-2*l,P/1.5)),pop(),push(),(o-6*l)/3*2),O=u-1.5*l;translate(P/2,O/2),translate((o-6*l)/3+4*l,1.5*l/2),Ft("rcenter",zt.get().x,zt.get().y,P,O)?H.highlights[0]+=At(1,H.highlights[0],.2):H.highlights[0]+=At(0,H.highlights[0],.2),scale(1+.025*H.highlights[0]),rectMode(CENTER),noStroke(),0<H.highlights[0].toFixed(3)&&(push(),translate(d*lerp(0,1,H.highlights[0]),g*lerp(0,1,H.highlights[0])),fill(0,100),rect(0,0,P,O),pop()),noStroke(),fill(lerpColor($.buttonDown,$.buttonUp,H.highlights[0])),rect(0,0,P,O),fill($.buttonText),Dt(Pt("settings_editColor",xt),0,0,P-2*l,O/1.5),this.clickEvents.push({hitbox:Ft("rcenter",zt.get().x,zt.get().y,P,O),item:H,event:function(e){e.highlights[0]/=5,Ni({hue:e.hue,saturation:e.saturation,brightness:e.brightness,alpha:e.alpha,loops:e.loops,smooth:e.smooth,mode:HSB,title:e.name,multiple:e.multiple,hues:e.hues,saturations:e.saturations,brightnesses:e.brightnesses,alphas:e.alphas})}}),pop()}`;
 const clickMenuScreensReplace = `else if("settings"===Bt.screen)Bt.settings.menu.click();`;
-const drawMenuPagesReplace = `case"settings":p.settings();break;`;
-const lssString = loadStartScreens.toString();
+const drawMenuPagesReplace = `case"settings":c.settings();break;`;
 
-eval(`Go.prototype.draw = ` + ((Go.prototype.draw.toString().replace(
+eval(`newSettingsMenu.prototype.draw = ` + ((newSettingsMenu.prototype.draw.toString().replace(
     newSettingsMenuReplace, newSettingsMenuReplace+newSettingsMenuReplace))
     .replace(`else if("color"===H.type)`, `else if("settingsMenuColor" === H.type)`))
-    .replace(`rect(0,0,y,O,O)`, `rect(0, -O/2, y, O*2, O)`));
+    .replace(`rect(0,0,y,P,P)`, `rect(0, -P/2, y, P*2, P)`));
     
 const clickMenuBuffer = clickMenu.screens;
 eval(`clickMenu.screens = `+clickMenu.screens.toString().replace(clickMenuScreensReplace, clickMenuScreensReplace+ `
@@ -373,10 +377,10 @@ localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings));
 localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme));
 }`)
 
-eval(`loadStartScreens = () => {
+eval(loadStartScreens.toString().replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
     langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;
-    ${lssString.slice(lssString.search("{") + 1)}`)
+`));
 
 // Add Skip Intro
 musicManager.musicTime = function() {
@@ -589,11 +593,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
 
 // Keybind stuff
 let ctrlDown = false;
-let altDown = false;
+let shiftDown = false;
 window.addEventListener("keydown", function(e){
     if(e.key === "Control") {ctrlDown = true}
-    if(e.key === "Alt") {altDown = true}
-    if(altDown && ctrlDown){
+    if(e.key === "Shift") {shiftDown = true}
+    console.log(ctrlDown, shiftDown, e.key)
+    if(shiftDown && ctrlDown){
         if(e.key === 'c') {
           if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && menu.screen === 'lvl') {
             if(this.confirm(`Copy ${newGrabLevelMeta(clevels[menu.lvl.sel], "id").title}?`))
@@ -627,7 +632,7 @@ window.addEventListener("keydown", function(e){
 });
 window.addEventListener("keyup", function(e) {
     if(e.key === "Control") {ctrlDown = false}
-    if(e.key === "Alt") {altDown = false}
+    if(e.key === "Shift") {shiftDown = false}
 })
 
 lvlImport.addEventListener("change", () => {
@@ -684,26 +689,8 @@ customThemeImport.addEventListener("change", () => {
                 themes[10].scrollbar.levels = vtest.scrollbar.levels;
                 themes[10].checkmark.levels = vtest.checkmark.levels;
                 themes[10].dropdown.levels = vtest.dropdown.levels;
-                themes[10].lightTheme = vtest.lightTheme;
-                saveCustomTheme();
-                var pulseHaxCustomTheme = {
-                    main: pulseHax.customTheme.main,
-                    text: pulseHax.customTheme.text,
-                    overlayShade: pulseHax.customTheme.overlayShade,
-                    shade: pulseHax.customTheme.shade,
-                    buttonDown: pulseHax.customTheme.buttonDown,
-                    buttonUp: pulseHax.customTheme.buttonUp,
-                    buttonText: pulseHax.customTheme.buttonText,
-                    textDown: pulseHax.customTheme.textDown,
-                    select: pulseHax.customTheme.select,
-                    modText: pulseHax.customTheme.modText,
-                    scrollbar: pulseHax.customTheme.scrollbar,
-                    checkmark: pulseHax.customTheme.checkmark,
-                    dropdown: pulseHax.customTheme.dropdown,
-                    lightTheme: pulseHax.customTheme.lightTheme
-                }
-                pulseHax.customTheme = pulseHaxCustomTheme;
-                localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme));
+                themes[10].lightTheme = vtest.lightTheme
+                saveCustomTheme()
                 } else {
                 console.error("File Import Error: Invalid File");
                 }
@@ -719,25 +706,13 @@ setInterval(() => {
     saveGameData();
     if(menu.screen==="pulseHax"){
         themes[10] = loadCustomTheme();
-        document.querySelector('link[rel*="icon"]').href = pulseHax.settings.changeTab ? game.pulseHaxLogo : ('/play/client/favicon.ico' || '/client/favicon.ico');
-        document.title = pulseHax.settings.changeTab ? "PulseHax" : "Pulsus";
     }
     if(menu.screen==="settings"){
         langs[langSel].theme_CUSTOM = pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName;
-        if(pulseHax.settings.additionalThemes && !menu.settings.menu.pages[0].items[2].options.includes(11)) {
-            menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
-            menu.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
-        };
-        if(!pulseHax.settings.additionalThemes && menu.settings.menu.pages[0].items[2].options.includes(11)) {
-            menu.settings.menu.pages[0].items[2].options.splice(menu.settings.menu.pages[0].items[2].options.indexOf(11), 5)
-            menu.settings.menu.pages[0].items[2].labels.splice(menu.settings.menu.pages[0].items[2].labels.indexOf('theme_gufo'), 5);
-        };
-    }
-    if(menu.screen==="lvl"){
-        musicManager.musicTime();
     }
     }, 300)
 setTimeout(() => {
+    loadStartScreens();
     themes[10] = loadCustomTheme();
     menu.settings.menu.pages[0].items[2].options.push(10);
     menu.settings.menu.pages[0].items[2].labels.push('theme_CUSTOM');
@@ -745,8 +720,10 @@ setTimeout(() => {
         menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
         menu.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
     };
-    document.querySelector('link[rel*="icon"]').href = pulseHax.settings.changeTab ? game.pulseHaxLogo : ('/play/client/favicon.ico' || '/client/favicon.ico');
-    document.title = pulseHax.settings.changeTab ? "PulseHax" : "Pulsus";
+    if(pulseHax.settings.changeTab) {
+        document.title = "PulseHax";
+        document.querySelector('link[rel*="icon"]').href = game.pulseHaxLogo;
+    };
 }, 300);
 
 });

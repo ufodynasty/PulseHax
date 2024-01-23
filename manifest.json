@@ -17,8 +17,8 @@
           "Init.js",
           "inGamePort.js",
           "assets/retry.wav",
-          "assets/icon.ico",
           "assets/icon.png",
+          "assets/icon.ico",
           "*"
         ],
         "matches": ["https://pulsus.cc/*","https://www.pulsus.cc/*"]

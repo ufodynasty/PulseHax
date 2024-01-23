@@ -1,69 +1,43 @@
 function completeSetup() {
-  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return xn},set: (val) => {xn = val}});
-  Object.defineProperty(globalThis, 'clevels', { get: () => {return Ht},set: (val) => {Ht = val}});
-  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Ko},set: (val) => {Ko = val}});
-  Object.defineProperty(globalThis, 'copyObject', { get: () => {return D},set: (val) => {D = val}});
-  Object.defineProperty(globalThis, 'fitText', { get: () => {return Ft},set: (val) => {Ft = val}});
-  Object.defineProperty(globalThis, 'game', { get: () => {return St},set: (val) => {St = val}});
-  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return Vo},set: (val) => {Vo = val}});
-  Object.defineProperty(globalThis, 'img', { get: () => {return xt},set: (val) => {xt = val}});
-  Object.defineProperty(globalThis, 'lang', { get: () => {return Et},set: (val) => {Et = val}});
+  Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return Bn},set: (val) => {Bn = val}});
+  Object.defineProperty(globalThis, 'clevels', { get: () => {return Rt},set: (val) => {Rt = val}});
+  Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Mo},set: (val) => {Mo = val}});
+  Object.defineProperty(globalThis, 'copyObject', { get: () => {return X},set: (val) => {X = val}});
+  Object.defineProperty(globalThis, 'fitText', { get: () => {return Dt},set: (val) => {Dt = val}});
+  Object.defineProperty(globalThis, 'game', { get: () => {return Tt},set: (val) => {Tt = val}});
+  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return qo},set: (val) => {qo = val}});
+  Object.defineProperty(globalThis, 'img', { get: () => {return St},set: (val) => {St = val}});
+  Object.defineProperty(globalThis, 'lang', { get: () => {return Pt},set: (val) => {Pt = val}});
   Object.defineProperty(globalThis, 'langList', { get: () => {return U},set: (val) => {U = val}});
-  Object.defineProperty(globalThis, 'langSel', { get: () => {return Pt},set: (val) => {Pt = val}});
+  Object.defineProperty(globalThis, 'langSel', { get: () => {return xt},set: (val) => {xt = val}});
   Object.defineProperty(globalThis, 'langs', { get: () => {return F},set: (val) => {F = val}});
-  Object.defineProperty(globalThis, 'levels', { get: () => {return Tt},set: (val) => {Tt = val}});
-  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return kt},set: (val) => {kt = val}});
+  Object.defineProperty(globalThis, 'levels', { get: () => {return Ht},set: (val) => {Ht = val}});
+  Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Qt},set: (val) => {Qt = val}});
   Object.defineProperty(globalThis, 'menu', { get: () => {return Bt},set: (val) => {Bt = val}});
-  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return eo},set: (val) => {eo = val}});
-  Object.defineProperty(globalThis, 'musicManager', { get: () => {return hr},set: (val) => {hr = val}}); // This name is wrong
-  Object.defineProperty(globalThis, 'nav', { get: () => {return p},set: (val) => {p = val}}); // This name is wrong
-  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return E},set: (val) => {E = val}});
-  Object.defineProperty(globalThis, 'screen', { get: () => {return Re},set: (val) => {Re = val}});
-  Object.defineProperty(globalThis, 'theme', { get: () => {return _},set: (val) => {_ = val}});
-  Object.defineProperty(globalThis, 'themes', { get: () => {return je},set: (val) => {je = val}});
-  Object.defineProperty(globalThis, 'toLoad', { get: () => {return Qe},set: (val) => {Qe = val}});
-  Object.defineProperty(globalThis, 'user', { get: () => {return y},set: (val) => {y = val}});
-  Object.defineProperty(globalThis, 'welcome', { get: () => {return r},set: (val) => {r = val}});
-  Object.defineProperty(globalThis, 'clickMenu', { get: () => {return ar},set: (val) => {ar = val}}); // This is wrong
-Object.defineProperty(globalThis, 'drawMenu', { get: () => {return p},set: (val) => {p = val}}); // This is wrong
-Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return vr},set: (val) => {vr = val}}); // This is wrong
-Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Go},set: (val) => {Go = val}});
-Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Rn},set: (val) => {Rn = val}});
+  Object.defineProperty(globalThis, 'menuMusic', { get: () => {return to},set: (val) => {to = val}});
+  Object.defineProperty(globalThis, 'musicManager', { get: () => {return gs},set: (val) => {gs = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'nav', { get: () => {return c},set: (val) => {c = val}}); // This name is wrong
+  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return Ut},set: (val) => {Ut = val}});
+  Object.defineProperty(globalThis, 'screen', { get: () => {return He},set: (val) => {He = val}});
+  Object.defineProperty(globalThis, 'theme', { get: () => {return $},set: (val) => {$ = val}});
+  Object.defineProperty(globalThis, 'themes', { get: () => {return qe},set: (val) => {qe = val}});
+  Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ne},set: (val) => {Ne = val}});
+  Object.defineProperty(globalThis, 'user', { get: () => {return O},set: (val) => {O = val}});
+  Object.defineProperty(globalThis, 'welcome', { get: () => {return s},set: (val) => {s = val}});
   window.dispatchEvent(new CustomEvent('SetupComplete'));
 }
-eval(or.toString().slice(0,-1) + 
+eval(rs.toString().slice(0,-1) + 
 `
 completeSetup()
 }`);
 
 window.addEventListener("SetupComplete", function() {
-  langs[langSel].edit_select_item_selectBetween = "Select All In-between";
-  langs[langSel].edit_select_item_selectBetween_sub = "Selects all beats in between the first selected beat and last selected beat."
-  eval(`hr.field.draw = ` + hr.field.draw.toString().slice(0, -1) + `
-    function selectInBetween() {
-        game.selectedBeats.sort((a, b) => a-b)
-        var lBound = game.selectedBeats[0];
-        var uBound = game.selectedBeats[game.selectedBeats.length-1];
-        if(lBound!==undefined && uBound!== undefined) {
-            for(let i = lBound; i<uBound; i++) {
-                if(game.beat[i]!==undefined && !game.selectedBeats.includes(i)) {
-                    game.selectedBeats.push(i)
-                }
-            }
-        }
-    }
-    if(game.selectedBeats.length>1 && game.beatNSM.pages[2] === undefined) {
-      game.beatNSM.pages.push({
-        title: "edit_select_quickSelect",
-        items: [{
-          type: "button",
-          name: "edit_select_item_selectBetween",
-          hint: "edit_select_item_selectBetween_sub",
-          event: ()=>selectInBetween()
-        }]
-      })
-    }
-  }`)
+  musicManager.musicTime = function() {
+    var e;
+    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
+        game.songEnded = [millis(), lvlHowl[game.song].duration]
+    }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
+  }
 
 // Feature removed in V 0.6.1 due to gamma 0.28.12 including a menu music volume option
 
@@ -205,8 +179,11 @@ window.addEventListener("keydown", function(e) {
       menu.lvl.prevPlay = game.song,
       game.songVol = 100;
     }
-  }}, !0);
-
+  }
+  if("AltLeft" === e.code || "AltRight" === e.code){
+    e.preventDefault();
+  }
+}, !0);
 
 
 window.addEventListener("InjectedScriptEval", function(evt) {
