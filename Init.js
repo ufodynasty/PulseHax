@@ -5,7 +5,7 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'copyObject', { get: () => {return X},set: (val) => {X = val}});
   Object.defineProperty(globalThis, 'fitText', { get: () => {return Dt},set: (val) => {Dt = val}});
   Object.defineProperty(globalThis, 'game', { get: () => {return Tt},set: (val) => {Tt = val}});
-  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return v},set: (val) => {v = val}});
+  Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return qo},set: (val) => {qo = val}});
   Object.defineProperty(globalThis, 'img', { get: () => {return St},set: (val) => {St = val}});
   Object.defineProperty(globalThis, 'lang', { get: () => {return Pt},set: (val) => {Pt = val}});
   Object.defineProperty(globalThis, 'langList', { get: () => {return U},set: (val) => {U = val}});
@@ -17,7 +17,7 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'menuMusic', { get: () => {return to},set: (val) => {to = val}});
   Object.defineProperty(globalThis, 'musicManager', { get: () => {return cs},set: (val) => {cs = val}}); // This name is wrong
   Object.defineProperty(globalThis, 'nav', { get: () => {return c},set: (val) => {c = val}}); // This name is wrong
-  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return Ut},set: (val) => {Ut = val}});
+  Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return H},set: (val) => {H = val}});
   Object.defineProperty(globalThis, 'screen', { get: () => {return He},set: (val) => {He = val}});
   Object.defineProperty(globalThis, 'theme', { get: () => {return $},set: (val) => {$ = val}});
   Object.defineProperty(globalThis, 'themes', { get: () => {return qe},set: (val) => {qe = val}});
@@ -170,17 +170,12 @@ window.addEventListener("keydown", function(e) {
   if("Tab" === e.code){
     e.preventDefault();
     if(!1 === game.edit && 1 === game.disMode && screen === "game"){
-      lvlHowl[game.song].pause()
-      game.effectsCache.vignette = 15
+      game.retry = true;
+      game.quickRetry = true;
       lowLag.play("retry",".5");
-      game.disMode = 1,
-      game.retry = !0,
-      game.buttonHover[0] /= 2,
-      menu.lvl.prevPlay = game.song,
-      game.songVol = 100;
     }
   }
-  if("AltLeft" === e.code || "AltRight" === e.code){
+  if(e.altKey){
     e.preventDefault();
   }
 }, !0);

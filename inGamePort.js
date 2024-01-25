@@ -592,16 +592,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
 }]);
 
 // Keybind stuff
-let ctrlDown = false;
-let shiftDown = false;
-window.addEventListener("keydown", function(e){
-    if(e.key === "Control") {ctrlDown = true}
-    if(e.key === "Shift") {shiftDown = true}
-    console.log(ctrlDown, shiftDown, e.key)
-    if(shiftDown && ctrlDown){
-        if(e.key === 'c') {
+document.addEventListener("keydown", function(e){
+    console.log(e.key, e.ctrlKey, e.shiftKey, e.meta)
+    if(e.shiftKey && e.ctrlKey){
+        if(e.key === 'C') {
           if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && menu.screen === 'lvl') {
-            if(this.confirm(`Copy ${newGrabLevelMeta(clevels[menu.lvl.sel], "id").title}?`))
+            if(confirm(`Copy ${newGrabLevelMeta(clevels[menu.lvl.sel], "id").title}?`))
               if(typeof clevels[menu.lvl.sel] == "number"){
                 copyLevel(clevels[menu.lvl.sel]);
                 levels.saved[levels.saved.length-1].stars = calcLevelStars(clevels[menu.lvl.sel]);
@@ -613,7 +609,8 @@ window.addEventListener("keydown", function(e){
                 levels.search = levels.saved;
               }
             }
-        } else if(e.key === 'e' && clevels[menu.lvl.sel].local && menu.screen === 'lvl') {
+        } else if(e.key === 'E' && clevels[menu.lvl.sel]?.local && menu.screen === 'lvl') {
+          if(!confirm(`Export ${clevels[menu.lvl.sel].title}.pls?`)) { return; }
           let zip = new JSZip();
           let response = clevels[menu.lvl.sel];
           zip.file(`${response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response));
@@ -625,15 +622,15 @@ window.addEventListener("keydown", function(e){
             a.click();
             URL.revokeObjectURL(url);
           });
-        } else if(e.key === 'i' && menu.screen !== 'menu') {
+        } else if(e.key === 'I' && menu.screen !== 'menu') {
+          if(!confirm("Import Maps?")) { return; }
           lvlImport.click();
         }
-      }
+    }/*
+    if(e.key === 'F1' && menu.screen === 'lvl' && clevels.length > 0) {
+        menu.lvl.sel = parseInt(Math.random()*clevels.length)
+      }*/
 });
-window.addEventListener("keyup", function(e) {
-    if(e.key === "Control") {ctrlDown = false}
-    if(e.key === "Shift") {shiftDown = false}
-})
 
 lvlImport.addEventListener("change", () => {
     for(file of lvlImportAction.files){
