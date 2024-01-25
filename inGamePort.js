@@ -342,6 +342,7 @@ nav.pulseHax = function() {
         buffer: (height - height / 16) / 64
     })
 }
+
 JSON.stringify(eval(`nav.pages = `+ nav.pages.toString().replace(drawMenuPagesReplace, drawMenuPagesReplace+`
 case "pulseHax":
     nav.pulseHax();
