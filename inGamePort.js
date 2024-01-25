@@ -1,7 +1,6 @@
 window.addEventListener("SetupComplete", function() {
-Object.defineProperty(globalThis, 'clickMenu', { get: () => {return cs},set: (val) => {cs = val}}); // This is wrong
-Object.defineProperty(globalThis, 'drawMenu', { get: () => {return c},set: (val) => {c = val}}); // This is wrong
-Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return ws},set: (val) => {ws = val}}); // This is wrong
+Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
+Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {ws = val}}); // This is wrong
 Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
 Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
 
@@ -332,7 +331,7 @@ clickMenu.screens.logo = clickMenuBuffer.logo;
 clickMenu.screens.header = clickMenuBuffer.header;
 clickMenu.screens.nav = clickMenuBuffer.nav;
 
-drawMenu.pulseHax = function() {
+nav.pulseHax = function() {
     menu.pulseHax.menu.draw({
         x: 0,
         y: height / 16,
@@ -343,9 +342,10 @@ drawMenu.pulseHax = function() {
         buffer: (height - height / 16) / 64
     })
 }
-JSON.stringify(eval(`drawMenu.pages = `+ drawMenu.pages.toString().replace(drawMenuPagesReplace, drawMenuPagesReplace+`
+
+JSON.stringify(eval(`nav.pages = `+ nav.pages.toString().replace(drawMenuPagesReplace, drawMenuPagesReplace+`
 case "pulseHax":
-    drawMenu.pulseHax();
+    nav.pulseHax();
     break;`)))
 
 eval(saveGameData.toString().slice(0, -1) + `;
