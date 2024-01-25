@@ -626,10 +626,10 @@ document.addEventListener("keydown", function(e){
           if(!confirm("Import Maps?")) { return; }
           lvlImport.click();
         }
-    }/*
+    }
     if(e.key === 'F1' && menu.screen === 'lvl' && clevels.length > 0) {
         menu.lvl.sel = parseInt(Math.random()*clevels.length)
-      }*/
+      }
 });
 
 lvlImport.addEventListener("change", () => {
