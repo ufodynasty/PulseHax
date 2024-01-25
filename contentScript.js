@@ -3,7 +3,12 @@ s.src = chrome.runtime.getURL(`Init.js`);
 s.onload = function() {
   this.remove();
 };
-(document.head || document.documentElement).appendChild(s);
+let s1 = document.createElement('script');
+s1.src = chrome.runtime.getURL(`inGamePort.js`);
+s1.onload = function() {
+  this.remove();
+};
+(document.head || document.documentElement).append(s, s1);
 window.addEventListener("SetupComplete", function() {
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{},plugins:[]}, function(result) {
     if(result.Settings.wave) {
@@ -30,8 +35,10 @@ window.addEventListener("SetupComplete", function() {
         langs[langSel].theme_shia = "Shia's theme";
         langs[langSel].theme_lilyyy = "Lilyyy's theme";
         langs[langSel].theme_axye = "Axye's theme";
+        if(!menu.settings.menu.pages[0].items[2].options.includes(11)) {
         menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
         menu.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
+        }
       `}));
     }
     Object.keys(result.CustomTheme).forEach(function (key){
@@ -52,7 +59,9 @@ window.addEventListener("SetupComplete", function() {
     chrome.storage.local.set({plugins:result.plugins});
   });
   window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-    lowLag.load("${chrome.runtime.getURL("/assets/retry.wav")}", "retry")
+    lowLag.load("${chrome.runtime.getURL("/assets/retry.wav")}", "retry");
+    game.pulseHaxLogo = "${chrome.runtime.getURL("/assets/icon.ico")}"
+    img.pulseHax = loadImage("${chrome.runtime.getURL("/assets/icon.png")}")
   `}));
 })
 
