@@ -166,20 +166,6 @@ window.addEventListener("SetupComplete", function() {
     });
 });
 
-window.addEventListener("keydown", function(e) {
-  if("Tab" === e.code){
-    e.preventDefault();
-    if(!1 === game.edit && 1 === game.disMode && screen === "game"){
-      game.retry = true;
-      game.quickRetry = true;
-      lowLag.play("retry",".5");
-    }
-  }
-  if(e.altKey){
-    e.preventDefault();
-  }
-}, !0);
-
 
 window.addEventListener("InjectedScriptEval", function(evt) {
   try {

@@ -4,6 +4,7 @@ Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},s
 Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
 Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
 Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
+Object.defineProperty(globalThis, 'promptRes', { get: () => {return ki},set: (val) => {ki = val}});
 Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
 Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
 Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
@@ -37,6 +38,7 @@ function fetchLocalStorage(item) {
             additionalThemes: false,
             changeTab: true,
             customThemeName: "",
+            sfxVolume: 50,
             skipIntro: false,
             welcomeText: "",
             welcomeWave: false
@@ -45,12 +47,13 @@ function fetchLocalStorage(item) {
         const settingSel = {
         bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab"],
         str: ["welcomeText", "customThemeName"],
-        num: []};
-        const types = ["bool", "str", "num"];
+        num: [],
+        slider: ["sfxVolume"]};
+        const types = ["bool", "str", "num", "slider"];
         const phStorage = JSON.parse(localStorage.getItem("pulseHaxSettings"))
         for(let type in types) {
             for(let setting in settingSel[types[type]]) {
-                settings[settingSel[types[type]][setting]] = phStorage[settingSel[types[type]][setting]] === undefined ? [false, "", 0][type] : phStorage[settingSel[types[type]][setting]]
+                settings[settingSel[types[type]][setting]] = phStorage[settingSel[types[type]][setting]] === undefined ? [false, "", 0, 50][type] : phStorage[settingSel[types[type]][setting]]
             }
         }; return settings
     } else if(item==="customTheme") {
@@ -65,6 +68,7 @@ const pulseHax = {
         uBound: 0
     }
 };
+console.log(pulseHax)
 
 // Set language elements for PulseHax
 pulseHax.langItems = {
@@ -88,6 +92,8 @@ pulseHax.langItems = {
     settings_additionalThemes_sub: `Adds extra themes to the "Theme" dropdown in Universal Settings (restart to apply changes)`,
     settings_changeTab: "Change Tab Name and Icon",
     settings_changeTab_sub: "Changes the tab name and icon from Pulsus to PulseHax (restart to apply)",
+    settings_sfxVolume: "SFX Volume",
+    settings_sfxVolume_sub: "Sets the volume of the PulseHax sound effects (such as quick retry, scroll and quick load)",
     settings_customTheme_main: "Main",
     settings_customTheme_main_sub: "Sets the color of the main element",
     settings_customTheme_text: "Text",
@@ -247,6 +253,20 @@ function toggleSubmission() {
     })
 }
 
+// Skip intro
+eval(`musicManager.musicTime = function() {
+    var e;
+    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((pulseHax.settings.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
+        game.songEnded = [millis(), lvlHowl[game.song].duration]
+    }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
+}`)
+
+// Fix the damn toggle quick play not working on cancel
+eval(`ki = ` + ki.toString().slice(0, -1) + `
+    toggleQuickPlay(true);
+}
+`)
+
 // Load additional themes
 themes.push({
     main: color(35, 50, 60),
@@ -344,6 +364,7 @@ themes.push({
 const newSettingsMenuReplace = `else if("color"===H.type){void 0===H.highlights&&(H.highlights=[0]),push(),translate(2*l,2.5*l/2);var y=(o-6*l)/3,P=u-2.5*l,P=(colorMode(H.mode),H.multiple?fill(te(H.hues[0]),te(H.saturations[0]),te(H.brightnesses[0]),void 0===H.alphas?255:te(H.alphas[0])):fill(te(H.hue),te(H.saturation),te(H.brightness),void 0===H.alpha?255:te(H.alpha)),stroke(255),strokeWeight(l),rect(0,0,y,P,P),H.multiple&&(fill($.text),textAlign(CENTER,CENTER),noStroke(),Dt(Pt("item_mixedValues",xt),y/2,P/2,y-2*l,P/1.5)),pop(),push(),(o-6*l)/3*2),O=u-1.5*l;translate(P/2,O/2),translate((o-6*l)/3+4*l,1.5*l/2),Ft("rcenter",zt.get().x,zt.get().y,P,O)?H.highlights[0]+=At(1,H.highlights[0],.2):H.highlights[0]+=At(0,H.highlights[0],.2),scale(1+.025*H.highlights[0]),rectMode(CENTER),noStroke(),0<H.highlights[0].toFixed(3)&&(push(),translate(d*lerp(0,1,H.highlights[0]),g*lerp(0,1,H.highlights[0])),fill(0,100),rect(0,0,P,O),pop()),noStroke(),fill(lerpColor($.buttonDown,$.buttonUp,H.highlights[0])),rect(0,0,P,O),fill($.buttonText),Dt(Pt("settings_editColor",xt),0,0,P-2*l,O/1.5),this.clickEvents.push({hitbox:Ft("rcenter",zt.get().x,zt.get().y,P,O),item:H,event:function(e){e.highlights[0]/=5,Ni({hue:e.hue,saturation:e.saturation,brightness:e.brightness,alpha:e.alpha,loops:e.loops,smooth:e.smooth,mode:HSB,title:e.name,multiple:e.multiple,hues:e.hues,saturations:e.saturations,brightnesses:e.brightnesses,alphas:e.alphas})}}),pop()}`;
 const clickMenuScreensReplace = `else if("settings"===Bt.screen)Bt.settings.menu.click();`;
 const drawMenuPagesReplace = `case"settings":c.settings();break;`;
+const sgdString = saveGameData.toString()
 const quickPlayReplace = `Bt.lvl.scrollNewLock||(Ft("rcorner",height/24*5,height/16,width/3-width/48-height/24*5,height/24)&&Ri({var:[Bt.lvl,"search"],title:"menu_lvl_search",type:"string",allowEmpty:!0,after:function(){Ht.search=[],Bt.lvl.sel=!1,Bt.lvl.searchSent=!1}})`
 
 eval(`newSettingsMenu.prototype.draw = ` + ((newSettingsMenu.prototype.draw.toString().replace(
@@ -393,34 +414,8 @@ case "pulseHax":
     nav.pulseHax();
     break;`)))
 
-eval(saveGameData.toString().slice(0, -1) + `;
-var pulseHaxSettings = {
-    additionalThemes: pulseHax.settings.additionalThemes,
-    changeTab: pulseHax.settings.changeTab,
-    customThemeName: pulseHax.settings.customThemeName,
-    skipIntro: pulseHax.settings.skipIntro,
-    welcomeText: pulseHax.settings.welcomeText,
-    welcomeWave: pulseHax.settings.welcomeWave
-};
-var pulseHaxCustomTheme = {
-    main: pulseHax.customTheme.main,
-    text: pulseHax.customTheme.text,
-    overlayShade: pulseHax.customTheme.overlayShade,
-    shade: pulseHax.customTheme.shade,
-    buttonDown: pulseHax.customTheme.buttonDown,
-    buttonUp: pulseHax.customTheme.buttonUp,
-    buttonText: pulseHax.customTheme.buttonText,
-    textDown: pulseHax.customTheme.textDown,
-    select: pulseHax.customTheme.select,
-    modText: pulseHax.customTheme.modText,
-    scrollbar: pulseHax.customTheme.scrollbar,
-    checkmark: pulseHax.customTheme.checkmark,
-    dropdown: pulseHax.customTheme.dropdown,
-    lightTheme: pulseHax.customTheme.lightTheme
-}
-localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings));
-localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme));
-}`)
+eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString.search(/\){/) + 2)}
+    localStorage.setItem("pulseHaxSettings", JSON.stringify(menu.pulseHax.settings)),${sgdString.slice(sgdString.search(/\){/) + 2)}`)
 
 eval(loadStartScreens.toString().replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
@@ -466,6 +461,15 @@ menu.pulseHax.menu = new newSettingsMenu([{
         type: "boolean",
         hint: "settings_changeTab_sub",
         var: [pulseHax.settings, "changeTab"]
+    }, {
+        type: "slider",
+        name: "settings_sfxVolume",
+        var: [pulseHax.settings, "sfxVolume"],
+        min: 0,
+        max: 100,
+        step: 1,
+        hint: "settings_sfxVolume_sub",
+        display: ()=>lang("percentage", langSel, pulseHax.settings.sfxVolume.toFixed(0))
     }]}, {
         title: "settings_header_customTheme",
         items: [{
@@ -689,7 +693,7 @@ document.addEventListener("keydown", function(e){
             menu.lvl.sel -= (0 === menu.lvl.sel) ? 0 : 1;
             menu.lvl.scroll = menu.lvl.sel*maxScroll/(clevels.length-1);
             if(selBuffer === menu.lvl.sel) { return; }
-            lowLag.play("scroll", ".5");
+            lowLag.play("scroll", pulseHax.settings.sfxVolume/100);
 
         }
         if(e.code === "ArrowDown") {
@@ -697,7 +701,7 @@ document.addEventListener("keydown", function(e){
             menu.lvl.sel = (clevels.length-1 === menu.lvl.sel) ? menu.lvl.sel : menu.lvl.sel === false ? 0 : menu.lvl.sel+1;
             menu.lvl.scroll = menu.lvl.sel*maxScroll/(clevels.length-1);
             if(selBuffer === menu.lvl.sel) { return; }
-            lowLag.play("scroll", ".5");
+            lowLag.play("scroll", pulseHax.settings.sfxVolume/100);
         }
         if(e.code === "Enter" && quickPlayEnabled) {
             if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && !game.edit) {
@@ -710,6 +714,17 @@ document.addEventListener("keydown", function(e){
             }
         }
     }
+    if(e.code === "Tab"){
+        e.preventDefault();
+        if(!1 === game.edit && 1 === game.disMode && screen === "game"){
+          game.retry = true;
+          game.quickRetry = true;
+          lowLag.play("retry",pulseHax.settings.sfxVolume/100);
+        }
+      }
+      if(e.altKey){
+        e.preventDefault();
+      }
 });
 
 lvlImport.addEventListener("change", () => {
@@ -780,9 +795,22 @@ customThemeImport.addEventListener("change", () => {
 
 // Startup and settings saving shenanigans
 setInterval(() => {
-    saveGameData();
     if(menu.screen==="pulseHax"){
         themes[10] = loadCustomTheme();
+        if(pulseHax.settings.additionalThemes && !menu.settings.menu.pages[0].items[2].options.includes(11)) {
+            menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
+        };
+        if(!pulseHax.settings.additionalThemes && menu.settings.menu.pages[0].items[2].options.includes(11)) {
+            menu.settings.menu.pages[0].items[2].options.splice(menu.settings.menu.pages[0].items[2].options.indexOf(11), 5)
+        };
+        if(pulseHax.settings.changeTab) {
+            document.title = "PulseHax";
+            document.querySelector('link[rel*="icon"]').href = game.pulseHaxLogo;
+        };
+        if(!pulseHax.settings.changeTab) {
+            document.title = "Pulsus";
+            document.querySelector('link[rel*="icon"]').href = 'https://www.pulsus.cc/play/client/favicon.ico';
+        };
     }
     if(menu.screen==="settings"){
         langs[langSel].theme_CUSTOM = pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName;
@@ -797,10 +825,8 @@ setTimeout(() => {
         menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
         menu.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
     };
-    if(pulseHax.settings.changeTab) {
-        document.title = "PulseHax";
-        document.querySelector('link[rel*="icon"]').href = game.pulseHaxLogo;
-    };
+    document.title = pulseHax.settings.changeTab ? "PulseHax" : "Pulsus";
+    document.querySelector('link[rel*="icon"]').href = pulseHax.settings.changeTab ? game.pulseHaxLogo : 'https://www.pulsus.cc/play/client/favicon.ico';
 }, 300);
 
 });
