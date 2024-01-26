@@ -683,7 +683,7 @@ document.addEventListener("keydown", function(e){
         if(e.code === 'F1') {
             menu.lvl.sel = parseInt(Math.random()*clevels.length);
             menu.lvl.scroll = menu.lvl.sel*maxScroll/(clevels.length-1);
-            lowLag.play("scroll", ".5");
+            lowLag.play("scroll", pulseHax.settings.sfxVolume/100);
         }
         if (e.code === 'F2') {
             toggleSubmission();
