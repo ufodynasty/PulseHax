@@ -3,6 +3,10 @@ Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (va
 Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {ws = val}}); // This is wrong
 Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
 Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
+Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
+Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
+Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
+Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
 
 // Set input elements for map and custom theme import
 const body = document.body;
@@ -122,6 +126,8 @@ pulseHax.langItems = {
     settings_customTheme_export_sub: "Exports your Custom Theme into a .pls file",
     settings_customTheme_import: "Import Custom Theme",
     settings_customTheme_import_sub: "Takes a .pls theme file and applies it to your custom theme",
+    submission_on: "Turned score submission on!",
+    submission_off: "Turned score submission off!",
     pulseHax_title: "PulseHax"
 }; 
 langs[langSel] = {...langs[langSel], ...pulseHax.langItems};
@@ -216,6 +222,30 @@ function saveCustomTheme(obj) {
         dropdown: makeColorFormat(RGBToHSB(...themes[10].dropdown.levels)),
     }
 };
+
+// Quick play bind disable for when the search box is brought up and enable for when the search box is not
+let quickPlayEnabled = true;
+function toggleQuickPlay(bool) {
+    quickPlayEnabled = bool;
+    console.log(`Quick play`, quickPlayEnabled ? `enabled` : `disabled`);
+}
+
+// Score submission toggle
+let submission = true;
+const toggleSearch = {
+    on: `var e=""!==T.uuid&&!Tt.failed&&!Tt.mods.auto&&H(Rt[Bt.lvl.sel],"id").ranked&&!Tt.replay.on&&0===Tt.mods.startPos&&0===Tt.mods.endPos`,
+    off: "var e = false"
+}
+function toggleSubmission() {
+    let v = submission ? "on" : "off"
+    let i = !submission ? "on" : "off";
+    eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString().replace(toggleSearch[v], toggleSearch[i]))
+    submission = !submission;
+    popupMessage({
+        type: "success",
+        message: submission ? "submission_on" : "submission_off"
+    })
+}
 
 // Load additional themes
 themes.push({
@@ -314,6 +344,7 @@ themes.push({
 const newSettingsMenuReplace = `else if("color"===H.type){void 0===H.highlights&&(H.highlights=[0]),push(),translate(2*l,2.5*l/2);var y=(o-6*l)/3,P=u-2.5*l,P=(colorMode(H.mode),H.multiple?fill(te(H.hues[0]),te(H.saturations[0]),te(H.brightnesses[0]),void 0===H.alphas?255:te(H.alphas[0])):fill(te(H.hue),te(H.saturation),te(H.brightness),void 0===H.alpha?255:te(H.alpha)),stroke(255),strokeWeight(l),rect(0,0,y,P,P),H.multiple&&(fill($.text),textAlign(CENTER,CENTER),noStroke(),Dt(Pt("item_mixedValues",xt),y/2,P/2,y-2*l,P/1.5)),pop(),push(),(o-6*l)/3*2),O=u-1.5*l;translate(P/2,O/2),translate((o-6*l)/3+4*l,1.5*l/2),Ft("rcenter",zt.get().x,zt.get().y,P,O)?H.highlights[0]+=At(1,H.highlights[0],.2):H.highlights[0]+=At(0,H.highlights[0],.2),scale(1+.025*H.highlights[0]),rectMode(CENTER),noStroke(),0<H.highlights[0].toFixed(3)&&(push(),translate(d*lerp(0,1,H.highlights[0]),g*lerp(0,1,H.highlights[0])),fill(0,100),rect(0,0,P,O),pop()),noStroke(),fill(lerpColor($.buttonDown,$.buttonUp,H.highlights[0])),rect(0,0,P,O),fill($.buttonText),Dt(Pt("settings_editColor",xt),0,0,P-2*l,O/1.5),this.clickEvents.push({hitbox:Ft("rcenter",zt.get().x,zt.get().y,P,O),item:H,event:function(e){e.highlights[0]/=5,Ni({hue:e.hue,saturation:e.saturation,brightness:e.brightness,alpha:e.alpha,loops:e.loops,smooth:e.smooth,mode:HSB,title:e.name,multiple:e.multiple,hues:e.hues,saturations:e.saturations,brightnesses:e.brightnesses,alphas:e.alphas})}}),pop()}`;
 const clickMenuScreensReplace = `else if("settings"===Bt.screen)Bt.settings.menu.click();`;
 const drawMenuPagesReplace = `case"settings":c.settings();break;`;
+const quickPlayReplace = `Bt.lvl.scrollNewLock||(Ft("rcorner",height/24*5,height/16,width/3-width/48-height/24*5,height/24)&&Ri({var:[Bt.lvl,"search"],title:"menu_lvl_search",type:"string",allowEmpty:!0,after:function(){Ht.search=[],Bt.lvl.sel=!1,Bt.lvl.searchSent=!1}})`
 
 eval(`newSettingsMenu.prototype.draw = ` + ((newSettingsMenu.prototype.draw.toString().replace(
     newSettingsMenuReplace, newSettingsMenuReplace+newSettingsMenuReplace))
@@ -321,9 +352,23 @@ eval(`newSettingsMenu.prototype.draw = ` + ((newSettingsMenu.prototype.draw.toSt
     .replace(`rect(0,0,y,P,P)`, `rect(0, -P/2, y, P*2, P)`));
     
 const clickMenuBuffer = clickMenu.screens;
-eval(`clickMenu.screens = `+clickMenu.screens.toString().replace(clickMenuScreensReplace, clickMenuScreensReplace+ `
+eval(`clickMenu.screens = `+(clickMenu.screens.toString().replace(clickMenuScreensReplace, clickMenuScreensReplace+ `
 else if ("pulseHax" === menu.screen)
-    menu.pulseHax.menu.click();`));
+    menu.pulseHax.menu.click();`))
+    .replace(quickPlayReplace, `
+    menu.lvl.scrollNewLock || (hitbox("rcorner", height / 24 * 5, height / 16, width / 3 - width / 48 - height / 24 * 5, height / 24) && (prmpt({
+        var: [menu.lvl, "search"],
+        title: "menu_lvl_search",
+        type: "string",
+        allowEmpty: !0,
+        after: function() {
+            levels.search = [],
+            menu.lvl.sel = !1,
+            menu.lvl.searchSent = !1,
+            toggleQuickPlay(true)
+        }
+    }), toggleQuickPlay(false))
+    `));
 clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;
 clickMenu.screens.accountSignedOut = clickMenuBuffer.accountSignedOut;
 clickMenu.screens.click = clickMenuBuffer.click;
@@ -381,6 +426,8 @@ eval(loadStartScreens.toString().replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
     langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;
 `));
+
+eval(loadLevel.toString().replace('("game","menu")', `("game","menu"),lowLag.play("load", "0.5")`))
 
 // Add Skip Intro
 musicManager.musicTime = function() {
@@ -593,9 +640,9 @@ menu.pulseHax.menu = new newSettingsMenu([{
 
 // Keybind stuff
 document.addEventListener("keydown", function(e){
-    console.log(e.key, e.ctrlKey, e.shiftKey, e.meta)
+    console.log(`Pressed: ${e.code}\nCtrl held: ${e.ctrlKey ? "Yes" : "No"}\nShift held: ${e.shiftKey? "Yes" : "No"}`);
     if(e.shiftKey && e.ctrlKey){
-        if(e.key === 'C') {
+        if(e.code === 'KeyC') {
           if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && menu.screen === 'lvl') {
             if(confirm(`Copy ${newGrabLevelMeta(clevels[menu.lvl.sel], "id").title}?`))
               if(typeof clevels[menu.lvl.sel] == "number"){
@@ -609,7 +656,7 @@ document.addEventListener("keydown", function(e){
                 levels.search = levels.saved;
               }
             }
-        } else if(e.key === 'E' && clevels[menu.lvl.sel]?.local && menu.screen === 'lvl') {
+        } else if(e.code === 'KeyE' && clevels[menu.lvl.sel]?.local && menu.screen === 'lvl') {
           if(!confirm(`Export ${clevels[menu.lvl.sel].title}.pls?`)) { return; }
           let zip = new JSZip();
           let response = clevels[menu.lvl.sel];
@@ -622,14 +669,47 @@ document.addEventListener("keydown", function(e){
             a.click();
             URL.revokeObjectURL(url);
           });
-        } else if(e.key === 'I' && menu.screen !== 'menu') {
+        } else if(e.code === 'KeyI' && menu.screen !== 'menu') {
           if(!confirm("Import Maps?")) { return; }
           lvlImport.click();
         }
     }
-    if(e.key === 'F1' && menu.screen === 'lvl' && clevels.length > 0) {
-        menu.lvl.sel = parseInt(Math.random()*clevels.length)
-      }
+    if(menu.screen === 'lvl' && clevels.length > 0 && screen === "menu") {
+        let maxScroll = height - (height / 16 + height / 24 + (height - (height / 16 + height / 24)) / 12);
+        if(e.code === 'F1') {
+            menu.lvl.sel = parseInt(Math.random()*clevels.length);
+            menu.lvl.scroll = menu.lvl.sel*maxScroll/(clevels.length-1);
+            lowLag.play("scroll", ".5");
+        }
+        if (e.code === 'F2') {
+            toggleSubmission();
+        }
+        if(e.code === "ArrowUp") {
+            let selBuffer = menu.lvl.sel;
+            menu.lvl.sel -= (0 === menu.lvl.sel) ? 0 : 1;
+            menu.lvl.scroll = menu.lvl.sel*maxScroll/(clevels.length-1);
+            if(selBuffer === menu.lvl.sel) { return; }
+            lowLag.play("scroll", ".5");
+
+        }
+        if(e.code === "ArrowDown") {
+            let selBuffer = menu.lvl.sel;
+            menu.lvl.sel = (clevels.length-1 === menu.lvl.sel) ? menu.lvl.sel : menu.lvl.sel === false ? 0 : menu.lvl.sel+1;
+            menu.lvl.scroll = menu.lvl.sel*maxScroll/(clevels.length-1);
+            if(selBuffer === menu.lvl.sel) { return; }
+            lowLag.play("scroll", ".5");
+        }
+        if(e.code === "Enter" && quickPlayEnabled) {
+            if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && !game.edit) {
+                game.edit = false;
+                game.replay.on = false;
+                loadLevel(menu.lvl.sel);
+            } else {
+                v.newGLRequested[Rt[menu.lvl.sel]] = true
+                m(Rt[menu.lvl.sel], "id", true);
+            }
+        }
+    }
 });
 
 lvlImport.addEventListener("change", () => {

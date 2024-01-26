@@ -60,6 +60,8 @@ window.addEventListener("SetupComplete", function() {
   });
   window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
     lowLag.load("${chrome.runtime.getURL("/assets/retry.wav")}", "retry");
+    lowLag.load("${chrome.runtime.getURL("/assets/load.wav")}", "load");
+    lowLag.load("${chrome.runtime.getURL("/assets/scroll.wav")}", "scroll");
     game.pulseHaxLogo = "${chrome.runtime.getURL("/assets/icon.ico")}"
     img.pulseHax = loadImage("${chrome.runtime.getURL("/assets/icon.png")}")
   `}));

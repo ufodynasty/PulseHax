@@ -17,6 +17,8 @@
           "Init.js",
           "inGamePort.js",
           "assets/retry.wav",
+          "assets/scroll.wav",
+          "assets/load.wav",
           "assets/icon.png",
           "assets/icon.ico",
           "*"
