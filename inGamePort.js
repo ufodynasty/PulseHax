@@ -422,7 +422,7 @@ eval(loadStartScreens.toString().replace('(){', `(){
     langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;
 `));
 
-eval(loadLevel.toString().replace('("game","menu")', `("game","menu"),lowLag.play("load", "0.5")`))
+eval(loadLevel.toString().replace('("game","menu")', `("game","menu"),lowLag.play("load", pulseHax.settings.sfxVolume/100)`))
 
 // Add Skip Intro
 musicManager.musicTime = function() {
