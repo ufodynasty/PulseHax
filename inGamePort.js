@@ -1,6 +1,6 @@
 window.addEventListener("SetupComplete", function() {
 Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
-Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {ws = val}}); // This is wrong
+Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
 Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
 Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
 Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
@@ -64,24 +64,27 @@ const pulseHax = {
     settings: fetchLocalStorage("settings"),
     customTheme: fetchLocalStorage("customTheme"),
     editor: {
-        lBound: 0,
-        uBound: 0
+        noteType: "any",
+        chordType: "any",
+        snapDenominator: 0
     }
 };
-console.log(pulseHax)
 
 // Set language elements for PulseHax
 pulseHax.langItems = {
-    pulseHax: "PulseHax",
+    pulseHax_title: "PulseHax",
+
     theme_CUSTOM: pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName,
     theme_gufo: "Gufo's theme",
     theme_floopy: "Floopy's theme",
     theme_shia: "Shia's theme",
     theme_lilyyy: "Lilyyy's theme",
     theme_axye: "Axye's theme",
+
     settings_header_extras: "Extras",
     settings_header_customTheme: "Custom Theme",
     settings_header_options: "Options",
+
     settings_welcomeWave: "Welcome Wave",
     settings_welcomeWave_sub: `Toggles whether or not "${pulseHax.settings.welcomeText === "" ? "welcome" : pulseHax.settings.welcomeText} o/" shows up upon opening the game`,
     settings_welcomeText: "Startup Text",
@@ -94,6 +97,7 @@ pulseHax.langItems = {
     settings_changeTab_sub: "Changes the tab name and icon from Pulsus to PulseHax (restart to apply)",
     settings_sfxVolume: "SFX Volume",
     settings_sfxVolume_sub: "Sets the volume of the PulseHax sound effects (such as quick retry, scroll and quick load)",
+
     settings_customTheme_main: "Main",
     settings_customTheme_main_sub: "Sets the color of the main element",
     settings_customTheme_text: "Text",
@@ -132,9 +136,25 @@ pulseHax.langItems = {
     settings_customTheme_export_sub: "Exports your Custom Theme into a .pls file",
     settings_customTheme_import: "Import Custom Theme",
     settings_customTheme_import_sub: "Takes a .pls theme file and applies it to your custom theme",
+
     submission_on: "Turned score submission on!",
     submission_off: "Turned score submission off!",
-    pulseHax_title: "PulseHax"
+
+    edit_select_item_selectAll: "Select All",
+    edit_select_item_selectAll_sub: "Selects all notes in the map (using the above filters)",
+    edit_select_noteType: "Note Type",
+    edit_select_noteType_sub: "Filters for beats or holds in Quick Select (Default is all)",
+    edit_select_noteType_any: "Any",
+    edit_select_noteType_beat: "Beat",
+    edit_select_noteType_hold: "Hold",
+    edit_select_chordType: "Chord Type",
+    edit_select_chordType_sub: "Filters for singles, doubles and triples+ in Quick Select (Default is all) SNAP OVERRIDES THIS",
+    edit_select_chordType_any: "Any",
+    edit_select_chordType_singles: "Singles",
+    edit_select_chordType_doubles: "Doubles",
+    edit_select_chordType_triplesFwd: "Triples+",
+    edit_select_snapDenominator: "Snap Denominator",
+    edit_select_snapDenominator_sub: "Sets a filter for a specific snap to look for (i.e '4' looks for 1/4s, leave 0 for all)",
 }; 
 langs[langSel] = {...langs[langSel], ...pulseHax.langItems};
 // Add the PulseHax menu to the nav menu
@@ -233,7 +253,6 @@ function saveCustomTheme(obj) {
 let quickPlayEnabled = true;
 function toggleQuickPlay(bool) {
     quickPlayEnabled = bool;
-    console.log(`Quick play`, quickPlayEnabled ? `enabled` : `disabled`);
 }
 
 // Score submission toggle
@@ -266,6 +285,49 @@ eval(`ki = ` + ki.toString().slice(0, -1) + `
     toggleQuickPlay(true);
 }
 `)
+
+// Custom selection function
+function customSelect(e) {
+    game.beat.sort((a, b) => a[1] - b[1])
+    let lb = e === "before" || e === "all" ? 0 : game.selectedBeats[0]
+    let ub = e === "after" || e === "all" ? game.beat.length : game.selectedBeats[game.selectedBeats.length - 1]+1
+    let selectedBuffer = [];
+    game.selectedBeats = [];
+    game.timelineMode = "select";
+    for(let i=lb; i<ub; i++) {
+        selectedBuffer.push(i);
+    }
+    const bValue = pulseHax.editor.noteType;
+    const chValue = pulseHax.editor.chordType;
+    const snapValue = pulseHax.editor.snapDenominator !== 0 ? 1/pulseHax.editor.snapDenominator : false;
+    for (let i of selectedBuffer){
+        if(bValue === "beat" ? !game.beat[i][5] : bValue === "hold" ? game.beat[i][5] : true){
+            if(snapValue !== false){
+                if((i-1 >= 0 && (Math.abs((game.beat[i][1]-game.beat[i-1][1])*game.beat[i][9]/120-snapValue) < 1e-10 || Math.abs((game.beat[i][1]-game.beat[i-1][1])*game.beat[i-1][9]/120-snapValue) < 1e-10)) || (i+1 < game.beat.length && (Math.abs((game.beat[i+1][1]-game.beat[i][1])*game.beat[i][9]/120-snapValue) < 1e-10 || Math.abs((game.beat[i+1][1]-game.beat[i][1])*game.beat[i+1][9]/120-snapValue) < 1e-10))) {
+                    game.selectedBeats.push(i);
+                    let j = 1;
+                    while(i-j >= 0 && game.beat[i][1] == game.beat[i-j][1]) {
+                        game.selectedBeats.push(i-j);
+                        j++;
+                    }
+            while(i+1 < game.beat.length && game.beat[i][1] == game.beat[i+1][1]) {
+                game.selectedBeats.push(i+1);
+                i++;
+            }
+                }
+            } else {
+        if(chValue == "1" || chValue == "2" ? i+1 >= game.beat.length || game.beat[i][1] != game.beat[i+1][1] : chValue == "3+" ? i+1 < game.beat.length && game.beat[i][1] == game.beat[i+1][1] : true) {
+            if(chValue == "1" ? i-1 < 0 || game.beat[i][1] != game.beat[i-1][1] : chValue == "2" ? i-1 >= 0 && game.beat[i][1] == game.beat[i-1][1] && (i-2 < 0 || game.beat[i][1] != game.beat[i-2][1]) : chValue == "3+" ? i-1 >= 0 && game.beat[i][1] == game.beat[i-1][1] : true){
+                game.selectedBeats.push(i);
+                chValue == "2" || chValue == "3+" ? game.selectedBeats.push(i-1) : ""
+                chValue == "3+" ? game.selectedBeats.push(i+1) : ""
+            }
+        }
+            }
+        }
+    }
+    game.selectedBeats = [...new Set(game.selectedBeats)];
+}
 
 // Load additional themes
 themes.push({
@@ -642,9 +704,81 @@ menu.pulseHax.menu = new newSettingsMenu([{
     }]
 }]);
 
+// Editor features
+const noteTypeLabel = ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold"];
+const noteTypeOptions = ["any", "beat", "hold"];
+const chordTypeLabel = ["edit_select_chordType_any", "edit_select_chordType_singles", "edit_select_chordType_doubles", "edit_select_chordType_triplesFwd"];
+const chordTypeOptions = ["any", "1", "2", "3+"]
+eval(`musicManager.field.draw = ` + ((musicManager.field.draw.toString().replace(`beatNSM.pages.length-1].items.push({`, `beatNSM.pages.length-1].items.push({
+        name: "edit_select_noteType",
+        hint: "edit_select_noteType_sub",
+        type: "dropdown",
+        labels: noteTypeLabel,
+        options: noteTypeOptions,
+        var: [pulseHax.editor, "noteType"]
+    }, {
+        name: "edit_select_chordType",
+        hint: "edit_select_chordType_sub",
+        type: "dropdown",
+        labels: chordTypeLabel,
+        options: chordTypeOptions,
+        var: [pulseHax.editor, "chordType"]
+    }, {
+        name: "edit_select_snapDenominator",
+        hint: "edit_select_snapDenominator_sub",
+        type: "number",
+        min: 0,
+        max: false,
+        smallChange: 1,
+        bigChange: 4,
+        var: [pulseHax.editor, "snapDenominator"]
+    }, {
+        type: "button",
+        name: "edit_select_item_selectAll",
+        hint: "edit_select_item_selectAll_sub",
+        event: () => customSelect("all")
+    }, {
+`)).replace(`mt((e,t)=>t<=e)`, `customSelect("before")`))
+        .replace(`mt((e,t)=>e<=t)`, `customSelect("after")`)
+
+);
+/*game.beatNSM.pages[game.beatNSM.pages.length-1].items.push([
+    {
+        name: "edit_select_noteType",
+        hint: "edit_select_noteType_sub",
+        type: "dropdown",
+        label: noteTypeLabel,
+        options: noteTypeOptions,
+        var: [pulseHax.editor, "noteType"]
+    }, {
+        name: "edit_select_chordType",
+        hint: "edit_select_chordType_sub",
+        type: "dropdown",
+        label: chordTypeLabel,
+        options: chordTypeOptions,
+        var: [pulseHax.editor, "chordType"]
+    }, {
+        name: "edit_select_chordType",
+        hint: "edit_select_chordType_sub",
+        type: "dropdown",
+        label: chordTypeLabel,
+        options: chordTypeOptions,
+        var: [pulseHax.editor, "chordType"]
+    }, {
+        name: "edit_select_snapDenominator",
+        hint: "edit_select_snapDenominator_sub",
+        type: "number",
+        min: 0,
+        max: false,
+        smallChange: 1,
+        bigChange: 4,
+        var: [pulseHax.editor, "snapDenominator"]
+    },
+
+])*/
+
 // Keybind stuff
 document.addEventListener("keydown", function(e){
-    console.log(`Pressed: ${e.code}\nCtrl held: ${e.ctrlKey ? "Yes" : "No"}\nShift held: ${e.shiftKey? "Yes" : "No"}`);
     if(e.shiftKey && e.ctrlKey){
         if(e.code === 'KeyC') {
           if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && menu.screen === 'lvl') {
