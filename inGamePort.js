@@ -8,6 +8,8 @@ Object.defineProperty(globalThis, 'promptRes', { get: () => {return ki},set: (va
 Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
 Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
 Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
+Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
+const promptResStr = 'ki'
 
 // Set input elements for map and custom theme import
 const body = document.body;
@@ -37,6 +39,7 @@ function fetchLocalStorage(item) {
         if(JSON.parse(localStorage.getItem("pulseHaxSettings")) === null){return {
             additionalThemes: false,
             changeTab: true,
+            customTheme: false,
             customThemeName: "",
             sfxVolume: 50,
             skipIntro: false,
@@ -45,7 +48,7 @@ function fetchLocalStorage(item) {
         }}
         let settings = {};
         const settingSel = {
-        bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab"],
+        bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab", "customTheme"],
         str: ["welcomeText", "customThemeName"],
         num: [],
         slider: ["sfxVolume"]};
@@ -97,6 +100,8 @@ pulseHax.langItems = {
     settings_changeTab_sub: "Changes the tab name and icon from Pulsus to PulseHax (restart to apply)",
     settings_sfxVolume: "SFX Volume",
     settings_sfxVolume_sub: "Sets the volume of the PulseHax sound effects (such as quick retry, scroll and quick load)",
+    settings_enableCustomTheme: "Enable Custom Theme",
+    settings_enableCustomTheme_sub: "Enables a fully customizable theme under PulseHax>Custom Theme",
 
     settings_customTheme_main: "Main",
     settings_customTheme_main_sub: "Sets the color of the main element",
@@ -213,7 +218,10 @@ const defaultTheme = {
 const defaultThemeBuffer = JSON.stringify(defaultTheme);
 
 // Load and save custom themes
-function loadCustomTheme(obj=pulseHax.customTheme) {
+function loadCustomTheme(colorSel="all", obj=pulseHax.customTheme) {
+    if(colorSel !== "all") {
+        return color(HSBtoRGB(...revertColorFormat(obj[colorSel])))
+    };
     return {
         main: color(HSBtoRGB(...revertColorFormat(obj.main))),
         text: color(HSBtoRGB(...revertColorFormat(obj.text))),
@@ -246,8 +254,16 @@ function saveCustomTheme(obj) {
         scrollbar: makeColorFormat(RGBToHSB(...themes[10].scrollbar.levels)),
         checkmark: makeColorFormat(RGBToHSB(...themes[10].checkmark.levels)),
         dropdown: makeColorFormat(RGBToHSB(...themes[10].dropdown.levels)),
+        lightTheme: themes[10].lightTheme,
     }
 };
+function getColorAfterPrompt() {
+    return {
+        color: prmpting.hue,
+        saturation: prmpting.saturation,
+        brightness: prmpting.brightness
+    }
+}
 
 // Quick play bind disable for when the search box is brought up and enable for when the search box is not
 let quickPlayEnabled = true;
@@ -275,13 +291,13 @@ function toggleSubmission() {
 // Skip intro
 eval(`musicManager.musicTime = function() {
     var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((pulseHax.settings.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
+    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
         game.songEnded = [millis(), lvlHowl[game.song].duration]
     }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
 }`)
 
 // Fix the damn toggle quick play not working on cancel
-eval(`ki = ` + ki.toString().slice(0, -1) + `
+eval(`${promptResStr} = ` + promptRes.toString().slice(0, -1) + `
     toggleQuickPlay(true);
 }
 `)
@@ -429,10 +445,13 @@ const drawMenuPagesReplace = `case"settings":c.settings();break;`;
 const sgdString = saveGameData.toString()
 const quickPlayReplace = `Bt.lvl.scrollNewLock||(Ft("rcorner",height/24*5,height/16,width/3-width/48-height/24*5,height/24)&&Ri({var:[Bt.lvl,"search"],title:"menu_lvl_search",type:"string",allowEmpty:!0,after:function(){Ht.search=[],Bt.lvl.sel=!1,Bt.lvl.searchSent=!1}})`
 
-eval(`newSettingsMenu.prototype.draw = ` + ((newSettingsMenu.prototype.draw.toString().replace(
+eval(`newSettingsMenu.prototype.draw = ` + ((((newSettingsMenu.prototype.draw.toString().replace(
     newSettingsMenuReplace, newSettingsMenuReplace+newSettingsMenuReplace))
     .replace(`else if("color"===H.type)`, `else if("settingsMenuColor" === H.type)`))
-    .replace(`rect(0,0,y,P,P)`, `rect(0, -P/2, y, P*2, P)`));
+    .replace(`rect(0,0,y,P,P)`, `rect(0, -P/2, y, P*2, P)`))
+    .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`))
+    .replace(`_(!i)`, `_(!i), e.event(e)`)
+    );
     
 const clickMenuBuffer = clickMenu.screens;
 eval(`clickMenu.screens = `+(clickMenu.screens.toString().replace(clickMenuScreensReplace, clickMenuScreensReplace+ `
@@ -477,7 +496,34 @@ case "pulseHax":
     break;`)))
 
 eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString.search(/\){/) + 2)}
-    localStorage.setItem("pulseHaxSettings", JSON.stringify(menu.pulseHax.settings)),${sgdString.slice(sgdString.search(/\){/) + 2)}`)
+    var pulseHaxSettings = {
+        additionalThemes: pulseHax.settings.additionalThemes,
+        changeTab: pulseHax.settings.changeTab,
+        customTheme: pulseHax.settings.customTheme,
+        customThemeName: pulseHax.settings.customThemeName,
+        sfxVolume: pulseHax.settings.sfxVolume,
+        skipIntro: pulseHax.settings.skipIntro,
+        welcomeText: pulseHax.settings.welcomeText,
+        welcomeWave: pulseHax.settings.welcomeWave
+    };
+    var pulseHaxCustomTheme = {
+        main: pulseHax.customTheme.main,
+        text: pulseHax.customTheme.text,
+        overlayShade: pulseHax.customTheme.overlayShade,
+        shade: pulseHax.customTheme.shade,
+        buttonDown: pulseHax.customTheme.buttonDown,
+        buttonUp: pulseHax.customTheme.buttonUp,
+        buttonText: pulseHax.customTheme.buttonText,
+        textDown: pulseHax.customTheme.textDown,
+        select: pulseHax.customTheme.select,
+        modText: pulseHax.customTheme.modText,
+        scrollbar: pulseHax.customTheme.scrollbar,
+        checkmark: pulseHax.customTheme.checkmark,
+        dropdown: pulseHax.customTheme.dropdown,
+        lightTheme: pulseHax.customTheme.lightTheme,
+    };
+    localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings)),
+    localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),${sgdString.slice(sgdString.search(/\){/) + 2)}`)
 
 eval(loadStartScreens.toString().replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
@@ -485,14 +531,6 @@ eval(loadStartScreens.toString().replace('(){', `(){
 `));
 
 eval(loadLevel.toString().replace('("game","menu")', `("game","menu"),lowLag.play("load", pulseHax.settings.sfxVolume/100)`))
-
-// Add Skip Intro
-musicManager.musicTime = function() {
-    var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((pulseHax.settings.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
-        game.songEnded = [millis(), lvlHowl[game.song].duration]
-    }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
-};
 
 // Add settings menu
 menu.pulseHax.menu = new newSettingsMenu([{
@@ -512,17 +550,34 @@ menu.pulseHax.menu = new newSettingsMenu([{
         name: "settings_skipIntro",
         type: "boolean",
         hint: "settings_skipIntro_sub",
-        var: [pulseHax.settings, "skipIntro"]
+        var: [pulseHax.settings, "skipIntro"],
+        event: function(e) {
+            game.skipIntro = pulseHax.settings.skipIntro
+            console.log(game.skipIntro);
+        }
     }, {
         name: "settings_additionalThemes",
         type: "boolean",
         hint: "settings_additionalThemes_sub",
-        var: [pulseHax.settings, "additionalThemes"]
+        var: [pulseHax.settings, "additionalThemes"],
+        event: function() {
+            menu.settings.menu.pages[0].items[2].options = menu.settings.menu.pages[0].items[2].options.filter((x) => !(x >= 11 && x <=15))
+            if(pulseHax.settings.additionalThemes) {
+                menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
+            }
+            if(!pulseHax.settings.additionalThemes && (menu.settings.themeSel >=11 || menu.settings.themeSel <=15)) {
+                menu.settings.themeSel = 0;
+        }
+    }
     }, {
         name: "settings_changeTab",
         type: "boolean",
         hint: "settings_changeTab_sub",
-        var: [pulseHax.settings, "changeTab"]
+        var: [pulseHax.settings, "changeTab"],
+        event: function() {
+                document.title = pulseHax.settings.changeTab ? "PulseHax" : "Pulsus";
+                document.querySelector('link[rel*="icon"]').href = pulseHax.settings.changeTab ? game.pulseHaxLogo : 'https://www.pulsus.cc/play/client/favicon.ico';
+    }
     }, {
         type: "slider",
         name: "settings_sfxVolume",
@@ -532,16 +587,46 @@ menu.pulseHax.menu = new newSettingsMenu([{
         step: 1,
         hint: "settings_sfxVolume_sub",
         display: ()=>lang("percentage", langSel, pulseHax.settings.sfxVolume.toFixed(0))
-    }]}, {
-        title: "settings_header_customTheme",
-        items: [{
-            type: "settingsMenuColor",
-            name: "settings_customTheme_main",
-            hint: "settings_customTheme_main_sub",
-            mode: HSB,
-            hue: [pulseHax.customTheme.main, "color"],
-            saturation: [pulseHax.customTheme.main, "saturation"],
-            brightness: [pulseHax.customTheme.main, "brightness"]
+    }, {
+        type: "boolean",
+        name: "settings_enableCustomTheme",
+        hint: "settings_enableCustomTheme_sub",
+        var: [pulseHax.settings, "customTheme"],
+        event: function() {
+            if(!pulseHax.settings.customTheme) {
+                menu.pulseHax.menu.pages.splice(1, 2)
+                menu.settings.menu.pages[0].items[2].options = menu.settings.menu.pages[0].items[2].options.filter((x) => !(x === 10))
+                menu.settings.menu.pages[0].items[2].labels = menu.settings.menu.pages[0].items[2].labels.filter((x) => x!=='theme_CUSTOM')
+                if(menu.settings.themeSel === 10) {
+                    menu.settings.themeSel = 0;
+                }
+            }
+            if(pulseHax.settings.customTheme) {
+                menu.pulseHax.menu.pages.push(...customThemeNSM)
+                menu.settings.menu.pages[0].items[2].options.push(10)
+                menu.settings.menu.pages[0].items[2].labels.splice(menu.settings.menu.pages[0].items[2].labels.indexOf('theme_gufo'), 0, 'theme_CUSTOM')
+                menu.settings.menu.pages[0].items[2].options.sort((a, b) => a-b)
+            }
+        }
+    }]}
+]);
+
+const customThemeNSM = [{
+    title: "settings_header_customTheme",
+    items: [{
+        type: "settingsMenuColor",
+        name: "settings_customTheme_main",
+        hint: "settings_customTheme_main_sub",
+        mode: HSB,
+        var: [pulseHax.customTheme, "main"],
+        hue: [pulseHax.customTheme.main, "color"],
+        saturation: [pulseHax.customTheme.main, "saturation"],
+        brightness: [pulseHax.customTheme.main, "brightness"],
+        after: () => {
+            pulseHax.customTheme.main = getColorAfterPrompt();
+            themes[10].main = loadCustomTheme('main');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_text",
@@ -549,7 +634,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.text, "color"],
         saturation: [pulseHax.customTheme.text, "saturation"],
-        brightness: [pulseHax.customTheme.text, "brightness"]
+        brightness: [pulseHax.customTheme.text, "brightness"],
+        after: function() {
+            pulseHax.customTheme.text = getColorAfterPrompt();
+            themes[10].text = loadCustomTheme('text');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_overlayShade",
@@ -557,7 +647,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.overlayShade, "color"],
         saturation: [pulseHax.customTheme.overlayShade, "saturation"],
-        brightness: [pulseHax.customTheme.overlayShade, "brightness"]
+        brightness: [pulseHax.customTheme.overlayShade, "brightness"],
+        after: function() {
+            pulseHax.customTheme.overlayShade = getColorAfterPrompt();
+            themes[10].overlayShade = loadCustomTheme('overlayShade');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_shade",
@@ -565,7 +660,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.shade, "color"],
         saturation: [pulseHax.customTheme.shade, "saturation"],
-        brightness: [pulseHax.customTheme.shade, "brightness"]
+        brightness: [pulseHax.customTheme.shade, "brightness"],
+        after: function() {
+            pulseHax.customTheme.shade = getColorAfterPrompt();
+            themes[10].shade = loadCustomTheme('shade');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_buttonDown",
@@ -573,7 +673,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.buttonDown, "color"],
         saturation: [pulseHax.customTheme.buttonDown, "saturation"],
-        brightness: [pulseHax.customTheme.buttonDown, "brightness"]
+        brightness: [pulseHax.customTheme.buttonDown, "brightness"],
+        after: function() {
+            pulseHax.customTheme.buttonDown = getColorAfterPrompt();
+            themes[10].buttonDown = loadCustomTheme('buttonDown');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_buttonUp",
@@ -581,7 +686,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.buttonUp, "color"],
         saturation: [pulseHax.customTheme.buttonUp, "saturation"],
-        brightness: [pulseHax.customTheme.buttonUp, "brightness"]
+        brightness: [pulseHax.customTheme.buttonUp, "brightness"],
+        after: function() {
+            pulseHax.customTheme.buttonUp = getColorAfterPrompt();
+            themes[10].buttonUp = loadCustomTheme('buttonUp');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_buttonText",
@@ -589,7 +699,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.buttonText, "color"],
         saturation: [pulseHax.customTheme.buttonText, "saturation"],
-        brightness: [pulseHax.customTheme.buttonText, "brightness"]
+        brightness: [pulseHax.customTheme.buttonText, "brightness"],
+        after: function() {
+            pulseHax.customTheme.buttonText = getColorAfterPrompt();
+            themes[10].buttonText = loadCustomTheme('buttonText');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_textDown",
@@ -597,7 +712,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.textDown, "color"],
         saturation: [pulseHax.customTheme.textDown, "saturation"],
-        brightness: [pulseHax.customTheme.textDown, "brightness"]
+        brightness: [pulseHax.customTheme.textDown, "brightness"],
+        after: function() {
+            pulseHax.customTheme.textDown = getColorAfterPrompt();
+            themes[10].textDown = loadCustomTheme('textDown');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_select",
@@ -605,7 +725,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.select, "color"],
         saturation: [pulseHax.customTheme.select, "saturation"],
-        brightness: [pulseHax.customTheme.select, "brightness"]
+        brightness: [pulseHax.customTheme.select, "brightness"],
+        after: function() {
+            pulseHax.customTheme.select = getColorAfterPrompt();
+            themes[10].select = loadCustomTheme('select');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_modText",
@@ -613,7 +738,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.modText, "color"],
         saturation: [pulseHax.customTheme.modText, "saturation"],
-        brightness: [pulseHax.customTheme.modText, "brightness"]
+        brightness: [pulseHax.customTheme.modText, "brightness"],
+        after: function() {
+            pulseHax.customTheme.modText = getColorAfterPrompt();
+            themes[10].modText = loadCustomTheme('modText');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_scrollbar",
@@ -621,7 +751,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.scrollbar, "color"],
         saturation: [pulseHax.customTheme.scrollbar, "saturation"],
-        brightness: [pulseHax.customTheme.scrollbar, "brightness"]
+        brightness: [pulseHax.customTheme.scrollbar, "brightness"],
+        after: function() {
+            pulseHax.customTheme.scrollbar = getColorAfterPrompt();
+            themes[10].scrollbar = loadCustomTheme('scrollbar');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_checkmark",
@@ -629,7 +764,12 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.checkmark, "color"],
         saturation: [pulseHax.customTheme.checkmark, "saturation"],
-        brightness: [pulseHax.customTheme.checkmark, "brightness"]
+        brightness: [pulseHax.customTheme.checkmark, "brightness"],
+        after: function() {
+            pulseHax.customTheme.checkmark = getColorAfterPrompt();
+            themes[10].checkmark = loadCustomTheme('checkmark');
+            saveCustomTheme();
+        }
     }, {
         type: "settingsMenuColor",
         name: "settings_customTheme_dropdown",
@@ -637,42 +777,47 @@ menu.pulseHax.menu = new newSettingsMenu([{
         mode: HSB,
         hue: [pulseHax.customTheme.dropdown, "color"],
         saturation: [pulseHax.customTheme.dropdown, "saturation"],
-        brightness: [pulseHax.customTheme.dropdown, "brightness"]
+        brightness: [pulseHax.customTheme.dropdown, "brightness"],
+        after: function() {
+            pulseHax.customTheme.dropdown = getColorAfterPrompt();
+            themes[10].dropdown = loadCustomTheme('dropdown');
+            saveCustomTheme();
+        }
     }, {
         name: "settings_customTheme_lightTheme",
         type: "boolean",
         hint: "settings_customTheme_lightTheme_sub",
-        var: [pulseHax.customTheme, "lightTheme"]
+        var: [pulseHax.customTheme, "lightTheme"],
+        event: function() {
+            pulseHax.customTheme.lightTheme = !pulseHax.customTheme.lightTheme;
+            themes[10].lightTheme = pulseHax.customTheme.lightTheme;
+            saveCustomTheme();
+        }
     }, {
         name: "settings_customTheme_name",
         type: "string",
         hint: "settings_customTheme_name_sub",
         var: [pulseHax.settings, "customThemeName"],
-        allowEmpty: true
-    }
-    /* {
-        type: "button",
-        name: "settings_customTheme_applyChanges",
-        event: function() {
-            themes[10] = loadCustomTheme();
+        allowEmpty: true,
+        after: function() {
             langs[langSel].theme_CUSTOM = pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName;
-            },
-        hint: "settings_customTheme_applyChanges_sub"
-        }*/
-    , {
+        }
+    }, {
         type: "button",
         name: "settings_customTheme_reset",
         event: function() {
-            pulseHax.customTheme = JSON.parse(defaultThemeBuffer)
+            pulseHax.customTheme = JSON.parse(defaultThemeBuffer);
             localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHax.customTheme))
+            const sections = ['main', 'text', 'overlayShade', 'shade', 'buttonDown', 'buttonUp', 'buttonText', 'textDown', 'select', 'modText', 'scrollbar', 'checkmark', 'dropdown']
             for(let i=0; i<13; i++) {
-                const sections = ['main', 'text', 'overlayShade', 'shade', 'buttonDown', 'buttonUp', 'buttonText', 'textDown', 'select', 'modText', 'scrollbar', 'checkmark', 'dropdown']
                 menu.pulseHax.menu.pages[1].items[i].hue[0] = pulseHax.customTheme[sections[i]];
                 menu.pulseHax.menu.pages[1].items[i].saturation[0] = pulseHax.customTheme[sections[i]];
                 menu.pulseHax.menu.pages[1].items[i].brightness[0] = pulseHax.customTheme[sections[i]];
-            }
+            };
+            menu.pulseHax.menu.pages[1].items[13].var[0].lightTheme = false;
+            menu.pulseHax.menu.pages[1].items[14].var[0].customThemeName = "Custom Theme";
             themes[10] = loadCustomTheme();
-            langs[langSel].theme_CUSTOM = pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName;
+            langs[langSel].theme_CUSTOM = "Custom Theme"
         },
         hint: "settings_customTheme_reset_sub"
     }]}, {
@@ -702,26 +847,22 @@ menu.pulseHax.menu = new newSettingsMenu([{
         },
         hint: "settings_customTheme_import_sub"
     }]
-}]);
+}];
 
 // Editor features
-const noteTypeLabel = ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold"];
-const noteTypeOptions = ["any", "beat", "hold"];
-const chordTypeLabel = ["edit_select_chordType_any", "edit_select_chordType_singles", "edit_select_chordType_doubles", "edit_select_chordType_triplesFwd"];
-const chordTypeOptions = ["any", "1", "2", "3+"]
 eval(`musicManager.field.draw = ` + ((musicManager.field.draw.toString().replace(`beatNSM.pages.length-1].items.push({`, `beatNSM.pages.length-1].items.push({
         name: "edit_select_noteType",
         hint: "edit_select_noteType_sub",
         type: "dropdown",
-        labels: noteTypeLabel,
-        options: noteTypeOptions,
+        labels: ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold"],
+        options: ["any", "beat", "hold"],
         var: [pulseHax.editor, "noteType"]
     }, {
         name: "edit_select_chordType",
         hint: "edit_select_chordType_sub",
         type: "dropdown",
-        labels: chordTypeLabel,
-        options: chordTypeOptions,
+        labels: ["edit_select_chordType_any", "edit_select_chordType_singles", "edit_select_chordType_doubles", "edit_select_chordType_triplesFwd"],
+        options: ["any", "1", "2", "3+"],
         var: [pulseHax.editor, "chordType"]
     }, {
         name: "edit_select_snapDenominator",
@@ -742,46 +883,12 @@ eval(`musicManager.field.draw = ` + ((musicManager.field.draw.toString().replace
         .replace(`mt((e,t)=>e<=t)`, `customSelect("after")`)
 
 );
-/*game.beatNSM.pages[game.beatNSM.pages.length-1].items.push([
-    {
-        name: "edit_select_noteType",
-        hint: "edit_select_noteType_sub",
-        type: "dropdown",
-        label: noteTypeLabel,
-        options: noteTypeOptions,
-        var: [pulseHax.editor, "noteType"]
-    }, {
-        name: "edit_select_chordType",
-        hint: "edit_select_chordType_sub",
-        type: "dropdown",
-        label: chordTypeLabel,
-        options: chordTypeOptions,
-        var: [pulseHax.editor, "chordType"]
-    }, {
-        name: "edit_select_chordType",
-        hint: "edit_select_chordType_sub",
-        type: "dropdown",
-        label: chordTypeLabel,
-        options: chordTypeOptions,
-        var: [pulseHax.editor, "chordType"]
-    }, {
-        name: "edit_select_snapDenominator",
-        hint: "edit_select_snapDenominator_sub",
-        type: "number",
-        min: 0,
-        max: false,
-        smallChange: 1,
-        bigChange: 4,
-        var: [pulseHax.editor, "snapDenominator"]
-    },
-
-])*/
 
 // Keybind stuff
 document.addEventListener("keydown", function(e){
-    if(e.shiftKey && e.ctrlKey){
+    if(e.shiftKey && e.ctrlKey && menu.screen === 'lvl'){
         if(e.code === 'KeyC') {
-          if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2 && menu.screen === 'lvl') {
+          if(getLevelDownloadState(clevels[menu.lvl.sel]) == 2) {
             if(confirm(`Copy ${newGrabLevelMeta(clevels[menu.lvl.sel], "id").title}?`))
               if(typeof clevels[menu.lvl.sel] == "number"){
                 copyLevel(clevels[menu.lvl.sel]);
@@ -794,7 +901,7 @@ document.addEventListener("keydown", function(e){
                 levels.search = levels.saved;
               }
             }
-        } else if(e.code === 'KeyE' && clevels[menu.lvl.sel]?.local && menu.screen === 'lvl') {
+        } else if(e.code === 'KeyE' && clevels[menu.lvl.sel]?.local) {
           if(!confirm(`Export ${clevels[menu.lvl.sel].title}.pls?`)) { return; }
           let zip = new JSZip();
           let response = clevels[menu.lvl.sel];
@@ -807,7 +914,7 @@ document.addEventListener("keydown", function(e){
             a.click();
             URL.revokeObjectURL(url);
           });
-        } else if(e.code === 'KeyI' && menu.screen !== 'menu') {
+        } else if(e.code === 'KeyI') {
           if(!confirm("Import Maps?")) { return; }
           lvlImport.click();
         }
@@ -848,16 +955,10 @@ document.addEventListener("keydown", function(e){
             }
         }
     }
-    if(e.code === "Tab"){
-        e.preventDefault();
-        if(!1 === game.edit && 1 === game.disMode && screen === "game"){
-          game.retry = true;
-          game.quickRetry = true;
-          lowLag.play("retry",pulseHax.settings.sfxVolume/100);
-        }
-      }
-      if(e.altKey){
-        e.preventDefault();
+    if(e.code === "Tab" && game.edit === false && game.disMode === 1 && screen === "game"){
+        game.retry = true;
+        game.quickRetry = true;
+        lowLag.play("retry",pulseHax.settings.sfxVolume/100);
       }
 });
 
@@ -867,11 +968,6 @@ lvlImport.addEventListener("change", () => {
         if(/\.pls$/.exec(file.name)){
             zip.loadAsync(file)
             .then(function(zip) {
-            console.log(file)
-            console.log("file")
-            console.log(Object.keys(zip.files)[0])
-            console.log("keys")
-            console.log(Object.keys(zip.files))
             zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
                 let vtest = JSON.parse(fileData);
                 if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
@@ -889,18 +985,11 @@ lvlImport.addEventListener("change", () => {
 
 customThemeImport.addEventListener("change", () => {
     let zip = new JSZip();
-    console.log(customThemeImport.files[0].name)
         if(/\.pls$/.exec(customThemeImport.files[0].name)){
             zip.loadAsync(customThemeImport.files[0])
             .then(function(zip) {
-            console.log(customThemeImport.files[0])
-            console.log("file")
-            console.log(Object.keys(zip.files)[0])
-            console.log("keys")
-            console.log(Object.keys(zip.files))
             zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
                 let vtest = JSON.parse(fileData);
-                console.log(vtest)
                 if(!(Object.hasOwn(vtest,"beat"))) {
                 themes[10].main.levels = vtest.main.levels;
                 themes[10].text.levels = vtest.text.levels;
@@ -915,8 +1004,19 @@ customThemeImport.addEventListener("change", () => {
                 themes[10].scrollbar.levels = vtest.scrollbar.levels;
                 themes[10].checkmark.levels = vtest.checkmark.levels;
                 themes[10].dropdown.levels = vtest.dropdown.levels;
-                themes[10].lightTheme = vtest.lightTheme
-                saveCustomTheme()
+                themes[10].lightTheme = vtest.lightTheme;
+                pulseHax.settings.customThemeName = customThemeImport.files[0].name.split('.pls')[0];
+                langs[langSel].theme_CUSTOM = pulseHax.settings.customThemeName;
+                saveCustomTheme();
+                const sections = ['main', 'text', 'overlayShade', 'shade', 'buttonDown', 'buttonUp', 'buttonText', 'textDown', 'select', 'modText', 'scrollbar', 'checkmark', 'dropdown']
+                for(let i=0; i<13; i++) {
+                    let format = makeColorFormat(RGBToHSB(...vtest[sections[i]].levels))
+                    menu.pulseHax.menu.pages[1].items[i].hue[0] = format;
+                    menu.pulseHax.menu.pages[1].items[i].saturation[0] = format;
+                    menu.pulseHax.menu.pages[1].items[i].brightness[0] = format;
+                };
+                menu.pulseHax.menu.pages[1].items[13].var[0].lightTheme = vtest.lightTheme;
+                menu.pulseHax.menu.pages[1].items[14].var[0].customThemeName = pulseHax.settings.customThemeName;
                 } else {
                 console.error("File Import Error: Invalid File");
                 }
@@ -927,38 +1027,25 @@ customThemeImport.addEventListener("change", () => {
         }
 })
 
-// Startup and settings saving shenanigans
-setInterval(() => {
-    if(menu.screen==="pulseHax"){
-        themes[10] = loadCustomTheme();
-        if(pulseHax.settings.additionalThemes && !menu.settings.menu.pages[0].items[2].options.includes(11)) {
-            menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
-        };
-        if(!pulseHax.settings.additionalThemes && menu.settings.menu.pages[0].items[2].options.includes(11)) {
-            menu.settings.menu.pages[0].items[2].options.splice(menu.settings.menu.pages[0].items[2].options.indexOf(11), 5)
-        };
-        if(pulseHax.settings.changeTab) {
-            document.title = "PulseHax";
-            document.querySelector('link[rel*="icon"]').href = game.pulseHaxLogo;
-        };
-        if(!pulseHax.settings.changeTab) {
-            document.title = "Pulsus";
-            document.querySelector('link[rel*="icon"]').href = 'https://www.pulsus.cc/play/client/favicon.ico';
-        };
-    }
-    if(menu.screen==="settings"){
-        langs[langSel].theme_CUSTOM = pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName;
-    }
-    }, 300)
+// Startup
 setTimeout(() => {
     loadStartScreens();
     themes[10] = loadCustomTheme();
-    menu.settings.menu.pages[0].items[2].options.push(10);
-    menu.settings.menu.pages[0].items[2].labels.push('theme_CUSTOM');
-    if(pulseHax.settings.additionalThemes && !menu.settings.menu.pages[0].items[2].options.includes(11)) {
-        menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
+    if(pulseHax.settings.customTheme){
+       menu.settings.menu.pages[0].items[2].options.push(10);
+       menu.settings.menu.pages[0].items[2].labels.push('theme_CUSTOM')
+    }
+    if(!menu.settings.menu.pages[0].items[2].labels.includes('theme_gufo')) {
         menu.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
     };
+    menu.settings.menu.pages[0].items[2].options = menu.settings.menu.pages[0].items[2].options.filter((x) => !(x >= 11 && x <=15))
+    if(pulseHax.settings.additionalThemes) {
+        menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
+    };
+    if(!pulseHax.settings.additionalThemes && (menu.settings.themeSel >=11 || menu.settings.themeSel <=15)) {
+        menu.settings.themeSel = 0;
+    };
+    game.skipIntro = pulseHax.settings.skipIntro;
     document.title = pulseHax.settings.changeTab ? "PulseHax" : "Pulsus";
     document.querySelector('link[rel*="icon"]').href = pulseHax.settings.changeTab ? game.pulseHaxLogo : 'https://www.pulsus.cc/play/client/favicon.ico';
 }, 300);
