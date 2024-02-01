@@ -1,20 +1,3 @@
-document.forms.startup.onchange = (e) => {
-  const checked = e.target;
-  let ID = e.target.id;
-  if (checked.checked) {
-    userSettings[ID] = true;
-    chrome.storage.local.set({Settings:userSettings}, function() {
-      console.log(`${ID} is set to ${userSettings[ID]}`);
-    });
-  } else {
-    userSettings[ID] = false;
-    chrome.storage.local.set({Settings:userSettings}, function() {
-      console.log(`${ID} is set to ${userSettings[ID]}`);
-    });
-  }
-  return false;
-}
-
 document.getElementById("darkmodetoggle").addEventListener("click", function(e) {
   /*
   This code is my code. There is much code out there that is like it but this one is mine. It may not be the best code
@@ -33,16 +16,12 @@ document.getElementById("darkmodetoggle").addEventListener("click", function(e) 
 
 function refresh() {
   execute("response = {game, user, screen, lvlSel: clevels[menu.lvl.sel], onlineLvlSel: newGrabLevelMeta(clevels[menu.lvl.sel], 'id')}", function(response) {
-    refreshSkip(response);
     refreshSelected(response);
     refreshExport(response);
     refreshCopy(response);
   })
 }refresh();
 
-function refreshSkip(response){
-  document.getElementById("skipIntro").checked = response.response.game.skipIntro;
-}
 // function refreshMute(response){
 //   document.getElementById("disableMenuMusic").checked = response.response.game.disableMenuMusic;
 // }
@@ -66,10 +45,6 @@ function refreshSelected(response) {
     document.getElementById("SelectedId").value = title.length + id.length + 3 <= 25 ? `${title} (${id})` : `${title.substr(0,21-id.length)}... (${id})`;
   }
 }
-
-document.getElementById("skipIntro").addEventListener("click", function() {
-  execute(`game.skipIntro = ${document.getElementById("skipIntro").checked}`);
-});
 
 // Feature removed in V 0.6.1 due to gamma 0.28.12 including a menu music volume option
 
@@ -140,47 +115,3 @@ document.getElementById("lvlImportAction").addEventListener("change",function() 
     }
   }
 })
-document.getElementById("customTheme").addEventListener("click", function(e) {
-  if(e.target.checked) {
-    execute(`
-      langs[langSel].theme_CUSTOM = "Custom theme";
-      menu.settings.menu.pages[1].items[1].options.push(10);
-      menu.settings.menu.pages[1].items[1].labels.push('theme_CUSTOM');
-      menu.settings.themeSel = 10;
-    `);
-  } else {
-    execute(`
-      menu.settings.menu.pages[1].items[1].options = menu.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return v != 10});
-      menu.settings.menu.pages[1].items[1].labels = menu.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return v != 'theme_CUSTOM'});
-      menu.settings.themeSel = menu.settings.themeSel == 10 ? 0 : menu.settings.themeSel;
-    `)
-  }
-  userSettings.customTheme = e.target.checked;
-  chrome.storage.local.set({Settings:userSettings}, function() {
-    console.log(`Custom Theme is set to ${userSettings.customTheme}`);
-  });
-});
-document.getElementById("additionalThemes").addEventListener("click", function(e) {
-  if(e.target.checked) {
-    execute(`
-      langs[langSel].theme_gufo = "Gufo's theme";
-      langs[langSel].theme_floopy = "Floopy's theme";
-      langs[langSel].theme_shia = "Shia's theme";
-      langs[langSel].theme_lilyyy = "Lilyyy's theme";
-      langs[langSel].theme_axye = "Axye's theme";
-      menu.settings.menu.pages[1].items[1].options.push(11, 12, 13, 14, 15);
-      menu.settings.menu.pages[1].items[1].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
-    `);
-  } else {
-    execute(`
-      menu.settings.menu.pages[1].items[1].options = menu.settings.menu.pages[1].items[1].options.filter((v,i,a) => {return ![11,12,13,14,15].includes(v)});
-      menu.settings.menu.pages[1].items[1].labels = menu.settings.menu.pages[1].items[1].labels.filter((v,i,a) => {return !['theme_gufo','theme_floopy','theme_shia','theme_lilyyy','theme_axye'].includes(v)});
-      menu.settings.themeSel = [11,12,13,14,15].includes(menu.settings.themeSel) ? 0 : menu.settings.themeSel;
-    `)
-  }
-  let ID = e.target.id;
-  userSettings[ID] = e.target.checked;
-  chrome.storage.local.set({Settings:userSettings}, function() {
-  console.log(`${ID} is set to ${userSettings[ID]}`);
-  });
-});

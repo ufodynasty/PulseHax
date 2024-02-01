@@ -11,47 +11,6 @@ s1.onload = function() {
 (document.head || document.documentElement).append(s, s1);
 window.addEventListener("SetupComplete", function() {
   chrome.storage.local.get({Settings:{wave:false,disableMenuMusic:false},CustomTheme:{},plugins:[]}, function(result) {
-    if(result.Settings.wave) {
-      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      welcome.wave = 1;
-      `}));
-    }
-    // if(result.Settings.disableMenuMusic) {
-    //   window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-    //   game.disableMenuMusic = true;
-    //   `}));
-    // }
-    if(result.Settings.customTheme) {
-      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-      langs.en.theme_CUSTOM = "Custom theme";
-      menu.settings.menu.pages[0].items[2].options.push(10);
-      menu.settings.menu.pages[0].items[2].labels.push('theme_CUSTOM');
-      `}));
-    }
-    if(result.Settings.additionalThemes) {
-      window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-        langs[langSel].theme_gufo = "Gufo's theme";
-        langs[langSel].theme_floopy = "Floopy's theme";
-        langs[langSel].theme_shia = "Shia's theme";
-        langs[langSel].theme_lilyyy = "Lilyyy's theme";
-        langs[langSel].theme_axye = "Axye's theme";
-        if(!menu.settings.menu.pages[0].items[2].options.includes(11)) {
-        menu.settings.menu.pages[0].items[2].options.push(11, 12, 13, 14, 15);
-        menu.settings.menu.pages[0].items[2].labels.push('theme_gufo', 'theme_floopy', 'theme_shia', 'theme_lilyyy', 'theme_axye');
-        }
-      `}));
-    }
-    Object.keys(result.CustomTheme).forEach(function (key){
-      if(key != "active" && key != "lightTheme") {
-        window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          themes[10].${key} = color(${result.CustomTheme[key].substr(1).match(/../g).map(x=>+`0x${x}`)});
-        `}));
-      } else if (key == "lightTheme") {
-        window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: `
-          themes[10].${key} = ${result.CustomTheme[key]};
-        `}));
-      }
-    });
     for(i of result.plugins) {
       window.dispatchEvent(new CustomEvent("InjectedScriptEval", {detail: i.script}));
       i.active = true;
