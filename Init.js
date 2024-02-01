@@ -32,12 +32,6 @@ completeSetup()
 }`);
 
 window.addEventListener("SetupComplete", function() {
-  musicManager.musicTime = function() {
-    var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0][1] : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
-        game.songEnded = [millis(), lvlHowl[game.song].duration]
-    }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
-  }
 
 // Feature removed in V 0.6.1 due to gamma 0.28.12 including a menu music volume option
 
@@ -72,98 +66,6 @@ window.addEventListener("SetupComplete", function() {
   //   textSize(ts);
   //   for (var i = 0; i < cred.length; i++) fitText(cred[i], width / 2, height / 2 + ts * (-cred.length / 2 + i) + ts / 2 + ts / 1.5 / 2, width - 2 * bufferSize, ts / (i % 2 == 0 ? 1 : 1.5), i % 2 == 0 && "bold")
   // }
-
-  themes.push({
-    main: color(35, 50, 60),
-    text: color(255, 255, 255),
-    overlayShade: color(32, 45, 54),
-    shade: color(20, 35, 45),
-    buttonDown: color(240, 240, 240),
-    buttonUp: color(255, 255, 255),
-    buttonText: color(0, 0, 0),
-    textDown: color(200, 200, 200),
-    select: color(60, 50, 35),
-    modText: color(255, 175, 0),
-    scrollbar: color(255, 255, 255),
-    lightTheme: !1,
-    checkmark: color(0, 175, 255),
-    dropdown: color(225, 225, 225)
-  },{
-    main: color(0, 0, 0),
-    text: color(64, 255, 64),
-    overlayShade: color(16, 16, 16),
-    shade: color(0, 0, 0),
-    buttonDown: color(32, 32, 32),
-    buttonUp: color(48, 48, 48),
-    buttonText: color(64, 255, 64),
-    textDown: color(32, 128, 32),
-    select: color(30, 30, 30),
-    modText: color(75, 175, 255),
-    scrollbar: color(75, 175, 255),
-    lightTheme: 1,
-    checkmark: color(75, 175, 255),
-    dropdown: color(24, 24, 24)
-  },{
-    main: color(20, 20, 20),
-    text: color(255, 255, 255),
-    overlayShade: color(10, 10, 10),
-    shade: color(20, 20, 20),
-    buttonDown: color(50, 50, 50),
-    buttonUp: color(75, 75, 75),
-    buttonText: color(255, 255, 255),
-    textDown: color(150, 150, 150),
-    select: color(75, 75, 75),
-    modText: color(225, 225, 225),
-    scrollbar: color(225, 225, 225),
-    lightTheme: 1,
-    checkmark: color(225, 225, 225),
-    dropdown: color(50, 50, 50)
-    },{
-    main: color(10, 10, 10),
-    text: color(255, 255, 255),
-    overlayShade: color(10, 10, 10),
-    shade: color(20, 20, 20),
-    buttonDown: color(50, 50, 50),
-    buttonUp: color(75, 75, 75),
-    buttonText: color(255, 255, 255),
-    textDown: color(150, 150, 150),
-    select: color(75, 75, 75),
-    modText: color(180, 100, 255),
-    scrollbar: color(180, 100, 255),
-    lightTheme: 1,
-    checkmark: color(180, 100, 255),
-    dropdown: color(180, 100, 255)
-    },{
-    main: color(238, 153, 255),
-    text: color(255, 255, 255),
-    overlayShade: color(204, 140, 217),
-    shade: color(190, 130, 201),
-    buttonDown: color(251, 299, 255),
-    buttonUp: color(246, 204, 255),
-    buttonText: color(143, 41, 163),
-    textDown: color(246, 204, 255),
-    select: color(219, 150, 233),
-    modText: color(246, 204, 255),
-    scrollbar: color(255, 255, 255),
-    lightTheme: 1,
-    checkmark: color(225, 77, 255),
-    dropdown: color(234, 128, 255)
-    },{
-    main: color(31, 12, 21),
-    text: color(244, 234, 179),
-    overlayShade: color(83, 34, 42),
-    shade: color(63, 24, 32),
-    buttonDown: color(238, 134, 89),
-    buttonUp: color(255, 213, 122),
-    buttonText: color(31, 12, 21),
-    textDown: color(225, 186, 132),
-    select: color(143, 60, 45),
-    modText: color(255, 51, 51),
-    scrollbar: color(255, 213, 122),
-    lightTheme: 1,
-    checkmark: color(127, 41, 71),
-    dropdown: color(226, 120, 75)
-    });
 });
 
 
