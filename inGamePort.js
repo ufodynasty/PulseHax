@@ -9,7 +9,41 @@ Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) =
 Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
 Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
 Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
-const promptResStr = 'ki'
+
+// Stringified parameters
+const NSMReplace = newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().indexOf('else if("color"==='), newSettingsMenu.prototype.draw.toString().lastIndexOf('alphas})}}),pop()}')+'alphas})}}),pop()}'.length);
+const strParamsLength = {
+    menu: 2,
+}
+const strParams = {
+    clickMenu: clickMenu.name,
+    loadStartScreens: loadStartScreens.name,
+    newSettingsMenu: newSettingsMenu.name,
+    saveGameData: saveGameData.name,
+    hitbox: hitbox.name,
+    promptRes: promptRes.name,
+    prmpt: prmpt.name,
+    loadLevel: loadLevel.name,
+    popupMessage: popupMessage.name,
+    prmpting: 'g',
+
+    NSMtype: newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-2] === "=" ?
+    newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-1] :
+    newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-1] + newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().search(`.type`)-2]
+}
+
+// Search string parameters
+const searchParams = {
+    clickMenu: {
+        screensReplace: `settings.menu.click();`,
+        quickPlayReplace: clickMenu.screens.toString().slice(clickMenu.screens.toString().indexOf(`.lvl.scrollNewLock`)-strParamsLength.menu, clickMenu.screens.toString().indexOf('lvl.searchSent=!1}})')+'lvl.searchSent=!1}})'.length)
+    },
+    newSettingsMenu: {
+        replace: NSMReplace,
+        y: NSMReplace[NSMReplace.indexOf('var')+4],
+        P: NSMReplace.slice(NSMReplace.indexOf('var'))[NSMReplace.slice(NSMReplace.indexOf('var')).indexOf(',')+1]
+    }
+}
 
 // Set input elements for map and custom theme import
 const body = document.body;
@@ -32,6 +66,25 @@ body.appendChild(customThemeImport);
 const JSZipScript = document.createElement('script');
 JSZipScript.src = game.pulseHaxLogo.replace("assets/icon.ico", "jszip.min.js");
 (document.head || document.documentElement).appendChild(JSZipScript);
+
+// Fallback theme
+const defaultTheme = {
+    main: makeColorFormat(RGBToHSB(35, 50, 60, 255)),
+    text: makeColorFormat(RGBToHSB(255, 255, 255, 255)),
+    overlayShade: makeColorFormat(RGBToHSB(32, 45, 54, 255)),
+    shade: makeColorFormat(RGBToHSB(20, 35, 45, 255)),
+    buttonDown: makeColorFormat(RGBToHSB(240, 240, 240, 255)),
+    buttonUp: makeColorFormat(RGBToHSB(255, 255, 255, 255)),
+    buttonText: makeColorFormat(RGBToHSB(0, 0, 0, 255)),
+    textDown: makeColorFormat(RGBToHSB(200, 200, 200, 255)),
+    select: makeColorFormat(RGBToHSB(60, 50, 35, 255)),
+    modText: makeColorFormat(RGBToHSB(255, 175, 0, 255)),
+    scrollbar: makeColorFormat(RGBToHSB(255, 255, 255, 255)),
+    checkmark: makeColorFormat(RGBToHSB(0, 175, 255, 255)),
+    dropdown: makeColorFormat(RGBToHSB(225, 225, 225, 255)),
+    lightTheme: false
+};
+const defaultThemeBuffer = JSON.stringify(defaultTheme);
 
 // Fetch PulseHax's local storage values then set them in the PulseHax object
 function fetchLocalStorage(item) {
@@ -61,6 +114,15 @@ function fetchLocalStorage(item) {
         }; return settings
     } else if(item==="customTheme") {
         return JSON.parse(localStorage.getItem("pulseHaxCustomTheme")) || defaultTheme
+    } else if(item==="colorBank") {
+        return JSON.parse(localStorage.getItem("pulseHaxColorBank")) || {
+            cb1: makeColorFormat([0, 0, 0]),
+            cb2: makeColorFormat([0, 0, 0]),
+            cb3: makeColorFormat([0, 0, 0]),
+            cb4: makeColorFormat([0, 0, 0]),
+            cb5: makeColorFormat([0, 0, 0]),
+            cb6: makeColorFormat([0, 0, 0])
+        }
     } return console.error("Invalid Input")
 };
 const pulseHax = {
@@ -69,13 +131,23 @@ const pulseHax = {
     editor: {
         noteType: "any",
         chordType: "any",
-        snapDenominator: 0
-    }
+        snapDenominator: 0,
+        customSnap: 4,
+        playbackRate: 1,
+        beatBuffer: null,
+        colorBankSel: 'cb1'
+    },
+    colorBank: fetchLocalStorage("colorBank"),
 };
 
 // Set language elements for PulseHax
 pulseHax.langItems = {
     pulseHax_title: "PulseHax",
+    ERR_noSelect: "No Notes Selected!",
+    ERR_multiSelect: "Too Many Notes Selected!",
+    ERR_noBuffer: "No Notes Buffered!",
+
+    edit_hint_keybinds_array: ["I'm Too Lazy To Do Something About This", "No Keybinds For You!!!!!!", "", "", "Loser"],
 
     theme_CUSTOM: pulseHax.settings.customThemeName === "" ? "Custom Theme" : pulseHax.settings.customThemeName,
     theme_gufo: "Gufo's theme",
@@ -145,6 +217,44 @@ pulseHax.langItems = {
     submission_on: "Turned score submission on!",
     submission_off: "Turned score submission off!",
 
+    edit_edit: "Edit",
+    edit_edit_customSnap: "Snap Denominator",
+    edit_edit_customSnap_sub: "Sets the timeline snap to 1 / (your input)",
+    edit_edit_customPlaybackRate: "Playback Rate",
+    edit_edit_customPlaybackRate_sub: "Sets the song playback rate",
+    edit_selectionManip: "Selection",
+    edit_selectionManip_createPracticeDiff: "Create Practice Diff",
+    edit_selectionManip_createPracticeDiff_sub: "Trims the map to only have the selected notes",
+    edit_buffers: "Buffers",
+    edit_buffers_bufferSelectedBeats: "Buffer Selected Beats",
+    edit_buffers_bufferSelectedBeats_sub: "Copies the selected notes globally so you can paste it in other maps",
+    edit_buffers_pasteBufferedBeats: "Paste Buffered Beats",
+    edit_buffers_pasteBufferedBeats_sub: "Pastes the globally copied notes in",
+    
+    edit_colorBank: "Color Bank",
+    edit_colorBank_1: "Color Bank 1",
+    edit_colorBank_1_sub: "Changes the value for the first color bank color",
+    edit_colorBank_2: "Color Bank 2",
+    edit_colorBank_2_sub: "Changes the value for the second color bank color",
+    edit_colorBank_3: "Color Bank 3",
+    edit_colorBank_3_sub: "Changes the value for the third color bank color",
+    edit_colorBank_4: "Color Bank 4",
+    edit_colorBank_4_sub: "Changes the value for the fourth color bank color",
+    edit_colorBank_5: "Color Bank 5",
+    edit_colorBank_5_sub: "Changes the value for the fifth color bank color",
+    edit_colorBank_6: "Color Bank 6",
+    edit_colorBank_6_sub: "Changes the value for the sixth color bank color",
+    edit_colorBank_sel: "Color Bank",
+    edit_colorBank_sel_sub: "Sets the color bank to apply changes to/from the editor",
+    edit_colorBank_fetchCurrent: "Fetch Current Color",
+    edit_colorBank_fetchCurrent_sub: "Applies the note color currently being used to the selected color bank",
+    edit_colorBank_setCurrent: "Set Current Color",
+    edit_colorBank_setCurrent_sub: "Applies the selected color bank's color to the note color",
+    edit_colorBank_fetchSelected: "Fetch Selected Color",
+    edit_colorBank_fetchSelected_sub: "Applies the selected note's color to the selected color bank",
+    edit_colorBank_setSelected: "Set Selected Color",
+    edit_colorBank_setSelected_sub: "Applies the selected color bank's color to the selected note(s)",
+
     edit_select_item_selectAll: "Select All",
     edit_select_item_selectAll_sub: "Selects all notes in the map (using the above filters)",
     edit_select_noteType: "Note Type",
@@ -165,6 +275,10 @@ langs[langSel] = {...langs[langSel], ...pulseHax.langItems};
 // Add the PulseHax menu to the nav menu
 menu.pulseHax = pulseHax;
 menu.nav.push(['pulseHax_title', 'pulseHax', 'pulseHax']);
+
+function switchValue(value) {
+    value = !value;
+}
 
 // Defining a bunch of color related conversion functions to use for custom themes
 function HSBtoRGB(h, s, b) {
@@ -198,24 +312,6 @@ function makeColorFormat(hsba=[0, 0, 0, 0]) {
 function revertColorFormat(obj) {
     return [obj.color, obj.saturation, obj.brightness, obj.alpha === undefined ? 255 : obj.alpha]
 };
-// Fallback theme
-const defaultTheme = {
-        main: makeColorFormat(RGBToHSB(35, 50, 60, 255)),
-        text: makeColorFormat(RGBToHSB(255, 255, 255, 255)),
-        overlayShade: makeColorFormat(RGBToHSB(32, 45, 54, 255)),
-        shade: makeColorFormat(RGBToHSB(20, 35, 45, 255)),
-        buttonDown: makeColorFormat(RGBToHSB(240, 240, 240, 255)),
-        buttonUp: makeColorFormat(RGBToHSB(255, 255, 255, 255)),
-        buttonText: makeColorFormat(RGBToHSB(0, 0, 0, 255)),
-        textDown: makeColorFormat(RGBToHSB(200, 200, 200, 255)),
-        select: makeColorFormat(RGBToHSB(60, 50, 35, 255)),
-        modText: makeColorFormat(RGBToHSB(255, 175, 0, 255)),
-        scrollbar: makeColorFormat(RGBToHSB(255, 255, 255, 255)),
-        checkmark: makeColorFormat(RGBToHSB(0, 175, 255, 255)),
-        dropdown: makeColorFormat(RGBToHSB(225, 225, 225, 255)),
-        lightTheme: false
-};
-const defaultThemeBuffer = JSON.stringify(defaultTheme);
 
 // Load and save custom themes
 function loadCustomTheme(colorSel="all", obj=pulseHax.customTheme) {
@@ -273,9 +369,11 @@ function toggleQuickPlay(bool) {
 
 // Score submission toggle
 let submission = true;
+const resultsScreenE = musicManager.resultsScreen.toString()[musicManager.resultsScreen.toString().indexOf('var')+4]
+const resultsScreenOn = musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('var'), musicManager.resultsScreen.toString().indexOf('endPos')+6)
 const toggleSearch = {
-    on: `var e=""!==T.uuid&&!Tt.failed&&!Tt.mods.auto&&H(Rt[Bt.lvl.sel],"id").ranked&&!Tt.replay.on&&0===Tt.mods.startPos&&0===Tt.mods.endPos`,
-    off: "var e = false"
+    on: resultsScreenOn,
+    off: `var ${resultsScreenE} = false`
 }
 function toggleSubmission() {
     let v = submission ? "on" : "off"
@@ -297,13 +395,27 @@ eval(`musicManager.musicTime = function() {
 }`)
 
 // Fix the damn toggle quick play not working on cancel
-eval(`${promptResStr} = ` + promptRes.toString().slice(0, -1) + `
+eval(`${strParams.promptRes} = ` + promptRes.toString().slice(0, -1) + `
     toggleQuickPlay(true);
 }
 `)
+// PULSUS IS CRINGE
+function refreshColorBank(bank) {
+    bankNum = parseInt(bank.slice(2))
+    game.extrasNSM.pages[3].items[bankNum-1].hue[0] = pulseHax.colorBank[bank];
+    game.extrasNSM.pages[3].items[bankNum-1].saturation[0] = pulseHax.colorBank[bank];
+    game.extrasNSM.pages[3].items[bankNum-1].brightness[0] = pulseHax.colorBank[bank];
+}
 
 // Custom selection function
 function customSelect(e) {
+    if(game.selectedBeats.length === 0 && (e === "after" || e === "before")) {
+        popupMessage({
+            type: "error",
+            message: "ERR_noSelect"
+        })
+        return;
+    }
     game.beat.sort((a, b) => a[1] - b[1])
     let lb = e === "before" || e === "all" ? 0 : game.selectedBeats[0]
     let ub = e === "after" || e === "all" ? game.beat.length : game.selectedBeats[game.selectedBeats.length - 1]+1
@@ -439,25 +551,21 @@ themes.push({
 });
 
 // Set replace search parameters for function refactoring
-const newSettingsMenuReplace = `else if("color"===H.type){void 0===H.highlights&&(H.highlights=[0]),push(),translate(2*l,2.5*l/2);var y=(o-6*l)/3,P=u-2.5*l,P=(colorMode(H.mode),H.multiple?fill(te(H.hues[0]),te(H.saturations[0]),te(H.brightnesses[0]),void 0===H.alphas?255:te(H.alphas[0])):fill(te(H.hue),te(H.saturation),te(H.brightness),void 0===H.alpha?255:te(H.alpha)),stroke(255),strokeWeight(l),rect(0,0,y,P,P),H.multiple&&(fill($.text),textAlign(CENTER,CENTER),noStroke(),Dt(Pt("item_mixedValues",xt),y/2,P/2,y-2*l,P/1.5)),pop(),push(),(o-6*l)/3*2),O=u-1.5*l;translate(P/2,O/2),translate((o-6*l)/3+4*l,1.5*l/2),Ft("rcenter",zt.get().x,zt.get().y,P,O)?H.highlights[0]+=At(1,H.highlights[0],.2):H.highlights[0]+=At(0,H.highlights[0],.2),scale(1+.025*H.highlights[0]),rectMode(CENTER),noStroke(),0<H.highlights[0].toFixed(3)&&(push(),translate(d*lerp(0,1,H.highlights[0]),g*lerp(0,1,H.highlights[0])),fill(0,100),rect(0,0,P,O),pop()),noStroke(),fill(lerpColor($.buttonDown,$.buttonUp,H.highlights[0])),rect(0,0,P,O),fill($.buttonText),Dt(Pt("settings_editColor",xt),0,0,P-2*l,O/1.5),this.clickEvents.push({hitbox:Ft("rcenter",zt.get().x,zt.get().y,P,O),item:H,event:function(e){e.highlights[0]/=5,Ni({hue:e.hue,saturation:e.saturation,brightness:e.brightness,alpha:e.alpha,loops:e.loops,smooth:e.smooth,mode:HSB,title:e.name,multiple:e.multiple,hues:e.hues,saturations:e.saturations,brightnesses:e.brightnesses,alphas:e.alphas})}}),pop()}`;
-const clickMenuScreensReplace = `else if("settings"===Bt.screen)Bt.settings.menu.click();`;
-const drawMenuPagesReplace = `case"settings":c.settings();break;`;
 const sgdString = saveGameData.toString()
-const quickPlayReplace = `Bt.lvl.scrollNewLock||(Ft("rcorner",height/24*5,height/16,width/3-width/48-height/24*5,height/24)&&Ri({var:[Bt.lvl,"search"],title:"menu_lvl_search",type:"string",allowEmpty:!0,after:function(){Ht.search=[],Bt.lvl.sel=!1,Bt.lvl.searchSent=!1}})`
 
-eval(`newSettingsMenu.prototype.draw = ` + ((((newSettingsMenu.prototype.draw.toString().replace(
-    newSettingsMenuReplace, newSettingsMenuReplace+newSettingsMenuReplace))
-    .replace(`else if("color"===H.type)`, `else if("settingsMenuColor" === H.type)`))
-    .replace(`rect(0,0,y,P,P)`, `rect(0, -P/2, y, P*2, P)`))
+eval(`newSettingsMenu.prototype.draw = ` + (((((newSettingsMenu.prototype.draw.toString().replace(
+    searchParams.newSettingsMenu.replace, searchParams.newSettingsMenu.replace + searchParams.newSettingsMenu.replace))
+    .replace(`else if("color"===${strParams.NSMtype}.type)`, `else if("settingsMenuColor" === ${strParams.NSMtype}.type)`))
+    .replace(`rect(0,0,${searchParams.newSettingsMenu.y},${searchParams.newSettingsMenu.P},${searchParams.newSettingsMenu.P})`, `rect(0, -${searchParams.newSettingsMenu.P}/2, ${searchParams.newSettingsMenu.y}, ${searchParams.newSettingsMenu.P}*2, ${searchParams.newSettingsMenu.P})`))
     .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`))
-    .replace(`_(!i)`, `_(!i), e.event(e)`)
+    .replace(newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5), `${newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5)}, e.event(e)`))
     );
     
 const clickMenuBuffer = clickMenu.screens;
-eval(`clickMenu.screens = `+(clickMenu.screens.toString().replace(clickMenuScreensReplace, clickMenuScreensReplace+ `
+eval(`clickMenu.screens = `+ ((clickMenu.screens.toString().replace(searchParams.clickMenu.screensReplace, searchParams.clickMenu.screensReplace + `
 else if ("pulseHax" === menu.screen)
     menu.pulseHax.menu.click();`))
-    .replace(quickPlayReplace, `
+    .replace(searchParams.clickMenu.quickPlayReplace, `
     menu.lvl.scrollNewLock || (hitbox("rcorner", height / 24 * 5, height / 16, width / 3 - width / 48 - height / 24 * 5, height / 24) && (prmpt({
         var: [menu.lvl, "search"],
         title: "menu_lvl_search",
@@ -470,7 +578,11 @@ else if ("pulseHax" === menu.screen)
             toggleQuickPlay(true)
         }
     }), toggleQuickPlay(false))
-    `));
+    `)
+    .replace(`.editorMode){`, `.editorMode){
+        if (hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
+            game.extrasNSM.click()
+        }`)));
 clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;
 clickMenu.screens.accountSignedOut = clickMenuBuffer.accountSignedOut;
 clickMenu.screens.click = clickMenuBuffer.click;
@@ -490,7 +602,7 @@ nav.pulseHax = function() {
     })
 }
 
-JSON.stringify(eval(`nav.pages = `+ nav.pages.toString().replace(drawMenuPagesReplace, drawMenuPagesReplace+`
+JSON.stringify(eval(`nav.pages = `+ nav.pages.toString().replace(`settings();break;`, `settings();break;
 case "pulseHax":
     nav.pulseHax();
     break;`)))
@@ -522,8 +634,11 @@ eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString
         dropdown: pulseHax.customTheme.dropdown,
         lightTheme: pulseHax.customTheme.lightTheme,
     };
+    var pulseHaxColorBank = pulseHax.colorBank;
     localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings)),
-    localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),${sgdString.slice(sgdString.search(/\){/) + 2)}`)
+    localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),
+    localStorage.setItem("pulseHaxColorBank", JSON.stringify(pulseHaxColorBank)),
+    ${sgdString.slice(sgdString.search(/\){/) + 2)}`)
 
 eval(loadStartScreens.toString().replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
@@ -531,6 +646,280 @@ eval(loadStartScreens.toString().replace('(){', `(){
 `));
 
 eval(loadLevel.toString().replace('("game","menu")', `("game","menu"),lowLag.play("load", pulseHax.settings.sfxVolume/100)`))
+
+// Editor extras menu
+game.extrasNSM = new newSettingsMenu([{
+    title: "edit_selectionManip",
+    items: [{
+        name: "edit_select_noteType",
+        hint: "edit_select_noteType_sub",
+        type: "dropdown",
+        labels: ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold"],
+        options: ["any", "beat", "hold"],
+        var: [pulseHax.editor, "noteType"]
+    }, {
+        name: "edit_select_chordType",
+        hint: "edit_select_chordType_sub",
+        type: "dropdown",
+        labels: ["edit_select_chordType_any", "edit_select_chordType_singles", "edit_select_chordType_doubles", "edit_select_chordType_triplesFwd"],
+        options: ["any", "1", "2", "3+"],
+        var: [pulseHax.editor, "chordType"]
+    }, {
+        name: "edit_select_snapDenominator",
+        hint: "edit_select_snapDenominator_sub",
+        type: "number",
+        min: 0,
+        max: false,
+        smallChange: 1,
+        bigChange: 4,
+        var: [pulseHax.editor, "snapDenominator"]
+    }, {
+        type: "button",
+        name: "edit_select_item_selectAll",
+        hint: "edit_select_item_selectAll_sub",
+        event: () => customSelect("all")
+    }, {
+        type: "button",
+        name: "edit_select_item_selectBefore",
+        hint: "edit_select_item_selectBefore_sub",
+        event: ()=>customSelect("before")
+    }, {
+        type: "button",
+        name: "edit_select_item_selectAfter",
+        hint: "edit_select_item_selectAfter_sub",
+        event: ()=>customSelect("after")
+    }, {
+        name: "edit_selectionManip_createPracticeDiff",
+        hint: "edit_selectionManip_createPracticeDiff_sub",
+        type: "button",
+        event: function() {
+            if(game.selectedBeats.length === 0) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_noSelect"
+                });
+                return;
+            }
+            game.songOffset = Math.round(game.songOffset + (game.beat[Math.min(...game.selectedBeats)][1] * 500))
+            game.time = game.beat[Math.min(...game.selectedBeats)][1]
+            game.beat = game.beat.slice(Math.min(...game.selectedBeats),Math.max(...game.selectedBeats)+1)
+            game.selectedBeats = []
+            for (beat of game.beat) {
+                beat[1] -= game.time
+            }
+            for (section of game.sections) {
+                section.time -= game.time
+            }
+            for (effect of game.effects) {
+                effect.time -= game.time
+            }
+            game.time = 0
+        }
+    }]
+}, {
+    title: "edit_edit",
+    items: [{
+        name: "edit_edit_customSnap",
+        hint: "edit_edit_customSnap_sub",
+        type: "number",
+        min: 0,
+        max: false,
+        smallChange: 1,
+        bigChange: 4,
+        var: [pulseHax.editor, "customSnap"],
+        display: ()=>pulseHax.editor.customSnap,
+        update: function() {
+            if(pulseHax.editor.customSnap === 0) {pulseHax.editor.customSnap = 1}
+            game.snap = 1/pulseHax.editor.customSnap;
+        }
+    }, {
+        name: "edit_edit_customPlaybackRate",
+        hint: "edit_edit_customPlaybackRate_sub",
+        type: "number",
+        min: 0,
+        max: false,
+        smallChange: .1,
+        bigChange: .5,
+        var: [pulseHax.editor, "customPlaybackRate"],
+        display: ()=>pulseHax.editor.customPlaybackRate,
+        update: function() {
+            if(pulseHax.editor.customPlaybackRate === 0) {pulseHax.editor.customPlaybackRate = 1}
+            game.playbackRate = pulseHax.editor.customPlaybackRate;
+        }
+    }]
+}, {
+    title: "edit_buffers",
+    items: [{
+        name: "edit_buffers_bufferSelectedBeats",
+        hint: "edit_buffers_bufferSelectedBeats_sub",
+        type: "button",
+        event: function() {
+            if(game.selectedBeats.length===0) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_noSelect"
+                });
+                return;
+            }
+            pulseHax.editor.beatBuffer = game.selectedBeats.map((x) => game.beat[x])
+        }
+    }, {
+        name: "edit_buffers_pasteBufferedBeats",
+        hint: "edit_buffers_pasteBufferedBeats_sub",
+        type: "button",
+        event: function() {
+            if(pulseHax.editor.beatBuffer === null) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_noBuffer"
+                });
+                return;
+            }
+            JSON.parse(`${JSON.stringify(pulseHax.editor.beatBuffer).replace(/\\/g, '\\\\').replace(/\`/g, '\\\`')}`).forEach((beat) => {
+                beat[1]+=game.time
+                game.beat.push(beat);
+              })
+        }
+    }]
+}, {
+    title: "edit_colorBank",
+    items: [{
+        type: "color",
+        name: "edit_colorBank_1",
+        hint: "edit_colorBank_1_sub",
+        mode: HSB,
+        var: [pulseHax.colorBank, "cb1"],
+        hue: [pulseHax.colorBank.cb1, "color"],
+        saturation: [pulseHax.colorBank.cb1, "saturation"],
+        brightness: [pulseHax.colorBank.cb1, "brightness"],
+        after: () => {
+            pulseHax.colorBank.cb1 = getColorAfterPrompt();
+        }
+    }, {
+        type: "color",
+        name: "edit_colorBank_2",
+        hint: "edit_colorBank_2_sub",
+        mode: HSB,
+        var: [pulseHax.colorBank, "cb2"],
+        hue: [pulseHax.colorBank.cb2, "color"],
+        saturation: [pulseHax.colorBank.cb2, "saturation"],
+        brightness: [pulseHax.colorBank.cb2, "brightness"],
+        after: () => {
+            pulseHax.colorBank.cb2 = getColorAfterPrompt();
+        }
+    }, {
+        type: "color",
+        name: "edit_colorBank_3",
+        hint: "edit_colorBank_3_sub",
+        mode: HSB,
+        var: [pulseHax.colorBank, "cb3"],
+        hue: [pulseHax.colorBank.cb3, "color"],
+        saturation: [pulseHax.colorBank.cb3, "saturation"],
+        brightness: [pulseHax.colorBank.cb3, "brightness"],
+        after: () => {
+            pulseHax.colorBank.cb3 = getColorAfterPrompt();
+        }
+    }, {
+        type: "color",
+        name: "edit_colorBank_4",
+        hint: "edit_colorBank_4_sub",
+        mode: HSB,
+        var: [pulseHax.colorBank, "cb4"],
+        hue: [pulseHax.colorBank.cb4, "color"],
+        saturation: [pulseHax.colorBank.cb4, "saturation"],
+        brightness: [pulseHax.colorBank.cb4, "brightness"],
+        after: () => {
+            pulseHax.colorBank.cb4 = getColorAfterPrompt();
+        }
+    }, {
+        type: "color",
+        name: "edit_colorBank_5",
+        hint: "edit_colorBank_5_sub",
+        mode: HSB,
+        var: [pulseHax.colorBank, "cb5"],
+        hue: [pulseHax.colorBank.cb5, "color"],
+        saturation: [pulseHax.colorBank.cb5, "saturation"],
+        brightness: [pulseHax.colorBank.cb5, "brightness"],
+        after: () => {
+            pulseHax.colorBank.cb5 = getColorAfterPrompt();
+        }
+    }, {
+        type: "color",
+        name: "edit_colorBank_6",
+        hint: "edit_colorBank_6_sub",
+        mode: HSB,
+        var: [pulseHax.colorBank, "cb6"],
+        hue: [pulseHax.colorBank.cb6, "color"],
+        saturation: [pulseHax.colorBank.cb6, "saturation"],
+        brightness: [pulseHax.colorBank.cb6, "brightness"],
+        after: () => {
+            pulseHax.colorBank.cb6 = getColorAfterPrompt();
+        }
+    }, {
+        name: "edit_colorBank_sel",
+        hint: "edit_colorBank_sel_sub",
+        type: "dropdown",
+        labels: ["edit_colorBank_1", "edit_colorBank_2", "edit_colorBank_3", "edit_colorBank_4", "edit_colorBank_5", "edit_colorBank_6"],
+        options: ['cb1', 'cb2', 'cb3', 'cb4', 'cb5', 'cb6'],
+        var: [pulseHax.editor, "colorBankSel"]
+    }, {
+        name: "edit_colorBank_fetchCurrent",
+        hint: "edit_colorBank_fetchCurrent_sub",
+        type: "button",
+        event: function() {
+            pulseHax.colorBank[pulseHax.editor.colorBankSel] = makeColorFormat([game.beatColor, game.beatSaturation, game.beatBrightness])
+            refreshColorBank(pulseHax.editor.colorBankSel);
+        }
+    }, {
+        name: "edit_colorBank_setCurrent",
+        hint: "edit_colorBank_setCurrent_sub",
+        type: "button",
+        event: function() {
+            game.beatColor = pulseHax.colorBank[pulseHax.editor.colorBankSel].color;
+            game.beatSaturation = pulseHax.colorBank[pulseHax.editor.colorBankSel].saturation;
+            game.beatBrightness = pulseHax.colorBank[pulseHax.editor.colorBankSel].brightness;
+        }
+    }, {
+        name: "edit_colorBank_fetchSelected",
+        hint: "edit_colorBank_fetchSelected_sub",
+        type: "button",
+        event: function() {
+            if(game.selectedBeats.length === 0) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_noSelect"
+                });
+                return;
+            } else if(game.selectedBeats.length > 1) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_multiSelect"
+                });
+                return;
+            }
+            pulseHax.colorBank[pulseHax.editor.colorBankSel] = makeColorFormat([game.beat[game.selectedBeats[0]][11], game.beat[game.selectedBeats[0]][16], game.beat[game.selectedBeats[0]][17]]);
+            refreshColorBank(pulseHax.editor.colorBankSel);
+        }
+    }, {
+        name: "edit_colorBank_setSelected",
+        hint: "edit_colorBank_setSelected_sub",
+        type: "button",
+        event: function() {
+            if(game.selectedBeats.length === 0) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_noSelect"
+                });
+                return;
+            }
+            for(i of game.selectedBeats) {
+                game.beat[i][11] = pulseHax.colorBank[pulseHax.editor.colorBankSel].color;
+                game.beat[i][16] = pulseHax.colorBank[pulseHax.editor.colorBankSel].saturation;
+                game.beat[i][17] = pulseHax.colorBank[pulseHax.editor.colorBankSel].brightness;
+            }
+        }
+    }]
+}, ])
 
 // Add settings menu
 menu.pulseHax.menu = new newSettingsMenu([{
@@ -551,7 +940,7 @@ menu.pulseHax.menu = new newSettingsMenu([{
         type: "boolean",
         hint: "settings_skipIntro_sub",
         var: [pulseHax.settings, "skipIntro"],
-        event: function(e) {
+        event: function() {
             game.skipIntro = pulseHax.settings.skipIntro
             console.log(game.skipIntro);
         }
@@ -850,38 +1239,22 @@ const customThemeNSM = [{
 }];
 
 // Editor features
-eval(`musicManager.field.draw = ` + ((musicManager.field.draw.toString().replace(`beatNSM.pages.length-1].items.push({`, `beatNSM.pages.length-1].items.push({
-        name: "edit_select_noteType",
-        hint: "edit_select_noteType_sub",
-        type: "dropdown",
-        labels: ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold"],
-        options: ["any", "beat", "hold"],
-        var: [pulseHax.editor, "noteType"]
-    }, {
-        name: "edit_select_chordType",
-        hint: "edit_select_chordType_sub",
-        type: "dropdown",
-        labels: ["edit_select_chordType_any", "edit_select_chordType_singles", "edit_select_chordType_doubles", "edit_select_chordType_triplesFwd"],
-        options: ["any", "1", "2", "3+"],
-        var: [pulseHax.editor, "chordType"]
-    }, {
-        name: "edit_select_snapDenominator",
-        hint: "edit_select_snapDenominator_sub",
-        type: "number",
-        min: 0,
-        max: false,
-        smallChange: 1,
-        bigChange: 4,
-        var: [pulseHax.editor, "snapDenominator"]
-    }, {
-        type: "button",
-        name: "edit_select_item_selectAll",
-        hint: "edit_select_item_selectAll_sub",
-        event: () => customSelect("all")
-    }, {
-`)).replace(`mt((e,t)=>t<=e)`, `customSelect("before")`))
-        .replace(`mt((e,t)=>e<=t)`, `customSelect("after")`)
-
+eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`128})}`, `128})} if(game.editorMode === 0) {
+            if (fill(0, 0, 0, 200),
+                rectMode(CORNER),
+                noStroke(),
+                rect(-width/16, height / 16 * 8/3, width / 4 + width / 16, height / 16 * 31/3, (width < height ? width : height) / 32)) {
+            game.extrasNSM.draw({
+            x: 0,
+            y: height / 16 * 8/3,
+            width: width / 4,
+            height: height / 16 * 31/3,
+            stacked: !0,
+            maxBarHeight: height / 16 / 1.25,
+            buffer: height / 16 * 12 / 128
+            })
+        }
+    }`)
 );
 
 // Keybind stuff
