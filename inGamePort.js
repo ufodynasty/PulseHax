@@ -218,7 +218,7 @@ pulseHax.langItems = {
     submission_off: "Turned score submission off!",
 
     edit_edit: "Edit",
-    edit_edit_customSnap: "Snap Denominator",
+    edit_edit_customSnap: "Custom Snap Denominator",
     edit_edit_customSnap_sub: "Sets the timeline snap to 1 / (your input)",
     edit_edit_customPlaybackRate: "Playback Rate",
     edit_edit_customPlaybackRate_sub: "Sets the song playback rate",
