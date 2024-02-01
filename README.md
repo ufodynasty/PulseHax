@@ -19,6 +19,17 @@ PulseHax is a Pulsus extension that adds a lot of QoL features not yet added to 
 - **Globally copy notes**, effects and bookmarks so you can paste them in other maps;
 - **Store your signature colors** in our **Color Banks** instead of having to make a Notepad file for your own palette!
 
+### Keybinds
+
+`Ctrl + Shift + C` - Copy Map
+`Ctrl + Shift + E` - Export Map
+`Ctrl + Shift + I` - Import Map
+`F1` - Select Random Map
+`F2` - Toggle Score Submission On/Off
+`Arrow Up/Down` - Scroll Through Maps List
+`Enter` - Download/Play Map
+`Tab` - Quick Retry
+
 ## Running PulseHax
 
 ### Through GitHub
