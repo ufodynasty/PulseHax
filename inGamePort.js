@@ -148,7 +148,7 @@ function fetchLocalStorage(item) {
         const settingSel = {
         bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab", "customTheme", "scoreSubmission", "obfuscateScores"],
         str: ["welcomeText", "customThemeName"],
-        num: [],
+        num: ["preferredFS"],
         slider: ["sfxVolume"],
         themeSel: ["themeSelLocal"],
         obfuscateDropdown: ["obfuscateType"]};
@@ -267,6 +267,8 @@ pulseHax.langItems = {
     settings_skipIntro_sub: "Skips long empty sections at the start of maps",
     settings_additionalThemes: "Additional Themes",
     settings_additionalThemes_sub: `Adds extra themes to the "Theme" dropdown in Universal Settings (restart to apply changes)`,
+    settings_preferredFS: "FS Preference",
+    settings_preferredFS_sub: "Automatically tries to fine-tune the Foresight mod so it matches your preference (Set to 0 to disable)",
     settings_changeTab: "Change Tab Name and Icon",
     settings_changeTab_sub: "Changes the tab name and icon from Pulsus to PulseHax (restart to apply)",
     settings_sfxVolume: "SFX Volume",
@@ -813,6 +815,7 @@ eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString
         customThemeName: pulseHax.settings.customThemeName,
         obfuscateScores: pulseHax.settings.obfuscateScores,
         obfuscateType: pulseHax.settings.obfuscateType,
+        preferredFS: pulseHax.settings.preferredFS,
         scoreSubmission: pulseHax.settings.scoreSubmission,
         sfxVolume: pulseHax.settings.sfxVolume,
         skipIntro: pulseHax.settings.skipIntro,
@@ -853,7 +856,16 @@ eval(loadStartScreens.toString().replace('(){', `(){
     langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;
 `));
 
-eval(loadLevel.toString().replace('("game","menu")', `("game","menu"),lowLag.play("load", pulseHax.settings.sfxVolume/100), pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`))
+eval((loadLevel.toString().replace('("game","menu")', `("game","menu"),
+lowLag.play("load", pulseHax.settings.sfxVolume/100),
+pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`))
+    .replace(`{`, `{if(!game.edit && pulseHax.settings.preferredFS!==0){
+        foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
+        foresight = Math.round(pulseHax.settings.preferredFS / foresight * 100) / 100;
+        if(foresight<.25) {foresight = .25}
+        if(foresight>2) {foresight = 2}
+        game.mods.foresight = foresight;
+    };`))
 
 // Editor extras menu
 game.extrasNSM = new newSettingsMenu([{
@@ -1174,6 +1186,18 @@ menu.pulseHax.menu = new newSettingsMenu([{
                 menu.settings.themeSel = 0;
         }
     }
+    }, {
+        name: "settings_preferredFS",
+        type: "number",
+        min: 0,
+        max: 10,
+        smallChange: .01,
+        bigChange: .1,
+        hint: "settings_preferredFS_sub",
+        var: [pulseHax.settings, "preferredFS"],
+        display: () => {
+            return pulseHax.settings.preferredFS+"FS"
+        }
     }, {
         name: "settings_changeTab",
         type: "boolean",
