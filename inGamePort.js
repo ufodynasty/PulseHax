@@ -1692,7 +1692,6 @@ customThemeImport.addEventListener("change", () => {
 setTimeout(() => {
     loadStartScreens();
     themes[10] = loadCustomTheme();
-    eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString().replace(toggleSearch[!pulseHax.settings.scoreSubmission ? "on" : "off"], toggleSearch[pulseHax.settings.scoreSubmission ? "on" : "off"]))
     refreshSkin();
     if(pulseHax.settings.customTheme){
         menu.pulseHax.menu.pages.push(...customThemeNSM)
