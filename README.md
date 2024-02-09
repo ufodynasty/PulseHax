@@ -25,7 +25,6 @@ PulseHax is a Pulsus extension that adds a lot of QoL features not yet added to 
 - `Ctrl + Shift + E` - Export Map
 - `Ctrl + Shift + I` - Import Map
 - `F1` - Select Random Map
-- `F2` - Toggle Score Submission On/Off
 - `Arrow Up/Down` - Scroll Through Maps List
 - `Enter` - Download/Play Map
 - `Tab` - Quick Retry
