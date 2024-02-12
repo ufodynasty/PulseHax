@@ -1,6 +1,8 @@
 window.addEventListener("SetupComplete", function() {
 Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
 Object.defineProperty(globalThis, 'ease', { get: () => {return At},set: (val) => {At = val}});
+Object.defineProperty(globalThis, 'editorAction', { get: () => {return kn},set: (val) => {kn = val}});
+Object.defineProperty(globalThis, 'executePlay', { get: () => {return en},set: (val) => {en = val}});
 Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
 Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
 Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
@@ -11,7 +13,8 @@ Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (va
 Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
 Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
 
-eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`0,width/1024`, `pulseHax.skin.currentSkin.URPos === "bottom" ? -height/16 + height - height/64*2 : 0,width/1024`))
+eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+    .replace(`0,width/1024`, `pulseHax.skin.currentSkin.URPos === "bottom" ? -height/16 + height - height/64*2 : 0,width/1024`))
 // Stringified parameters
 const NSMReplace = newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().indexOf('else if("color"==='), newSettingsMenu.prototype.draw.toString().lastIndexOf('alphas})}}),pop()}')+'alphas})}}),pop()}'.length);
 const strParamsLength = {
@@ -149,9 +152,10 @@ function fetchLocalStorage(item) {
         bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab", "customTheme"],
         str: ["welcomeText", "customThemeName"],
         num: ["preferredFS"],
-        slider: ["sfxVolume"]};
-        const defaultValues = [false, "", 0, 50]
-        const types = ["bool", "str", "num", "slider"];
+        slider: ["sfxVolume"],
+        themeSel: ["themeSelLocal"]};
+        const defaultValues = [false, "", 0, 50, menu.settings.themeSel]
+        const types = ["bool", "str", "num", "slider", "themeSel"];
         const phStorage = JSON.parse(localStorage.getItem("pulseHaxSettings"))
         for(let type in types) {
             for(let setting in settingSel[types[type]]) {
@@ -190,8 +194,6 @@ function fetchLocalStorage(item) {
                 }
             }
         }
-    } else if(item==="startupWarning") {
-        return JSON.parse(localStorage.getItem("startupWarning")) ?? true
     } return console.error("Invalid Input")
 };
 const pulseHax = {
@@ -208,7 +210,6 @@ const pulseHax = {
     },
     colorBank: fetchLocalStorage("colorBank"),
     skin: fetchLocalStorage("skin"),
-    startupWarning: fetchLocalStorage("startupWarning"),
     dropdownClosed: false,
     isObfuscated: false,
     rankedSel: null
@@ -225,13 +226,6 @@ Object.keys(langs[langSel]).filter((e) => {return e.includes("pulseHax_skin")}).
 pulseHax.skinsStartup = {
     skinLabels: Object.keys(langs[langSel]).filter((e) => {return e.includes("pulseHax_skin")}),
     skinOptions: skinOptionBuffer
-}
-
-function openWarning() {
-    console.log(pulseHax.startupWarning)
-    if(!pulseHax.startupWarning) { return; }
-    open("https://github.com/ufodynasty/PulseHax/wiki/Ban-Warning");
-    localStorage.setItem("startupWarning", "false")
 }
 
 // Set language elements for PulseHax
@@ -487,7 +481,13 @@ function toggleQuickPlay(bool) {
 
 // Score submission toggle
 const resultsScreenE = musicManager.resultsScreen.toString()[musicManager.resultsScreen.toString().indexOf('var')+4]
-eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString().replace(musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('var'), musicManager.resultsScreen.toString().indexOf('endPos')+6), `var ${resultsScreenE}=false`))
+eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString()
+    .replace(musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('var'), musicManager.resultsScreen.toString().indexOf('endPos')+6), `var ${resultsScreenE}=false`))
+
+eval(editorAction.toString()
+    .replace(`&&(.25`, `&&((.25`)
+    .slice(0, -1) + `, pulseHax.editor.customSnap = Math.round(1000 * (10**(game.snap.toString().split(".")[1]?.length || 0) / (game.snap * 10**(game.snap.toString().split(".")[1]?.length || 0)))) / 1000)}`
+);
 
 // Skip intro
 eval(`musicManager.musicTime = function() {
@@ -498,9 +498,8 @@ eval(`musicManager.musicTime = function() {
 }`)
 
 // Fix the damn toggle quick play not working on cancel
-eval(`${strParams.promptRes} = ` + promptRes.toString().slice(0, -1) + `
-    toggleQuickPlay(true);
-}
+eval(`${strParams.promptRes} = ` + promptRes.toString()
+    .slice(0, -1) + `,toggleQuickPlay(true);}
 `)
 // PULSUS IS CRINGE
 function refreshColorBank(bank) {
@@ -593,9 +592,14 @@ const fieldSearch = musicManager.field.draw.toString().slice(musicManager.field.
 const resultsSearch = musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('textSize(i)'), musicManager.resultsScreen.toString().indexOf(`*3)`)+3);
 
 // Add The UI
-eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`))
-eval(`musicManager.resultsScreen = ` + musicManager.resultsScreen.toString().replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`))
-eval(`musicManager.field.draw = `+musicManager.field.draw.toString().replace(fieldSearch, fieldSearch+ `
+eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+    .replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
+);
+eval(`musicManager.resultsScreen = ` + musicManager.resultsScreen.toString()
+    .replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
+);
+eval(`musicManager.field.draw = `+musicManager.field.draw.toString()
+    .replace(fieldSearch, fieldSearch+ `
 !pulseHaxCustomScore(customScoreFunc)?.none && (
     resultFunction = pulseHaxCustomScore(customScoreFunc),
     textAlign(RIGHT, TOP),
@@ -605,7 +609,8 @@ eval(`musicManager.field.draw = `+musicManager.field.draw.toString().replace(fie
     text(customScoreDis.toFixed(resultFunction.fix)+resultFunction.unit, width - height / 32, height / 32 * 2.5)
     ),`)
 );
-eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString().replace(resultsSearch, `textSize(i);
+eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString()
+    .replace(resultsSearch, `textSize(i);
 let offset = false;
 !pulseHaxCustomScore(customScoreFunc)?.none && (
     resultFunction = pulseHaxCustomScore(customScoreFunc),
@@ -618,7 +623,8 @@ text(lang("game_score", langSel, t), width / 2, offset ? 1.25 * i : 0),
 text(lang("game_accuracy", langSel, game.acc.toFixed(3)), width / 2, 1.25 * i * (offset ? 2 : 1)),
 text(lang("game_maxCombo", langSel, game.comboMax), width / 2, 1.25 * i * (offset ? 3 : 2)),
 v = ${resultsScreenE} ? game.submittedScore ? lang("game_pulse", langSel, game.submittedScore.performance.toFixed(2)) : lang("loading", langSel) : "";
-text(v, width / 2, 1.25 * i * (offset ? 4 : 3))` ));
+text(v, width / 2, 1.25 * i * (offset ? 4 : 3))` )
+);
 
 // Load additional themes
 themes.push({
@@ -716,11 +722,11 @@ themes.push({
 // Set replace search parameters for function refactoring
 const sgdString = saveGameData.toString()
 
-eval(`newSettingsMenu.prototype.draw = ` + (((((((newSettingsMenu.prototype.draw.toString().replace(
-    searchParams.newSettingsMenu.replace, searchParams.newSettingsMenu.replace + searchParams.newSettingsMenu.replace))
-    .replace(`else if("color"===${strParams.NSMtype}.type)`, `else if("settingsMenuColor" === ${strParams.NSMtype}.type)`))
-    .replace(`rect(0,0,${searchParams.newSettingsMenu.y},${searchParams.newSettingsMenu.P},${searchParams.newSettingsMenu.P})`, `rect(0, -${searchParams.newSettingsMenu.P}/2, ${searchParams.newSettingsMenu.y}, ${searchParams.newSettingsMenu.P}*2, ${searchParams.newSettingsMenu.P})`))
-    .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`))
+eval(`newSettingsMenu.prototype.draw = ` + newSettingsMenu.prototype.draw.toString()
+    .replace(searchParams.newSettingsMenu.replace, searchParams.newSettingsMenu.replace + searchParams.newSettingsMenu.replace)
+    .replace(`else if("color"===${strParams.NSMtype}.type)`, `else if("settingsMenuColor" === ${strParams.NSMtype}.type)`)
+    .replace(`rect(0,0,${searchParams.newSettingsMenu.y},${searchParams.newSettingsMenu.P},${searchParams.newSettingsMenu.P})`, `rect(0, -${searchParams.newSettingsMenu.P}/2, ${searchParams.newSettingsMenu.y}, ${searchParams.newSettingsMenu.P}*2, ${searchParams.newSettingsMenu.P})`)
+    .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`)
     .replace(`open}})`, `open; if(!pulseHax.dropdownClosed) {
         let interval = setInterval(() => {
             if(e.animation.height === 0) {
@@ -728,15 +734,17 @@ eval(`newSettingsMenu.prototype.draw = ` + (((((((newSettingsMenu.prototype.draw
                 e.after?.();
             }
         }, 500)
-    }; console.log(pulseHax.dropdownClosed); pulseHax.dropdownClosed = false}})`))
-    .replace(`${strParams.NSMtype}.animation.height=0,`, `(${strParams.NSMtype}.animation.height = 0, pulseHax.dropdownClosed = false),`))
-    .replace(newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5), `${newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5)}, e.phBool ? e.event(e) : ''`))
+    }; console.log(pulseHax.dropdownClosed); pulseHax.dropdownClosed = false}})`)
+    .replace(`${strParams.NSMtype}.animation.height=0,`, `(${strParams.NSMtype}.animation.height = 0, pulseHax.dropdownClosed = false),`)
+    .replace(newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5), `${newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5)}, e.phBool ? e.event(e) : ''`)
 );
     
 const clickMenuBuffer = clickMenu.screens;
-eval(`clickMenu.screens = `+ (((clickMenu.screens.toString().replace(searchParams.clickMenu.screensReplace, searchParams.clickMenu.screensReplace + `
+eval(`clickMenu.screens = `+ clickMenu.screens.toString()
+    .replace(searchParams.clickMenu.screensReplace, searchParams.clickMenu.screensReplace + `
 else if ("pulseHax" === menu.screen)
-    menu.pulseHax.menu.click();`))
+    menu.pulseHax.menu.click();
+    `)
     .replace(searchParams.clickMenu.quickPlayReplace, `
     menu.lvl.scrollNewLock || (hitbox("rcorner", height / 24 * 5, height / 16, width / 3 - width / 48 - height / 24 * 5, height / 24) && (prmpt({
         var: [menu.lvl, "search"],
@@ -754,10 +762,9 @@ else if ("pulseHax" === menu.screen)
     .replace(`.editorMode){`, `.editorMode){
         if (hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
             game.extrasNSM.click()
-        }`)))
-    .replace(`${clickMenu.name}.screens.logo(),`, `(clickMenu.screens.logo(),
-    openWarning("https://github.com/ufodynasty/PulseHax/wiki/Ban-Warning")),
-`));
+    }`)
+    .replace(".time),", ".time, pulseHax.editor.customPlaybackRate = game.playbackRate),")
+);
 clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;
 clickMenu.screens.accountSignedOut = clickMenuBuffer.accountSignedOut;
 clickMenu.screens.click = clickMenuBuffer.click;
@@ -777,7 +784,8 @@ nav.pulseHax = function() {
     })
 }
 
-JSON.stringify(eval(`nav.pages = `+ nav.pages.toString().replace(`settings();break;`, `settings();break;
+JSON.stringify(eval(`nav.pages = `+ nav.pages.toString()
+    .replace(`settings();break;`, `settings();break;
 case "pulseHax":
     nav.pulseHax();
     break;`)))
@@ -824,21 +832,24 @@ eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString
     localStorage.setItem("pulseHaxSkin", JSON.stringify(pulseHaxSkin))
     ${sgdString.slice(sgdString.search(/\){/) + 2)}`)
 
-eval(loadStartScreens.toString().replace('(){', `(){
+eval(loadStartScreens.toString()
+    .replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
     langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;
 `));
 
-eval((loadLevel.toString().replace('("game","menu")', `("game","menu"),
+eval(loadLevel.toString()
+    .replace('("game","menu")', `("game","menu"),
 lowLag.play("load", pulseHax.settings.sfxVolume/100),
-pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`))
+pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`)
     .replace(`{`, `{if(!game.edit && pulseHax.settings.preferredFS!==0){
         foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
         foresight = Math.round(pulseHax.settings.preferredFS / foresight * 100) / 100;
         if(foresight<.25) {foresight = .25}
         if(foresight>2) {foresight = 2}
         game.mods.foresight = foresight;
-    };`))
+    };`)
+);
 
 // Editor extras menu
 game.extrasNSM = new newSettingsMenu([{
@@ -916,13 +927,14 @@ game.extrasNSM = new newSettingsMenu([{
         hint: "edit_edit_customSnap_sub",
         type: "number",
         min: 0,
-        max: false,
+        max: 1024,
         smallChange: 1,
         bigChange: 4,
         var: [pulseHax.editor, "customSnap"],
         display: ()=>pulseHax.editor.customSnap,
         update: function() {
             if(pulseHax.editor.customSnap === 0) {pulseHax.editor.customSnap = 1}
+            if(1/pulseHax.customSnap === game.snap) {return;}
             game.snap = 1/pulseHax.editor.customSnap;
         }
     }, {
@@ -930,14 +942,18 @@ game.extrasNSM = new newSettingsMenu([{
         hint: "edit_edit_customPlaybackRate_sub",
         type: "number",
         min: 0,
-        max: false,
+        max: 1000,
         smallChange: .1,
         bigChange: .5,
         var: [pulseHax.editor, "customPlaybackRate"],
         display: ()=>pulseHax.editor.customPlaybackRate,
         update: function() {
-            if(pulseHax.editor.customPlaybackRate === 0) {pulseHax.editor.customPlaybackRate = 1}
+            if(!pulseHax.editor.customPlaybackRate) {pulseHax.editor.customPlaybackRate = 1}
+            if(pulseHax.editor.customPlaybackRate === game.playbackRate) {return;}
+            if(game.playing) {executePlay()}
+            pulseHax.editor.customPlaybackRate = Math.round(1000 * pulseHax.editor.customPlaybackRate)/1000;
             game.playbackRate = pulseHax.editor.customPlaybackRate;
+            if(!game.playing) {executePlay()}
         }
     }]
 }, {
@@ -1249,14 +1265,20 @@ menu.pulseHax.menu = new newSettingsMenu([{
             event: function() {
                 pulseHax.skin.skins[pulseHax.skin.skinSelect].config.customUR = pulseHax.skin.currentSkin.customUR
                 if(pulseHax.skin.currentSkin.customUR) {
-                    eval(`musicManager.field.draw = ` + (musicManager.field.draw.toString().replace(`height/64)}pop()}`, strParams.customURNewReplace))
-                    .replace(strParams.defaultURBarReplace, strParams.customURBarReplace))
+                    eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+                        .replace(`height/64)}pop()}`, strParams.customURNewReplace)
+                        .replace(strParams.defaultURBarReplace, strParams.customURBarReplace)
+                    );
                 } else {
                     // Needs to get executed twice I have no fuckin clue why but do not interfere
-                    eval(`musicManager.field.draw = ` + (musicManager.field.draw.toString().replace(strParams.customURNewReplace, `height/64)}pop()}`))
-                    .replace(strParams.customURBarReplace, strParams.defaultURBarReplace))
-                    eval(`musicManager.field.draw = ` + (musicManager.field.draw.toString().replace(strParams.customURNewReplace, `height/64)}pop()}`))
-                    .replace(strParams.customURBarReplace, strParams.defaultURBarReplace))
+                    eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+                        .replace(strParams.customURNewReplace, `height/64)}pop()}`)
+                        .replace(strParams.customURBarReplace, strParams.defaultURBarReplace)
+                    );
+                    eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+                        .replace(strParams.customURNewReplace, `height/64)}pop()}`)
+                        .replace(strParams.customURBarReplace, strParams.defaultURBarReplace)
+                    );
                 }
             }
         }, {
@@ -1530,7 +1552,8 @@ const customThemeNSM = [{
 }];
 
 // Editor menu and UR
-eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`128})}`, `128})} if(game.editorMode === 0) {
+eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+    .replace(`128})}`, `128})} if(game.editorMode === 0) {
             if (fill(0, 0, 0, 200),
                 rectMode(CORNER),
                 noStroke(),
@@ -1707,6 +1730,7 @@ setTimeout(() => {
     };
     if(!pulseHax.settings.additionalThemes && (menu.settings.themeSel >=11 && menu.settings.themeSel <=15)) {
         menu.settings.themeSel = 0;
+        console.log("e")
     };
     menu.settings.themeSel =
         menu.settings.menu.pages[0].items[2].options.includes(pulseHax.settings.themeSelLocal)
