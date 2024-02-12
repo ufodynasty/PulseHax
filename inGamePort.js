@@ -1,17 +1,4 @@
 window.addEventListener("SetupComplete", function() {
-Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
-Object.defineProperty(globalThis, 'ease', { get: () => {return At},set: (val) => {At = val}});
-Object.defineProperty(globalThis, 'editorAction', { get: () => {return kn},set: (val) => {kn = val}});
-Object.defineProperty(globalThis, 'executePlay', { get: () => {return en},set: (val) => {en = val}});
-Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
-Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
-Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
-Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
-Object.defineProperty(globalThis, 'promptRes', { get: () => {return ki},set: (val) => {ki = val}});
-Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
-Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
-Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
-Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
 
 eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
     .replace(`0,width/1024`, `pulseHax.skin.currentSkin.URPos === "bottom" ? -height/16 + height - height/64*2 : 0,width/1024`))
@@ -214,6 +201,11 @@ const pulseHax = {
     isObfuscated: false,
     rankedSel: null
 };
+
+// Anonoynnimiyuse stuff
+function functionParams(funcName) {
+    return "(" + funcName.toString().split("{")[0].split("(")[1];
+}
 
 // Skin load
 themeNames = {}
@@ -483,11 +475,6 @@ function toggleQuickPlay(bool) {
 const resultsScreenE = musicManager.resultsScreen.toString()[musicManager.resultsScreen.toString().indexOf('var')+4]
 eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString()
     .replace(musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('var'), musicManager.resultsScreen.toString().indexOf('endPos')+6), `var ${resultsScreenE}=false`))
-
-eval(editorAction.toString()
-    .replace(`&&(.25`, `&&((.25`)
-    .slice(0, -1) + `, pulseHax.editor.customSnap = Math.round(1000 * (10**(game.snap.toString().split(".")[1]?.length || 0) / (game.snap * 10**(game.snap.toString().split(".")[1]?.length || 0)))) / 1000)}`
-);
 
 // Skip intro
 eval(`musicManager.musicTime = function() {
@@ -830,18 +817,18 @@ eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString
     localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),
     localStorage.setItem("pulseHaxColorBank", JSON.stringify(pulseHaxColorBank)),
     localStorage.setItem("pulseHaxSkin", JSON.stringify(pulseHaxSkin))
-    ${sgdString.slice(sgdString.search(/\){/) + 2)}`)
+    ${sgdString.slice(sgdString.search(/\){/) + 2)}`
+);
 
-eval(loadStartScreens.toString()
+const loadStartScreensNew = loadStartScreens.toString()
     .replace('(){', `(){
     welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
-    langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;
-`));
-
-eval(loadLevel.toString()
+    langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;`)
+    .replace(loadStartScreens.toString().split("{")[0], functionParams(loadStartScreens));
+const loadLevelNew = loadLevel.toString()
     .replace('("game","menu")', `("game","menu"),
-lowLag.play("load", pulseHax.settings.sfxVolume/100),
-pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`)
+    lowLag.play("load", pulseHax.settings.sfxVolume/100),
+    pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`)
     .replace(`{`, `{if(!game.edit && pulseHax.settings.preferredFS!==0){
         foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
         foresight = Math.round(pulseHax.settings.preferredFS / foresight * 100) / 100;
@@ -849,7 +836,15 @@ pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`)
         if(foresight>2) {foresight = 2}
         game.mods.foresight = foresight;
     };`)
-);
+    .replace(loadLevel.toString().split("{")[0], functionParams(loadLevel));
+const editorActionNew = (editorAction.toString()
+    .replace(`&&(.25`, `&&((.25`)
+    .slice(0, -1) + `, pulseHax.editor.customSnap = Math.round(1000 * (10**(game.snap.toString().split(".")[1]?.length || 0) / (game.snap * 10**(game.snap.toString().split(".")[1]?.length || 0)))) / 1000)}`)
+    .replace(editorAction.toString().split("{")[0], functionParams(editorAction));
+    
+eval(`loadStartScreens = function` + loadStartScreensNew);
+eval(`loadLevel = function` + loadLevelNew)
+eval(`editorAction = function` + editorActionNew)
 
 // Editor extras menu
 game.extrasNSM = new newSettingsMenu([{
@@ -1713,7 +1708,6 @@ customThemeImport.addEventListener("change", () => {
 
 // Startup
 setTimeout(() => {
-    loadStartScreens();
     themes[10] = loadCustomTheme();
     refreshSkin();
     if(pulseHax.settings.customTheme){
@@ -1739,6 +1733,6 @@ setTimeout(() => {
     game.skipIntro = pulseHax.settings.skipIntro;
     document.title = pulseHax.settings.changeTab ? "PulseHax" : "Pulsus";
     document.querySelector('link[rel*="icon"]').href = pulseHax.settings.changeTab ? game.pulseHaxLogo : 'https://www.pulsus.cc/play/client/favicon.ico';
-}, 300);
+}, 1000);
 
 });

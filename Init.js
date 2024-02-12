@@ -24,6 +24,20 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ne},set: (val) => {Ne = val}});
   Object.defineProperty(globalThis, 'user', { get: () => {return T},set: (val) => {T = val}});
   Object.defineProperty(globalThis, 'welcome', { get: () => {return s},set: (val) => {s = val}});
+  // inGamePort
+  Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
+  Object.defineProperty(globalThis, 'ease', { get: () => {return At},set: (val) => {At = val}});
+  Object.defineProperty(globalThis, 'editorAction', { get: () => {return kn},set: (val) => {kn = val}});
+  Object.defineProperty(globalThis, 'executePlay', { get: () => {return en},set: (val) => {en = val}});
+  Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
+  Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
+  Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
+  Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
+  Object.defineProperty(globalThis, 'promptRes', { get: () => {return ki},set: (val) => {ki = val}});
+  Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
+  Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
+  Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
+  Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
   window.dispatchEvent(new CustomEvent('SetupComplete'));
 }
 eval(hs.toString().slice(0,-1) + 
