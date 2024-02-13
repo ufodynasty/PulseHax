@@ -691,7 +691,7 @@ eval(`
     musicManager.field.draw = ${
         musicManager.field.draw.toString()
             // Set parameters for custom scoring
-            .replace(`{`, `{game.bg = pulseHax.settings.customBackground !== "" ? pulseHax.settings.customBackground : game.bg; let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
+            .replace(`{`, `{game.bg = pulseHax.settings.customBackground !== "" && !game.edit ? pulseHax.settings.customBackground : game.bg; let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
             // Custom scoring UI
             .replace(fieldSearch, fieldSearch+ `
                 !pulseHaxCustomScore(customScoreFunc)?.none && (
