@@ -355,6 +355,8 @@ pulseHax.langItems = {
     edit_colorBank_setSelected: "Set Selected Color",
     edit_colorBank_setSelected_sub: "Applies the selected color bank's color to the selected note(s)",
 
+    edit_select_item_selectInRange: "Select In Range",
+    edit_select_item_selectInRange_sub: "Selects all notes in the selected range",
     edit_select_item_selectAll: "Select All",
     edit_select_item_selectAll_sub: "Selects all notes in the map (using the above filters)",
     edit_select_noteType: "Note Type",
@@ -498,7 +500,7 @@ function refreshColorBank(bank) {
 
 // Custom selection function
 function customSelect(e) {
-    if(game.selectedBeats.length === 0 && (e === "after" || e === "before")) {
+    if(game.selectedBeats.length === 0 && (e === "after" || e === "before" || e === "inRange")) {
         popupMessage({
             type: "error",
             message: "ERR_noSelect"
@@ -841,10 +843,14 @@ const editorActionNew = (editorAction.toString()
     .replace(`&&(.25`, `&&((.25`)
     .slice(0, -1) + `, pulseHax.editor.customSnap = Math.round(1000 * (10**(game.snap.toString().split(".")[1]?.length || 0) / (game.snap * 10**(game.snap.toString().split(".")[1]?.length || 0)))) / 1000)}`)
     .replace(editorAction.toString().split("{")[0], functionParams(editorAction));
-    
+const selectObjectsNew = selectObjects.toString()
+    .replace(`}else if("effects"`, `if(!game.selectedBeats.length < 2){customSelect("inRange")}}else if("effects"`)
+    .replace(selectObjects.toString().split("{")[0], functionParams(selectObjects));
 eval(`loadStartScreens = function` + loadStartScreensNew);
-eval(`loadLevel = function` + loadLevelNew)
-eval(`editorAction = function` + editorActionNew)
+eval(`loadLevel = function` + loadLevelNew);
+eval(`editorAction = function` + editorActionNew);
+eval(`selectObjects = function` + selectObjectsNew);
+eval(`game.menuNSM.pages[0].items[10].event = ` + game.menuNSM.pages[0].items[10].event.toString().slice(0, -1) + ",game.mods.hidden=false}")
 
 // Editor extras menu
 game.extrasNSM = new newSettingsMenu([{
@@ -872,6 +878,11 @@ game.extrasNSM = new newSettingsMenu([{
         smallChange: 1,
         bigChange: 4,
         var: [pulseHax.editor, "snapDenominator"]
+    }, {
+        type: "button",
+        name: "edit_select_item_selectInRange",
+        hint: "edit_select_item_selectInRange_sub",
+        event: () => customSelect("inRange")
     }, {
         type: "button",
         name: "edit_select_item_selectAll",
@@ -943,13 +954,47 @@ game.extrasNSM = new newSettingsMenu([{
         var: [pulseHax.editor, "customPlaybackRate"],
         display: ()=>pulseHax.editor.customPlaybackRate,
         update: function() {
+            let playAction = false;
             if(!pulseHax.editor.customPlaybackRate) {pulseHax.editor.customPlaybackRate = 1}
             if(pulseHax.editor.customPlaybackRate === game.playbackRate) {return;}
-            if(game.playing) {executePlay()}
+            if(game.playing) {executePlay(); playAction = true}
             pulseHax.editor.customPlaybackRate = Math.round(1000 * pulseHax.editor.customPlaybackRate)/1000;
             game.playbackRate = pulseHax.editor.customPlaybackRate;
-            if(!game.playing) {executePlay()}
+            if(playAction) {executePlay()}
         }
+    }, {
+        name: "settings_backgroundDim",
+        hint: "settings_backgroundDim_sub",
+        type: "slider",
+        min: 0,
+        max: 100,
+        step: 1,
+        var: [menu.settings, "bgDim"],
+        display: ()=>lang("percentage", langSel, menu.settings.bgDim.toFixed(0))
+    }, {
+        name: "settings_musicVolume",
+        hint: "settings_musicVolume_sub",
+        type: "slider",
+        min: 0,
+        max: 100,
+        step: 1,
+        var: [menu.settings, "musicVolume"],
+        display: ()=>lang("percentage", langSel, menu.settings.musicVolume.toFixed(0)),
+        update: ()=>lvlHowl[game.song].volume(menu.settings.musicVolume / 100)
+    }, {
+        name: "settings_hitsoundVolume",
+        hint: "settings_hitsoundVolume_sub",
+        type: "slider",
+        min: 0,
+        max: 100,
+        step: 1,
+        var: [menu.settings, "hitsoundVolume"],
+        display: ()=>lang("percentage", langSel, menu.settings.hitsoundVolume.toFixed(0))
+    }, {
+        name: "mods_hidden",
+        hint: "mods_hidden_sub",
+        type: "boolean",
+        var: [game.mods, "hidden"]
     }]
 }, {
     title: "edit_buffers",
