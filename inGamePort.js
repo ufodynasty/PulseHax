@@ -1,23 +1,16 @@
 window.addEventListener("SetupComplete", function() {
 
-eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
-    .replace(`0,width/1024`, `pulseHax.skin.currentSkin.URPos === "bottom" ? -height/16 + height - height/64*2 : 0,width/1024`))
+let unstableRate = 0;
+let unstableRateDis = 0;
+eval(`musicManager.field.draw = ${
+    musicManager.field.draw.toString()
+        // UR position
+        .replace('0,width/1024', 'pulseHax.skin.currentSkin.URPos === "bottom" ? -height/16 + height - height/64*2 : 0,width/1024')
+    }`
+);
 // Stringified parameters
 const NSMReplace = newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().indexOf('else if("color"==='), newSettingsMenu.prototype.draw.toString().lastIndexOf('alphas})}}),pop()}')+'alphas})}}),pop()}'.length);
-const strParamsLength = {
-    menu: 2,
-}
 const strParams = {
-    clickMenu: clickMenu.name,
-    loadStartScreens: loadStartScreens.name,
-    newSettingsMenu: newSettingsMenu.name,
-    saveGameData: saveGameData.name,
-    hitbox: hitbox.name,
-    promptRes: promptRes.name,
-    prmpt: prmpt.name,
-    loadLevel: loadLevel.name,
-    popupMessage: popupMessage.name,
-    prmpting: 'g',
     customURNewReplace: `height/64)}
     for(let i = game.hitValues.length-2; i >= 0; i--) {
         colorMode(RGB),
@@ -56,7 +49,7 @@ const strParams = {
 const searchParams = {
     clickMenu: {
         screensReplace: `settings.menu.click();`,
-        quickPlayReplace: clickMenu.screens.toString().slice(clickMenu.screens.toString().indexOf(`.lvl.scrollNewLock`)-strParamsLength.menu, clickMenu.screens.toString().indexOf('lvl.searchSent=!1}})')+'lvl.searchSent=!1}})'.length)
+        quickPlayReplace: clickMenu.screens.toString().slice(clickMenu.screens.toString().indexOf(`.lvl.scrollNewLock`)-Object.keys(window).filter(function(key){ try{ return 'sideBtn' in window[key] } catch { return 'AA' } })[0].length, clickMenu.screens.toString().indexOf('lvl.searchSent=!1}})')+'lvl.searchSent=!1}})'.length)
     },
     newSettingsMenu: {
         replace: NSMReplace,
@@ -137,7 +130,7 @@ function fetchLocalStorage(item) {
         let settings = {};
         const settingSel = {
         bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab", "customTheme"],
-        str: ["welcomeText", "customThemeName"],
+        str: ["welcomeText", "customThemeName", "customBackground"],
         num: ["preferredFS"],
         slider: ["sfxVolume"],
         themeSel: ["themeSelLocal"]};
@@ -274,6 +267,8 @@ pulseHax.langItems = {
     settings_skin_customScore_sub: "Applies a custom scoring system to the upper right section of the playfield",
     settings_skin_customScore_none: "None",
     settings_skin_customScore_PWC: "Floopy's PWC Scoring",
+    settings_skin_customBackground: "Custom Background",
+    settings_skin_customBackground_sub: "Sets all map backgrounds to the uploaded file (remove to disable)",
 
     settings_customTheme_main: "Main",
     settings_customTheme_main_sub: "Sets the color of the main element",
@@ -383,7 +378,7 @@ function refreshSkin() {
     pulseHax.skin.currentSkin.showReplayHeader = pulseHax.skin.skins[pulseHax.skin.skinSelect].config.showReplayHeader;
     pulseHax.skin.currentSkin.customUR = pulseHax.skin.skins[pulseHax.skin.skinSelect].config.customUR;
     pulseHax.skin.currentSkin.URPos = pulseHax.skin.skins[pulseHax.skin.skinSelect].config.URPos;
-    menu.pulseHax.menu.pages[1].items.forEach((e) => {try{e.event()} catch(e){}})
+    menu.pulseHax.menu.pages[1].items.forEach((e) => {try{e.event()} catch{}})
 }
 
 // Defining a bunch of color related conversion functions to use for custom themes
@@ -473,23 +468,6 @@ function toggleQuickPlay(bool) {
     quickPlayEnabled = bool;
 }
 
-// Score submission toggle
-const resultsScreenE = musicManager.resultsScreen.toString()[musicManager.resultsScreen.toString().indexOf('var')+4]
-eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString()
-    .replace(musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('var'), musicManager.resultsScreen.toString().indexOf('endPos')+6), `var ${resultsScreenE}=false`))
-
-// Skip intro
-eval(`musicManager.musicTime = function() {
-    var e;
-    1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0]?.[1] || 0 : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
-        game.songEnded = [millis(), lvlHowl[game.song].duration]
-    }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
-}`)
-
-// Fix the damn toggle quick play not working on cancel
-eval(`${strParams.promptRes} = ` + promptRes.toString()
-    .slice(0, -1) + `,toggleQuickPlay(true);}
-`)
 // PULSUS IS CRINGE
 function refreshColorBank(bank) {
     bankNum = parseInt(bank.slice(2))
@@ -574,283 +552,245 @@ function pulseHaxCustomScore(system) {
         };
     }
 };
-// Custom scoring systems and obfuscate
+
+// Function refactoring
 let customScore = 0;
 let customScoreDis = 0;
 const fieldSearch = musicManager.field.draw.toString().slice(musicManager.field.draw.toString().lastIndexOf('scoreDis')-11, musicManager.field.draw.toString().indexOf('height/32,height/32)),')+'height/32,height/32)),'.length);
 const resultsSearch = musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('textSize(i)'), musicManager.resultsScreen.toString().indexOf(`*3)`)+3);
+const resultsScreenE = musicManager.resultsScreen.toString()[musicManager.resultsScreen.toString().indexOf('var')+4]
+const clickMenuBuffer = clickMenu.screens;
 
 // Add The UI
-eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
-    .replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
-);
-eval(`musicManager.resultsScreen = ` + musicManager.resultsScreen.toString()
-    .replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
-);
-eval(`musicManager.field.draw = `+musicManager.field.draw.toString()
-    .replace(fieldSearch, fieldSearch+ `
-!pulseHaxCustomScore(customScoreFunc)?.none && (
-    resultFunction = pulseHaxCustomScore(customScoreFunc),
-    textAlign(RIGHT, TOP),
-    fill(150, 255, 255),
-    customScore = resultFunction.val,
-    customScoreDis += ease(customScore, customScoreDis, .35),
-    text(customScoreDis.toFixed(resultFunction.fix)+resultFunction.unit, width - height / 32, height / 32 * 2.5)
-    ),`)
-);
-eval(`musicManager.resultsScreen = `+ musicManager.resultsScreen.toString()
-    .replace(resultsSearch, `textSize(i);
-let offset = false;
-!pulseHaxCustomScore(customScoreFunc)?.none && (
-    resultFunction = pulseHaxCustomScore(customScoreFunc),
-    fill(150, 255, 255),
-    text(lang("game_customScore", langSel, resultFunction.val.toFixed(resultFunction.fix)+resultFunction.unit), width / 2, 0),
-    fill(255),
-    offset = true
-    ),
-text(lang("game_score", langSel, t), width / 2, offset ? 1.25 * i : 0),
-text(lang("game_accuracy", langSel, game.acc.toFixed(3)), width / 2, 1.25 * i * (offset ? 2 : 1)),
-text(lang("game_maxCombo", langSel, game.comboMax), width / 2, 1.25 * i * (offset ? 3 : 2)),
-v = ${resultsScreenE} ? game.submittedScore ? lang("game_pulse", langSel, game.submittedScore.performance.toFixed(2)) : lang("loading", langSel) : "";
-text(v, width / 2, 1.25 * i * (offset ? 4 : 3))` )
-);
-
-// Load additional themes
-themes.push({
-    main: color(35, 50, 60),
-    text: color(255, 255, 255),
-    overlayShade: color(32, 45, 54),
-    shade: color(20, 35, 45),
-    buttonDown: color(240, 240, 240),
-    buttonUp: color(255, 255, 255),
-    buttonText: color(0, 0, 0),
-    textDown: color(200, 200, 200),
-    select: color(60, 50, 35),
-    modText: color(255, 175, 0),
-    scrollbar: color(255, 255, 255),
-    lightTheme: !1,
-    checkmark: color(0, 175, 255),
-    dropdown: color(225, 225, 225)
-    },{
-    main: color(0, 0, 0),
-    text: color(64, 255, 64),
-    overlayShade: color(16, 16, 16),
-    shade: color(0, 0, 0),
-    buttonDown: color(32, 32, 32),
-    buttonUp: color(48, 48, 48),
-    buttonText: color(64, 255, 64),
-    textDown: color(32, 128, 32),
-    select: color(30, 30, 30),
-    modText: color(75, 175, 255),
-    scrollbar: color(75, 175, 255),
-    lightTheme: 1,
-    checkmark: color(75, 175, 255),
-    dropdown: color(24, 24, 24)
-    },{
-    main: color(20, 20, 20),
-    text: color(255, 175, 175),
-    overlayShade: color(10, 10, 10),
-    shade: color(20, 20, 20),
-    buttonDown: color(50, 50, 50),
-    buttonUp: color(75, 75, 75),
-    buttonText: color(255, 200, 200),
-    textDown: color(170, 100, 100),
-    select: color(75, 75, 75),
-    modText: color(255, 150, 100),
-    scrollbar: color(225, 225, 225),
-    lightTheme: 0,
-    checkmark: color(225, 225, 225),
-    dropdown: color(50, 50, 50)
-    },{
-    main: color(10, 10, 10),
-    text: color(255, 255, 255),
-    overlayShade: color(10, 10, 10),
-    shade: color(20, 20, 20),
-    buttonDown: color(50, 50, 50),
-    buttonUp: color(75, 75, 75),
-    buttonText: color(255, 255, 255),
-    textDown: color(150, 150, 150),
-    select: color(75, 75, 75),
-    modText: color(180, 100, 255),
-    scrollbar: color(180, 100, 255),
-    lightTheme: 1,
-    checkmark: color(180, 100, 255),
-    dropdown: color(180, 100, 255)
-    },{
-    main: color(238, 153, 255),
-    text: color(255, 255, 255),
-    overlayShade: color(204, 140, 217),
-    shade: color(190, 130, 201),
-    buttonDown: color(251, 299, 255),
-    buttonUp: color(246, 204, 255),
-    buttonText: color(143, 41, 163),
-    textDown: color(246, 204, 255),
-    select: color(219, 150, 233),
-    modText: color(246, 204, 255),
-    scrollbar: color(255, 255, 255),
-    lightTheme: 1,
-    checkmark: color(225, 77, 255),
-    dropdown: color(234, 128, 255)
-    },{
-    main: color(31, 12, 21),
-    text: color(244, 234, 179),
-    overlayShade: color(83, 34, 42),
-    shade: color(63, 24, 32),
-    buttonDown: color(238, 134, 89),
-    buttonUp: color(255, 213, 122),
-    buttonText: color(31, 12, 21),
-    textDown: color(225, 186, 132),
-    select: color(143, 60, 45),
-    modText: color(255, 51, 51),
-    scrollbar: color(255, 213, 122),
-    lightTheme: 1,
-    checkmark: color(127, 41, 71),
-    dropdown: color(226, 120, 75)
-});
-
-// Set replace search parameters for function refactoring
-const sgdString = saveGameData.toString()
-
-eval(`newSettingsMenu.prototype.draw = ` + newSettingsMenu.prototype.draw.toString()
-    .replace(searchParams.newSettingsMenu.replace, searchParams.newSettingsMenu.replace + searchParams.newSettingsMenu.replace)
-    .replace(`else if("color"===${strParams.NSMtype}.type)`, `else if("settingsMenuColor" === ${strParams.NSMtype}.type)`)
-    .replace(`rect(0,0,${searchParams.newSettingsMenu.y},${searchParams.newSettingsMenu.P},${searchParams.newSettingsMenu.P})`, `rect(0, -${searchParams.newSettingsMenu.P}/2, ${searchParams.newSettingsMenu.y}, ${searchParams.newSettingsMenu.P}*2, ${searchParams.newSettingsMenu.P})`)
-    .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`)
-    .replace(`open}})`, `open; if(!pulseHax.dropdownClosed) {
-        let interval = setInterval(() => {
-            if(e.animation.height === 0) {
-                clearInterval(interval);
-                e.after?.();
+eval(`
+    // Custom welcome text and wave
+    loadStartScreens = function${
+        loadStartScreens.toString()
+            .replace('{', `{
+            welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
+            langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;`)
+            .replace(loadStartScreens.toString().split("{")[0], functionParams(loadStartScreens))
+    };
+    // Menu color box, dropdown and after, event and update parameter shenanigans
+    newSettingsMenu.prototype.draw = ${
+        newSettingsMenu.prototype.draw.toString()
+            .replace(searchParams.newSettingsMenu.replace, searchParams.newSettingsMenu.replace + searchParams.newSettingsMenu.replace)
+            .replace(`else if("color"===${strParams.NSMtype}.type)`, `else if("settingsMenuColor" === ${strParams.NSMtype}.type)`)
+            .replace(
+                `rect(0,0,${searchParams.newSettingsMenu.y},${searchParams.newSettingsMenu.P},${searchParams.newSettingsMenu.P})`,
+                `rect(0, -${searchParams.newSettingsMenu.P}/2, ${searchParams.newSettingsMenu.y}, ${searchParams.newSettingsMenu.P}*2, ${searchParams.newSettingsMenu.P})`)
+            .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`)
+            .replace(`open}})`, `open; if(!pulseHax.dropdownClosed) {
+                let interval = setInterval(() => {
+                    if(e.animation.height === 0) {
+                        clearInterval(interval);
+                        e.after?.();
+                    }
+                }, 500)
+            }; pulseHax.dropdownClosed = false}})`)
+            .replace(`${strParams.NSMtype}.animation.height=0,`, `(${strParams.NSMtype}.animation.height = 0, pulseHax.dropdownClosed = false),`)
+            .replace(
+                newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5),
+                `${newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5)}, e.phBool ? e.event(e) : ''`)
+    };
+    // Function for drawing the pulseHax menu
+    nav.pulseHax = function() {
+        menu.pulseHax.menu.draw({
+            x: 0,
+            y: height / 16,
+            width: width,
+            height: height - height / 16,
+            stacked: !1,
+            maxBarHeight: height / 16 / 1.23,
+            buffer: (height - height / 16) / 64
+        })
+    };
+    // Draw the pulseHax menu when it's clicked in the navbar
+    nav.pages = ${
+        nav.pages.toString()
+            .replace(`settings();break;`, `settings();break;
+        case "pulseHax":
+            nav.pulseHax();
+            break;`)
+    };
+    // Save pulseHax stuff
+    saveGameData = function${
+        saveGameData.toString()
+            .replace('{', `{
+            var pulseHaxSettings = {
+                additionalThemes: pulseHax.settings.additionalThemes,
+                changeTab: pulseHax.settings.changeTab,
+                customBackground: pulseHax.settings.customBackground,
+                customTheme: pulseHax.settings.customTheme,
+                customThemeName: pulseHax.settings.customThemeName,
+                preferredFS: pulseHax.settings.preferredFS,
+                scoreSubmission: pulseHax.settings.scoreSubmission,
+                sfxVolume: pulseHax.settings.sfxVolume,
+                skipIntro: pulseHax.settings.skipIntro,
+                themeSelLocal: pulseHax.settings.themeSelLocal,
+                welcomeText: pulseHax.settings.welcomeText,
+                welcomeWave: pulseHax.settings.welcomeWave
+            };
+            var pulseHaxCustomTheme = {
+                main: pulseHax.customTheme.main,
+                text: pulseHax.customTheme.text,
+                overlayShade: pulseHax.customTheme.overlayShade,
+                shade: pulseHax.customTheme.shade,
+                buttonDown: pulseHax.customTheme.buttonDown,
+                buttonUp: pulseHax.customTheme.buttonUp,
+                buttonText: pulseHax.customTheme.buttonText,
+                textDown: pulseHax.customTheme.textDown,
+                select: pulseHax.customTheme.select,
+                modText: pulseHax.customTheme.modText,
+                scrollbar: pulseHax.customTheme.scrollbar,
+                checkmark: pulseHax.customTheme.checkmark,
+                dropdown: pulseHax.customTheme.dropdown,
+                lightTheme: pulseHax.customTheme.lightTheme,
+            };
+            var pulseHaxSkin = {
+                skinSelect: pulseHax.skin.skinSelect,
+                skins: pulseHax.skin.skins,
+                currentSkin: pulseHax.skin.currentSkin
+            };
+            var pulseHaxColorBank = pulseHax.colorBank;
+            localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings)),
+            localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),
+            localStorage.setItem("pulseHaxColorBank", JSON.stringify(pulseHaxColorBank)),
+            localStorage.setItem("pulseHaxSkin", JSON.stringify(pulseHaxSkin))
+            `)
+            .replace(saveGameData.toString().split("{")[0], functionParams(saveGameData))
+    };
+    // Preferred FS, load SFX
+    loadLevel = function${
+        loadLevel.toString()
+            .replace('("game","menu")', `("game","menu"),
+            lowLag.play("load", pulseHax.settings.sfxVolume/100),
+            pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`)
+            .replace(`{`, `{if(!game.edit && pulseHax.settings.preferredFS!==0){
+                foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
+                foresight = Math.round(pulseHax.settings.preferredFS / foresight * 100) / 100;
+                if(foresight<.25) {foresight = .25}
+                if(foresight>2) {foresight = 2}
+                game.mods.foresight = foresight;
+            };`)
+            .replace(loadLevel.toString().split("{")[0], functionParams(loadLevel))
+    };
+    // Let the user use the default snap adjust
+    editorAction = function${
+        editorAction.toString()
+            .replace(`&&(.25`, `&&((.25`)
+            .replace(editorAction.toString().split("{")[0], functionParams(editorAction))
+            .slice(0, -1) + `, pulseHax.editor.customSnap = Math.round(1000 * (10**(game.snap.toString().split(".")[1]?.length || 0) / (game.snap * 10**(game.snap.toString().split(".")[1]?.length || 0)))) / 1000)}`
+    };
+    // HD turns off when exiting the editor
+    game.menuNSM.pages[0].items[10].event = ${
+        game.menuNSM.pages[0].items[10].event.toString()
+            .slice(0, -1) + ",game.mods.hidden=false}"
+    };
+    // General skinning
+    musicManager.field.draw = ${
+        musicManager.field.draw.toString()
+            // Set parameters for custom scoring
+            .replace(`{`, `{game.bg = pulseHax.settings.customBackground !== "" ? pulseHax.settings.customBackground : game.bg; let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
+            // Custom scoring UI
+            .replace(fieldSearch, fieldSearch+ `
+                !pulseHaxCustomScore(customScoreFunc)?.none && (
+                    resultFunction = pulseHaxCustomScore(customScoreFunc),
+                    textAlign(RIGHT, TOP),
+                    fill(150, 255, 255),
+                    customScore = resultFunction.val,
+                    customScoreDis += ease(customScore, customScoreDis, .35),
+                    text(customScoreDis.toFixed(resultFunction.fix)+resultFunction.unit, width - height / 32, height / 32 * 2.5)
+                    ),
+            `)
+            // Editor extras settings menu
+            .replace(`128})}`, `128})} if(game.editorMode === 0) {
+                if (fill(0, 0, 0, 200),
+                    rectMode(CORNER),
+                    noStroke(),
+                    rect(-width/16, height / 16 * 8/3, width / 4 + width / 16, height / 16 * 31/3, (width < height ? width : height) / 32)) {
+                game.extrasNSM.draw({
+                x: 0,
+                y: height / 16 * 8/3,
+                width: width / 4,
+                height: height / 16 * 31/3,
+                stacked: !0,
+                maxBarHeight: height / 16 / 1.25,
+                buffer: height / 16 * 12 / 128
+                })}
             }
-        }, 500)
-    }; console.log(pulseHax.dropdownClosed); pulseHax.dropdownClosed = false}})`)
-    .replace(`${strParams.NSMtype}.animation.height=0,`, `(${strParams.NSMtype}.animation.height = 0, pulseHax.dropdownClosed = false),`)
-    .replace(newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5), `${newSettingsMenu.prototype.draw.toString().slice(newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`), newSettingsMenu.prototype.draw.toString().lastIndexOf(`_(!`)+5)}, e.phBool ? e.event(e) : ''`)
-);
-    
-const clickMenuBuffer = clickMenu.screens;
-eval(`clickMenu.screens = `+ clickMenu.screens.toString()
-    .replace(searchParams.clickMenu.screensReplace, searchParams.clickMenu.screensReplace + `
-else if ("pulseHax" === menu.screen)
-    menu.pulseHax.menu.click();
-    `)
-    .replace(searchParams.clickMenu.quickPlayReplace, `
-    menu.lvl.scrollNewLock || (hitbox("rcorner", height / 24 * 5, height / 16, width / 3 - width / 48 - height / 24 * 5, height / 24) && (prmpt({
-        var: [menu.lvl, "search"],
-        title: "menu_lvl_search",
-        type: "string",
-        allowEmpty: !0,
-        after: function() {
-            levels.search = [],
-            menu.lvl.sel = !1,
-            menu.lvl.searchSent = !1,
-            toggleQuickPlay(true)
-        }
-    }), toggleQuickPlay(false))
-    `)
-    .replace(`.editorMode){`, `.editorMode){
-        if (hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
-            game.extrasNSM.click()
-    }`)
-    .replace(".time),", ".time, pulseHax.editor.customPlaybackRate = game.playbackRate),")
-);
+            `)
+    };
+    // Skinning 2.0
+    musicManager.resultsScreen = ${
+        musicManager.resultsScreen.toString()
+            // Set parameters for custom scoring
+            .replace(`{`, `{let customScoreFunc = pulseHax?.skin?.currentSkin?.customScore || "none"; let resultFunction;`)
+            // Custom scoring UI
+            .replace(resultsSearch, `textSize(i);
+            let offset = false;
+            !pulseHaxCustomScore(customScoreFunc)?.none && (
+                resultFunction = pulseHaxCustomScore(customScoreFunc),
+                fill(150, 255, 255),
+                text(lang("game_customScore", langSel, resultFunction.val.toFixed(resultFunction.fix)+resultFunction.unit), width / 2, 0),
+                fill(255),
+                offset = true
+                ),
+            text(lang("game_score", langSel, t), width / 2, offset ? 1.25 * i : 0),
+            text(lang("game_accuracy", langSel, game.acc.toFixed(3)), width / 2, 1.25 * i * (offset ? 2 : 1)),
+            text(lang("game_maxCombo", langSel, game.comboMax), width / 2, 1.25 * i * (offset ? 3 : 2)),
+            v = ${resultsScreenE} ? game.submittedScore ? lang("game_pulse", langSel, game.submittedScore.performance.toFixed(2)) : lang("loading", langSel) : "";
+            text(v, width / 2, 1.25 * i * (offset ? 4 : 3))` )
+            // Disable score submission
+            .replace(musicManager.resultsScreen.toString().slice(musicManager.resultsScreen.toString().indexOf('var'), musicManager.resultsScreen.toString().indexOf('endPos')+6), `var ${resultsScreenE}=false`)
+    };
+    // Skip intro
+    musicManager.musicTime = function() {
+        var e;
+        1 === soundManager.getSoundById("menuMusic").playState && (soundManager.stop("menuMusic"), soundManager.setVolume(game.song, menu.settings.musicVolume)), !1 === game.edit && (!1 === game.preLevelStart && (game.preLevelStart = millis()), 5e3 <= millis() - game.preLevelStart + (game.songOffset + game.mods.offset + menu.settings.offset) && !game.songPlaying && !game.paused ? (lvlHowl[game.song].rate(game.mods.bpm), lvlHowl[game.song].volume(menu.settings.musicVolume / 100), e = lvlHowl[game.song].play(), lvlHowl[game.song].seek((game.songOffset + game.mods.offset + menu.settings.offset) / 1e3 + ((game.skipIntro ? game.beat[0]?.[1] || 0 : 0) * game.mods.bpm / (game.bpm / 60)) - 5, e), game.songPlaying = !0) : game.paused && (lvlHowl[game.song].pause(), game.songPlaying = !1)), game.edit || !1 !== game.songEnded || lvlHowl[game.song].on("end", function() {
+            game.songEnded = [millis(), lvlHowl[game.song].duration]
+        }), !1 !== game.edit || game.paused || 1 !== game.disMode || (!1 !== game.songPlaying || !1 !== toLoad && "hidden" !== toLoad || !1 === game.preLevelStart ? (-1e3 < ((e = ((!1 === game.songEnded ? lvlHowl[game.song].seek() : lvlHowl[game.song].duration() + (!1 === game.songEnded ? 0 : (millis() - game.songEnded[0]) / 1e3 * game.mods.bpm)) - (game.songOffset + game.mods.offset + menu.settings.offset) / 1e3) * (game.bpm / 60) / game.mods.bpm) - game.time) * game.mods.bpm / (game.bpm / 60) || "set" === game.time) && (game.time = e) : game.time = (millis() - game.preLevelStart - 5e3) / 1e3 * (game.bpm / 60) / game.mods.bpm)
+    };
+    // Quick play, editor extras
+    clickMenu.screens = ${
+        clickMenu.screens.toString()
+            .replace(searchParams.clickMenu.screensReplace, searchParams.clickMenu.screensReplace + `
+        else if ("pulseHax" === menu.screen)
+            menu.pulseHax.menu.click();
+            `)
+            .replace(searchParams.clickMenu.quickPlayReplace, `
+            menu.lvl.scrollNewLock || (hitbox("rcorner", height / 24 * 5, height / 16, width / 3 - width / 48 - height / 24 * 5, height / 24) && (prmpt({
+                var: [menu.lvl, "search"],
+                title: "menu_lvl_search",
+                type: "string",
+                allowEmpty: !0,
+                after: function() {
+                    levels.search = [],
+                    menu.lvl.sel = !1,
+                    menu.lvl.searchSent = !1,
+                    toggleQuickPlay(true)
+                }
+            }), toggleQuickPlay(false))
+            `)
+            .replace(`.editorMode){`, `.editorMode){
+                if (hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
+                    game.extrasNSM.click()
+            }`)
+            .replace(".time),", ".time, pulseHax.editor.customPlaybackRate = game.playbackRate),")
+    };
+    // Makes it so quick play doesn't break when cancelling the search box
+    promptRes = function${
+        promptRes.toString()
+            .replace(promptRes.toString().split("{")[0], functionParams(promptRes))
+            .slice(0, -1) + `,toggleQuickPlay(true);}`
+    };
+`);
 clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;
 clickMenu.screens.accountSignedOut = clickMenuBuffer.accountSignedOut;
 clickMenu.screens.click = clickMenuBuffer.click;
 clickMenu.screens.logo = clickMenuBuffer.logo;
 clickMenu.screens.header = clickMenuBuffer.header;
 clickMenu.screens.nav = clickMenuBuffer.nav;
-
-nav.pulseHax = function() {
-    menu.pulseHax.menu.draw({
-        x: 0,
-        y: height / 16,
-        width: width,
-        height: height - height / 16,
-        stacked: !1,
-        maxBarHeight: height / 16 / 1.23,
-        buffer: (height - height / 16) / 64
-    })
-}
-
-JSON.stringify(eval(`nav.pages = `+ nav.pages.toString()
-    .replace(`settings();break;`, `settings();break;
-case "pulseHax":
-    nav.pulseHax();
-    break;`)))
-
-eval(`saveGameData = function ${sgdString.slice(sgdString.search(/\(/),sgdString.search(/\){/) + 2)}
-    var pulseHaxSettings = {
-        additionalThemes: pulseHax.settings.additionalThemes,
-        changeTab: pulseHax.settings.changeTab,
-        customTheme: pulseHax.settings.customTheme,
-        customThemeName: pulseHax.settings.customThemeName,
-        preferredFS: pulseHax.settings.preferredFS,
-        scoreSubmission: pulseHax.settings.scoreSubmission,
-        sfxVolume: pulseHax.settings.sfxVolume,
-        skipIntro: pulseHax.settings.skipIntro,
-        themeSelLocal: pulseHax.settings.themeSelLocal,
-        welcomeText: pulseHax.settings.welcomeText,
-        welcomeWave: pulseHax.settings.welcomeWave
-    };
-    var pulseHaxCustomTheme = {
-        main: pulseHax.customTheme.main,
-        text: pulseHax.customTheme.text,
-        overlayShade: pulseHax.customTheme.overlayShade,
-        shade: pulseHax.customTheme.shade,
-        buttonDown: pulseHax.customTheme.buttonDown,
-        buttonUp: pulseHax.customTheme.buttonUp,
-        buttonText: pulseHax.customTheme.buttonText,
-        textDown: pulseHax.customTheme.textDown,
-        select: pulseHax.customTheme.select,
-        modText: pulseHax.customTheme.modText,
-        scrollbar: pulseHax.customTheme.scrollbar,
-        checkmark: pulseHax.customTheme.checkmark,
-        dropdown: pulseHax.customTheme.dropdown,
-        lightTheme: pulseHax.customTheme.lightTheme,
-    };
-    var pulseHaxSkin = {
-        skinSelect: pulseHax.skin.skinSelect,
-        skins: pulseHax.skin.skins,
-        currentSkin: pulseHax.skin.currentSkin
-    };
-    var pulseHaxColorBank = pulseHax.colorBank;
-    localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings)),
-    localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),
-    localStorage.setItem("pulseHaxColorBank", JSON.stringify(pulseHaxColorBank)),
-    localStorage.setItem("pulseHaxSkin", JSON.stringify(pulseHaxSkin))
-    ${sgdString.slice(sgdString.search(/\){/) + 2)}`
-);
-
-const loadStartScreensNew = loadStartScreens.toString()
-    .replace('(){', `(){
-    welcome.wave = pulseHax.settings.welcomeWave ? 1 : welcome.wave;
-    langs[langSel].welcome = pulseHax.settings.welcomeText === "" ? lang("welcome", langSel) : pulseHax.settings.welcomeText;`)
-    .replace(loadStartScreens.toString().split("{")[0], functionParams(loadStartScreens));
-const loadLevelNew = loadLevel.toString()
-    .replace('("game","menu")', `("game","menu"),
-    lowLag.play("load", pulseHax.settings.sfxVolume/100),
-    pulseHax.rankedSel = newGrabLevelMeta(clevels[menu.lvl.sel], "id").ranked`)
-    .replace(`{`, `{if(!game.edit && pulseHax.settings.preferredFS!==0){
-        foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
-        foresight = Math.round(pulseHax.settings.preferredFS / foresight * 100) / 100;
-        if(foresight<.25) {foresight = .25}
-        if(foresight>2) {foresight = 2}
-        game.mods.foresight = foresight;
-    };`)
-    .replace(loadLevel.toString().split("{")[0], functionParams(loadLevel));
-const editorActionNew = (editorAction.toString()
-    .replace(`&&(.25`, `&&((.25`)
-    .slice(0, -1) + `, pulseHax.editor.customSnap = Math.round(1000 * (10**(game.snap.toString().split(".")[1]?.length || 0) / (game.snap * 10**(game.snap.toString().split(".")[1]?.length || 0)))) / 1000)}`)
-    .replace(editorAction.toString().split("{")[0], functionParams(editorAction));
-const selectObjectsNew = selectObjects.toString()
-    .replace(`}else if("effects"`, `if(!game.selectedBeats.length < 2){customSelect("inRange")}}else if("effects"`)
-    .replace(selectObjects.toString().split("{")[0], functionParams(selectObjects));
-eval(`loadStartScreens = function` + loadStartScreensNew);
-eval(`loadLevel = function` + loadLevelNew);
-eval(`editorAction = function` + editorActionNew);
-eval(`selectObjects = function` + selectObjectsNew);
-eval(`game.menuNSM.pages[0].items[10].event = ` + game.menuNSM.pages[0].items[10].event.toString().slice(0, -1) + ",game.mods.hidden=false}")
 
 // Editor extras menu
 game.extrasNSM = new newSettingsMenu([{
@@ -1170,8 +1110,7 @@ game.extrasNSM = new newSettingsMenu([{
     }]
 }, ])
 
-let unstableRate = 0;
-let unstableRateDis = 0;
+
 // Add settings menu
 let dropdownFirstInstance = true;
 menu.settings.menu.pages[0].items[2].after = function() {
@@ -1198,7 +1137,6 @@ menu.pulseHax.menu = new newSettingsMenu([{
         phBool: true,
         event: function() {
             game.skipIntro = pulseHax.settings.skipIntro
-            console.log(game.skipIntro);
         }
     }, {
         name: "settings_additionalThemes",
@@ -1279,7 +1217,6 @@ menu.pulseHax.menu = new newSettingsMenu([{
         after: function() {
             pulseHax.dropdownClosed = true
             if(!dropdownFirstInstance){
-                console.log('did')
                 refreshSkin();
                 return;
             }
@@ -1292,7 +1229,6 @@ menu.pulseHax.menu = new newSettingsMenu([{
             var: [pulseHax.skin.currentSkin, "showReplayHeader"],
             phBool: true,
             event: function() {
-                console.log(pulseHax.skin.currentSkin.showReplayHeader)
                 pulseHax.skin.skins[pulseHax.skin.skinSelect].config.showReplayHeader = pulseHax.skin.currentSkin.showReplayHeader
                 !pulseHax.skin.currentSkin.showReplayHeader ? eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`mods))),0<`, `mods))),100<`)) : eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`mods))),100<`, `mods))),0<`))
             }
@@ -1330,7 +1266,6 @@ menu.pulseHax.menu = new newSettingsMenu([{
             var: [pulseHax.skin.currentSkin, "URPos"],
             after: function() {
                 pulseHax.dropdownClosed = true
-                console.log("URPos: " + pulseHax.skin.currentSkin.URPos)
                 pulseHax.skin.skins[pulseHax.skin.skinSelect].config.URPos = pulseHax.skin.currentSkin.URPos
 
 
@@ -1344,10 +1279,22 @@ menu.pulseHax.menu = new newSettingsMenu([{
             var: [pulseHax.skin.currentSkin, "customScore"],
             after: function() {
                 pulseHax.dropdownClosed = true
-                console.log("customScore: " + pulseHax.skin.currentSkin.customScore)
                 pulseHax.skin.skins[pulseHax.skin.skinSelect].config.customScore = pulseHax.skin.currentSkin.customScore
 
 
+            }
+        }, {
+            type: "file",
+            name: "settings_skin_customBackground",
+            hint: "settings_skin_customBackground_sub",
+            fileType: "image",
+            sizeLimit: 2048e3,
+            var: [pulseHax.settings, "customBackground"],
+            success: function(e) {
+                pulseHax.settings.customBackground = e.data
+            },
+            reset: function() {
+                pulseHax.settings.customBackground = ""
             }
         }]
     }
@@ -1591,26 +1538,6 @@ const customThemeNSM = [{
     }]
 }];
 
-// Editor menu and UR
-eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
-    .replace(`128})}`, `128})} if(game.editorMode === 0) {
-            if (fill(0, 0, 0, 200),
-                rectMode(CORNER),
-                noStroke(),
-                rect(-width/16, height / 16 * 8/3, width / 4 + width / 16, height / 16 * 31/3, (width < height ? width : height) / 32)) {
-            game.extrasNSM.draw({
-            x: 0,
-            y: height / 16 * 8/3,
-            width: width / 4,
-            height: height / 16 * 31/3,
-            stacked: !0,
-            maxBarHeight: height / 16 / 1.25,
-            buffer: height / 16 * 12 / 128
-            })
-        }
-    }`)
-);
-
 // Keybind stuff
 document.addEventListener("keydown", function(e){
     if(e.shiftKey && e.ctrlKey && menu.screen === 'lvl'){
@@ -1769,7 +1696,6 @@ setTimeout(() => {
     };
     if(!pulseHax.settings.additionalThemes && (menu.settings.themeSel >=11 && menu.settings.themeSel <=15)) {
         menu.settings.themeSel = 0;
-        console.log("e")
     };
     menu.settings.themeSel =
         menu.settings.menu.pages[0].items[2].options.includes(pulseHax.settings.themeSelLocal)
