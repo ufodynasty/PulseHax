@@ -38,7 +38,6 @@ function completeSetup() {
   Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
   Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
   Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
-  Object.defineProperty(globalThis, 'selectObjects', { get: () => {return jn},set: (val) => {jn = val}});
   window.dispatchEvent(new CustomEvent('SetupComplete'));
 }
 eval(hs.toString().slice(0,-1) + 
@@ -81,6 +80,98 @@ window.addEventListener("SetupComplete", function() {
   //   textSize(ts);
   //   for (var i = 0; i < cred.length; i++) fitText(cred[i], width / 2, height / 2 + ts * (-cred.length / 2 + i) + ts / 2 + ts / 1.5 / 2, width - 2 * bufferSize, ts / (i % 2 == 0 ? 1 : 1.5), i % 2 == 0 && "bold")
   // }
+
+  themes.push({
+    main: color(35, 50, 60),
+    text: color(255, 255, 255),
+    overlayShade: color(32, 45, 54),
+    shade: color(20, 35, 45),
+    buttonDown: color(240, 240, 240),
+    buttonUp: color(255, 255, 255),
+    buttonText: color(0, 0, 0),
+    textDown: color(200, 200, 200),
+    select: color(60, 50, 35),
+    modText: color(255, 175, 0),
+    scrollbar: color(255, 255, 255),
+    lightTheme: !1,
+    checkmark: color(0, 175, 255),
+    dropdown: color(225, 225, 225)
+    },{
+    main: color(0, 0, 0),
+    text: color(64, 255, 64),
+    overlayShade: color(16, 16, 16),
+    shade: color(0, 0, 0),
+    buttonDown: color(32, 32, 32),
+    buttonUp: color(48, 48, 48),
+    buttonText: color(64, 255, 64),
+    textDown: color(32, 128, 32),
+    select: color(30, 30, 30),
+    modText: color(75, 175, 255),
+    scrollbar: color(75, 175, 255),
+    lightTheme: 1,
+    checkmark: color(75, 175, 255),
+    dropdown: color(24, 24, 24)
+    },{
+    main: color(20, 20, 20),
+    text: color(255, 175, 175),
+    overlayShade: color(10, 10, 10),
+    shade: color(20, 20, 20),
+    buttonDown: color(50, 50, 50),
+    buttonUp: color(75, 75, 75),
+    buttonText: color(255, 200, 200),
+    textDown: color(170, 100, 100),
+    select: color(75, 75, 75),
+    modText: color(255, 150, 100),
+    scrollbar: color(225, 225, 225),
+    lightTheme: 0,
+    checkmark: color(225, 225, 225),
+    dropdown: color(50, 50, 50)
+    },{
+    main: color(10, 10, 10),
+    text: color(255, 255, 255),
+    overlayShade: color(10, 10, 10),
+    shade: color(20, 20, 20),
+    buttonDown: color(50, 50, 50),
+    buttonUp: color(75, 75, 75),
+    buttonText: color(255, 255, 255),
+    textDown: color(150, 150, 150),
+    select: color(75, 75, 75),
+    modText: color(180, 100, 255),
+    scrollbar: color(180, 100, 255),
+    lightTheme: 1,
+    checkmark: color(180, 100, 255),
+    dropdown: color(180, 100, 255)
+    },{
+    main: color(238, 153, 255),
+    text: color(255, 255, 255),
+    overlayShade: color(204, 140, 217),
+    shade: color(190, 130, 201),
+    buttonDown: color(251, 299, 255),
+    buttonUp: color(246, 204, 255),
+    buttonText: color(143, 41, 163),
+    textDown: color(246, 204, 255),
+    select: color(219, 150, 233),
+    modText: color(246, 204, 255),
+    scrollbar: color(255, 255, 255),
+    lightTheme: 1,
+    checkmark: color(225, 77, 255),
+    dropdown: color(234, 128, 255)
+    },{
+    main: color(31, 12, 21),
+    text: color(244, 234, 179),
+    overlayShade: color(83, 34, 42),
+    shade: color(63, 24, 32),
+    buttonDown: color(238, 134, 89),
+    buttonUp: color(255, 213, 122),
+    buttonText: color(31, 12, 21),
+    textDown: color(225, 186, 132),
+    select: color(143, 60, 45),
+    modText: color(255, 51, 51),
+    scrollbar: color(255, 213, 122),
+    lightTheme: 1,
+    checkmark: color(127, 41, 71),
+    dropdown: color(226, 120, 75)
+});
 });
 
 
