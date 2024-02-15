@@ -1531,12 +1531,12 @@ const customThemeNSM = [{
             localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHax.customTheme))
             const sections = ['main', 'text', 'overlayShade', 'shade', 'buttonDown', 'buttonUp', 'buttonText', 'textDown', 'select', 'modText', 'scrollbar', 'checkmark', 'dropdown']
             for(let i=0; i<13; i++) {
-                menu.pulseHax.menu.pages[1].items[i].hue[0] = pulseHax.customTheme[sections[i]];
-                menu.pulseHax.menu.pages[1].items[i].saturation[0] = pulseHax.customTheme[sections[i]];
-                menu.pulseHax.menu.pages[1].items[i].brightness[0] = pulseHax.customTheme[sections[i]];
+                menu.pulseHax.menu.pages[2].items[i].hue[0] = pulseHax.customTheme[sections[i]];
+                menu.pulseHax.menu.pages[2].items[i].saturation[0] = pulseHax.customTheme[sections[i]];
+                menu.pulseHax.menu.pages[2].items[i].brightness[0] = pulseHax.customTheme[sections[i]];
             };
-            menu.pulseHax.menu.pages[1].items[13].var[0].lightTheme = false;
-            menu.pulseHax.menu.pages[1].items[14].var[0].customThemeName = "Custom Theme";
+            menu.pulseHax.menu.pages[2].items[13].var[0].lightTheme = false;
+            menu.pulseHax.menu.pages[2].items[14].var[0].customThemeName = "Custom Theme";
             themes[10] = loadCustomTheme();
             langs[langSel].theme_CUSTOM = "Custom Theme"
         },
@@ -1694,12 +1694,12 @@ customThemeImport.addEventListener("change", () => {
                 const sections = ['main', 'text', 'overlayShade', 'shade', 'buttonDown', 'buttonUp', 'buttonText', 'textDown', 'select', 'modText', 'scrollbar', 'checkmark', 'dropdown']
                 for(let i=0; i<13; i++) {
                     let format = makeColorFormat(RGBToHSB(...vtest[sections[i]].levels))
-                    menu.pulseHax.menu.pages[1].items[i].hue[0] = format;
-                    menu.pulseHax.menu.pages[1].items[i].saturation[0] = format;
-                    menu.pulseHax.menu.pages[1].items[i].brightness[0] = format;
+                    menu.pulseHax.menu.pages[2].items[i].hue[0] = format;
+                    menu.pulseHax.menu.pages[2].items[i].saturation[0] = format;
+                    menu.pulseHax.menu.pages[2].items[i].brightness[0] = format;
                 };
-                menu.pulseHax.menu.pages[1].items[13].var[0].lightTheme = vtest.lightTheme;
-                menu.pulseHax.menu.pages[1].items[14].var[0].customThemeName = pulseHax.settings.customThemeName;
+                menu.pulseHax.menu.pages[2].items[13].var[0].lightTheme = vtest.lightTheme;
+                menu.pulseHax.menu.pages[2].items[14].var[0].customThemeName = pulseHax.settings.customThemeName;
                 } else {
                 console.error("File Import Error: Invalid File");
                 }
