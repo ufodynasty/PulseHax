@@ -116,65 +116,69 @@ const defaultThemeBuffer = JSON.stringify(defaultTheme);
 
 // Fetch PulseHax's local storage values then set them in the PulseHax object
 function fetchLocalStorage(item) {
-    if(item==="settings"){
-        if(JSON.parse(localStorage.getItem("pulseHaxSettings")) === null){return {
-            additionalThemes: false,
-            changeTab: true,
-            customTheme: false,
-            customThemeName: "",
-            sfxVolume: 50,
-            skipIntro: false,
-            welcomeText: "",
-            welcomeWave: false
-        }}
-        let settings = {};
-        const settingSel = {
-        bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab", "customTheme"],
-        str: ["welcomeText", "customThemeName", "customBackground"],
-        num: ["preferredFS"],
-        slider: ["sfxVolume"],
-        themeSel: ["themeSelLocal"]};
-        const defaultValues = [false, "", 0, 50, menu.settings.themeSel]
-        const types = ["bool", "str", "num", "slider", "themeSel"];
-        const phStorage = JSON.parse(localStorage.getItem("pulseHaxSettings"))
-        for(let type in types) {
-            for(let setting in settingSel[types[type]]) {
-                settings[settingSel[types[type]][setting]] = phStorage[settingSel[types[type]][setting]] === undefined ? defaultValues[type] : phStorage[settingSel[types[type]][setting]]
-            }
-        }; return settings
-    } else if(item==="customTheme") {
-        return JSON.parse(localStorage.getItem("pulseHaxCustomTheme")) || defaultTheme
-    } else if(item==="colorBank") {
-        return JSON.parse(localStorage.getItem("pulseHaxColorBank")) || {
-            cb1: makeColorFormat([0, 0, 0]),
-            cb2: makeColorFormat([0, 0, 0]),
-            cb3: makeColorFormat([0, 0, 0]),
-            cb4: makeColorFormat([0, 0, 0]),
-            cb5: makeColorFormat([0, 0, 0]),
-            cb6: makeColorFormat([0, 0, 0])
-        }                                                                                   
-    } else if(item==="skin") {
-        return JSON.parse(localStorage.getItem("pulseHaxSkin")) || {
-            skinSelect: 'default',
-            currentSkin: {
-                showReplayHeader: true,
-                customUR: false,
-                URPos: "top",
-                customScore: "none"
-            },
-            skins: {
-                default: {
+    switch(item) {
+        case "settings": {
+            if(JSON.parse(localStorage.getItem("pulseHaxSettings")) === null){return {
+                additionalThemes: false,
+                changeTab: true,
+                customTheme: false,
+                customThemeName: "",
+                sfxVolume: 50,
+                skipIntro: false,
+                welcomeText: "",
+                welcomeWave: false
+            }}
+            let settings = {};
+            const settingSel = {
+            bool: ["welcomeWave", "skipIntro", "additionalThemes", "changeTab", "customTheme"],
+            str: ["welcomeText", "customThemeName", "customBackground"],
+            num: ["preferredFS"],
+            slider: ["sfxVolume"],
+            themeSel: ["themeSelLocal"]};
+            const defaultValues = [false, "", 0, 50, menu.settings.themeSel]
+            const types = ["bool", "str", "num", "slider", "themeSel"];
+            const phStorage = JSON.parse(localStorage.getItem("pulseHaxSettings"))
+            for(let type in types) {
+                for(let setting in settingSel[types[type]]) {
+                    settings[settingSel[types[type]][setting]] = phStorage[settingSel[types[type]][setting]] === undefined ? defaultValues[type] : phStorage[settingSel[types[type]][setting]]
+                }
+            }; return settings
+        } case "customTheme": {
+            return JSON.parse(localStorage.getItem("pulseHaxCustomTheme")) || defaultTheme
+        } case "colorBank": {
+            return JSON.parse(localStorage.getItem("pulseHaxColorBankNew")) || {
+                "Default": {
+                    ...makeColorFormat([141, 255, 255]),
                     name: "Default",
-                    config: {
-                        showReplayHeader: true,
-                        customUR: false,
-                        URPos: "top",
-                        customScore: "none"
+                }
+            }                                                                                   
+        } case "skin": {
+            return JSON.parse(localStorage.getItem("pulseHaxSkin")) || {
+                skinSelect: 'default',
+                currentSkin: {
+                    showReplayHeader: true,
+                    customUR: false,
+                    URPos: "top",
+                    customScore: "none"
+                },
+                skins: {
+                    default: {
+                        name: "Default",
+                        config: {
+                            showReplayHeader: true,
+                            customUR: false,
+                            URPos: "top",
+                            customScore: "none"
+                        }
                     }
                 }
             }
+        } case "colorBanksAdded": {
+            return JSON.parse(localStorage.getItem("pulseHaxColorBanksAdded")) || 1
+        } default: {
+            return console.error("Invalid Input")
         }
-    } return console.error("Invalid Input")
+}
 };
 const pulseHax = {
     settings: fetchLocalStorage("settings"),
@@ -186,14 +190,28 @@ const pulseHax = {
         customSnap: 4,
         playbackRate: 1,
         beatBuffer: null,
-        colorBankSel: 'cb1'
+        colorBank: {
+            name: ''
+        }
     },
     colorBank: fetchLocalStorage("colorBank"),
+    colorBanksAdded: fetchLocalStorage("colorBanksAdded"),
     skin: fetchLocalStorage("skin"),
-    dropdownClosed: false,
-    isObfuscated: false,
-    rankedSel: null
+    dropdownClosed: false
 };
+
+pulseHax.editor.colorBank.colorBankLabels = new Array();
+Object.keys(pulseHax.colorBank).forEach((e) => pulseHax.editor.colorBank.colorBankLabels.push(`edit_colorBank_${pulseHax.colorBank[e].name}`));
+console.log(pulseHax.editor.colorBank.colorBankLabels)
+
+pulseHax.editor.colorBank.colorBankOptions = new Array();
+Object.keys(pulseHax.colorBank).forEach((e) => pulseHax.editor.colorBank.colorBankOptions.push(pulseHax.colorBank[e].name));
+console.log(pulseHax.editor.colorBank.colorBankOptions);
+pulseHax.editor.colorBank.sel = pulseHax.editor.colorBank.colorBankOptions[0]
+
+pulseHax.colorBankLangItems = new Object();
+Object.keys(pulseHax.colorBank).forEach((e) => pulseHax.colorBankLangItems[`edit_colorBank_${pulseHax.colorBank[e].name}`] = pulseHax.colorBank[e].name)
+console.log(pulseHax.colorBankLangItems);
 
 // Anonoynnimiyuse stuff
 function functionParams(funcName) {
@@ -216,9 +234,12 @@ pulseHax.skinsStartup = {
 // Set language elements for PulseHax
 pulseHax.langItems = {
     pulseHax_title: "PulseHax",
-    ERR_noSelect: "No Notes Selected!",
-    ERR_multiSelect: "Too Many Notes Selected!",
-    ERR_noBuffer: "No Notes Buffered!",
+    ERR_noSelect: "No notes selected!",
+    ERR_multiSelect: "Too many notes selected!",
+    ERR_noBuffer: "No notes buffered!",
+    ERR_duplicateBank: "A color bank with this name already exists!",
+    ERR_tooLittleBanks: "Cannot delete when there is only 1 color bank added!",
+    ERR_invalidBankName: "Don't even try bruh",
 
     game_customScore: "Custom Score: `1`",
 
@@ -327,18 +348,7 @@ pulseHax.langItems = {
     edit_buffers_pasteBufferedBeats_sub: "Pastes the globally copied notes in",
     
     edit_colorBank: "Color Bank",
-    edit_colorBank_1: "Color Bank 1",
-    edit_colorBank_1_sub: "Changes the value for the first color bank color",
-    edit_colorBank_2: "Color Bank 2",
-    edit_colorBank_2_sub: "Changes the value for the second color bank color",
-    edit_colorBank_3: "Color Bank 3",
-    edit_colorBank_3_sub: "Changes the value for the third color bank color",
-    edit_colorBank_4: "Color Bank 4",
-    edit_colorBank_4_sub: "Changes the value for the fourth color bank color",
-    edit_colorBank_5: "Color Bank 5",
-    edit_colorBank_5_sub: "Changes the value for the fifth color bank color",
-    edit_colorBank_6: "Color Bank 6",
-    edit_colorBank_6_sub: "Changes the value for the sixth color bank color",
+    edit_colorBank_sub: "Sets a custom color for the selected bank",
     edit_colorBank_sel: "Color Bank",
     edit_colorBank_sel_sub: "Sets the color bank to apply changes to/from the editor",
     edit_colorBank_fetchCurrent: "Fetch Current Color",
@@ -349,6 +359,12 @@ pulseHax.langItems = {
     edit_colorBank_fetchSelected_sub: "Applies the selected note's color to the selected color bank",
     edit_colorBank_setSelected: "Set Selected Color",
     edit_colorBank_setSelected_sub: "Applies the selected color bank's color to the selected note(s)",
+    edit_colorBank_bankName: "Color Bank Name",
+    edit_colorBank_bankName_sub: "Applies a name to the selected bank for more readability",
+    edit_colorBank_addBank: "Add Color Bank",
+    edit_colorBank_addBank_sub: "Adds a new color bank to dropdown",
+    edit_colorBank_removeBank: "Remove Color Bank",
+    edit_colorBank_removeBank_sub: "Removes the selected color bank from dropdown",
 
     edit_select_item_selectInRange: "Select In Range",
     edit_select_item_selectInRange_sub: "Selects all notes in the selected range",
@@ -368,7 +384,7 @@ pulseHax.langItems = {
     edit_select_snapDenominator: "Snap Denominator",
     edit_select_snapDenominator_sub: "Sets a filter for a specific snap to look for (i.e '4' looks for 1/4s, leave 0 for all)",
 }; 
-langs[langSel] = {...langs[langSel], ...pulseHax.langItems};
+langs[langSel] = {...langs[langSel], ...pulseHax.langItems, ...pulseHax.colorBankLangItems};
 // Add the PulseHax menu to the nav menu
 menu.pulseHax = pulseHax;
 menu.nav.push(['pulseHax_title', 'pulseHax', 'pulseHax']);
@@ -470,10 +486,12 @@ function toggleQuickPlay(bool) {
 
 // PULSUS IS CRINGE
 function refreshColorBank(bank) {
-    bankNum = parseInt(bank.slice(2))
-    game.extrasNSM.pages[3].items[bankNum-1].hue[0] = pulseHax.colorBank[bank];
-    game.extrasNSM.pages[3].items[bankNum-1].saturation[0] = pulseHax.colorBank[bank];
-    game.extrasNSM.pages[3].items[bankNum-1].brightness[0] = pulseHax.colorBank[bank];
+    console.log(bank)
+    let bankNum = pulseHax.editor.colorBank.colorBankOptions.indexOf(pulseHax.editor.colorBank.sel)
+    game.extrasNSM.pages[3].items[0].hue[0] = pulseHax.colorBank[bank];
+    game.extrasNSM.pages[3].items[0].saturation[0] = pulseHax.colorBank[bank];
+    game.extrasNSM.pages[3].items[0].brightness[0] = pulseHax.colorBank[bank];
+    game.extrasNSM.pages[3].items[0].name = pulseHax.editor.colorBank.colorBankLabels[bankNum];
 }
 
 // Custom selection function
@@ -653,9 +671,11 @@ eval(`
                 currentSkin: pulseHax.skin.currentSkin
             };
             var pulseHaxColorBank = pulseHax.colorBank;
+            var pulseHaxColorBanksAdded = pulseHax.colorBanksAdded;
             localStorage.setItem("pulseHaxSettings", JSON.stringify(pulseHaxSettings)),
             localStorage.setItem("pulseHaxCustomTheme", JSON.stringify(pulseHaxCustomTheme)),
-            localStorage.setItem("pulseHaxColorBank", JSON.stringify(pulseHaxColorBank)),
+            localStorage.setItem("pulseHaxColorBankNew", JSON.stringify(pulseHaxColorBank)),
+            localStorage.setItem("pulseHaxColorBanksAdded", JSON.stringify(pulseHaxColorBanksAdded))
             localStorage.setItem("pulseHaxSkin", JSON.stringify(pulseHaxSkin))
             `)
             .replace(saveGameData.toString().split("{")[0], functionParams(saveGameData))
@@ -974,99 +994,43 @@ game.extrasNSM = new newSettingsMenu([{
     title: "edit_colorBank",
     items: [{
         type: "color",
-        name: "edit_colorBank_1",
-        hint: "edit_colorBank_1_sub",
+        name: `edit_colorBank_${pulseHax.editor.colorBank.sel}`,
+        hint: "edit_colorBank_sub",
         mode: HSB,
-        var: [pulseHax.colorBank, "cb1"],
-        hue: [pulseHax.colorBank.cb1, "color"],
-        saturation: [pulseHax.colorBank.cb1, "saturation"],
-        brightness: [pulseHax.colorBank.cb1, "brightness"],
+        var: [pulseHax.colorBank, pulseHax.editor.colorBank.sel],
+        hue: [pulseHax.colorBank[pulseHax.editor.colorBank.sel], "color"],
+        saturation: [pulseHax.colorBank[pulseHax.editor.colorBank.sel], "saturation"],
+        brightness: [pulseHax.colorBank[pulseHax.editor.colorBank.sel], "brightness"],
         after: () => {
-            pulseHax.colorBank.cb1 = getColorAfterPrompt();
-        }
-    }, {
-        type: "color",
-        name: "edit_colorBank_2",
-        hint: "edit_colorBank_2_sub",
-        mode: HSB,
-        var: [pulseHax.colorBank, "cb2"],
-        hue: [pulseHax.colorBank.cb2, "color"],
-        saturation: [pulseHax.colorBank.cb2, "saturation"],
-        brightness: [pulseHax.colorBank.cb2, "brightness"],
-        after: () => {
-            pulseHax.colorBank.cb2 = getColorAfterPrompt();
-        }
-    }, {
-        type: "color",
-        name: "edit_colorBank_3",
-        hint: "edit_colorBank_3_sub",
-        mode: HSB,
-        var: [pulseHax.colorBank, "cb3"],
-        hue: [pulseHax.colorBank.cb3, "color"],
-        saturation: [pulseHax.colorBank.cb3, "saturation"],
-        brightness: [pulseHax.colorBank.cb3, "brightness"],
-        after: () => {
-            pulseHax.colorBank.cb3 = getColorAfterPrompt();
-        }
-    }, {
-        type: "color",
-        name: "edit_colorBank_4",
-        hint: "edit_colorBank_4_sub",
-        mode: HSB,
-        var: [pulseHax.colorBank, "cb4"],
-        hue: [pulseHax.colorBank.cb4, "color"],
-        saturation: [pulseHax.colorBank.cb4, "saturation"],
-        brightness: [pulseHax.colorBank.cb4, "brightness"],
-        after: () => {
-            pulseHax.colorBank.cb4 = getColorAfterPrompt();
-        }
-    }, {
-        type: "color",
-        name: "edit_colorBank_5",
-        hint: "edit_colorBank_5_sub",
-        mode: HSB,
-        var: [pulseHax.colorBank, "cb5"],
-        hue: [pulseHax.colorBank.cb5, "color"],
-        saturation: [pulseHax.colorBank.cb5, "saturation"],
-        brightness: [pulseHax.colorBank.cb5, "brightness"],
-        after: () => {
-            pulseHax.colorBank.cb5 = getColorAfterPrompt();
-        }
-    }, {
-        type: "color",
-        name: "edit_colorBank_6",
-        hint: "edit_colorBank_6_sub",
-        mode: HSB,
-        var: [pulseHax.colorBank, "cb6"],
-        hue: [pulseHax.colorBank.cb6, "color"],
-        saturation: [pulseHax.colorBank.cb6, "saturation"],
-        brightness: [pulseHax.colorBank.cb6, "brightness"],
-        after: () => {
-            pulseHax.colorBank.cb6 = getColorAfterPrompt();
+            pulseHax.colorBank[pulseHax.editor.colorBank.sel] = {...getColorAfterPrompt(), name: pulseHax.colorBank[pulseHax.editor.colorBank.sel].name};
         }
     }, {
         name: "edit_colorBank_sel",
         hint: "edit_colorBank_sel_sub",
         type: "dropdown",
-        labels: ["edit_colorBank_1", "edit_colorBank_2", "edit_colorBank_3", "edit_colorBank_4", "edit_colorBank_5", "edit_colorBank_6"],
-        options: ['cb1', 'cb2', 'cb3', 'cb4', 'cb5', 'cb6'],
-        var: [pulseHax.editor, "colorBankSel"]
+        labels: pulseHax.editor.colorBank.colorBankLabels,
+        options: pulseHax.editor.colorBank.colorBankOptions,
+        var: [pulseHax.editor.colorBank, "sel"],
+        after: function() {
+            refreshColorBank(pulseHax.editor.colorBank.sel)
+        }
     }, {
         name: "edit_colorBank_fetchCurrent",
         hint: "edit_colorBank_fetchCurrent_sub",
         type: "button",
         event: function() {
-            pulseHax.colorBank[pulseHax.editor.colorBankSel] = makeColorFormat([game.beatColor, game.beatSaturation, game.beatBrightness])
-            refreshColorBank(pulseHax.editor.colorBankSel);
+            pulseHax.colorBank[pulseHax.editor.colorBank.sel] = {...makeColorFormat([game.beatColor, game.beatSaturation, game.beatBrightness]), name: pulseHax.colorBank[pulseHax.editor.colorBank.sel].name}
+            console.log(pulseHax.editor.colorBank.sel)
+            refreshColorBank(pulseHax.editor.colorBank.sel);
         }
     }, {
         name: "edit_colorBank_setCurrent",
         hint: "edit_colorBank_setCurrent_sub",
         type: "button",
         event: function() {
-            game.beatColor = pulseHax.colorBank[pulseHax.editor.colorBankSel].color;
-            game.beatSaturation = pulseHax.colorBank[pulseHax.editor.colorBankSel].saturation;
-            game.beatBrightness = pulseHax.colorBank[pulseHax.editor.colorBankSel].brightness;
+            game.beatColor = pulseHax.colorBank[pulseHax.editor.colorBank.sel].color;
+            game.beatSaturation = pulseHax.colorBank[pulseHax.editor.colorBank.sel].saturation;
+            game.beatBrightness = pulseHax.colorBank[pulseHax.editor.colorBank.sel].brightness;
         }
     }, {
         name: "edit_colorBank_fetchSelected",
@@ -1086,8 +1050,8 @@ game.extrasNSM = new newSettingsMenu([{
                 });
                 return;
             }
-            pulseHax.colorBank[pulseHax.editor.colorBankSel] = makeColorFormat([game.beat[game.selectedBeats[0]][11], game.beat[game.selectedBeats[0]][16], game.beat[game.selectedBeats[0]][17]]);
-            refreshColorBank(pulseHax.editor.colorBankSel);
+            pulseHax.colorBank[pulseHax.editor.colorBank.sel] = {...makeColorFormat([game.beat[game.selectedBeats[0]][11], game.beat[game.selectedBeats[0]][16], game.beat[game.selectedBeats[0]][17]]), name: pulseHax.colorBank[pulseHax.editor.colorBank.sel].name};
+            refreshColorBank(pulseHax.editor.colorBank.sel);
         }
     }, {
         name: "edit_colorBank_setSelected",
@@ -1102,10 +1066,78 @@ game.extrasNSM = new newSettingsMenu([{
                 return;
             }
             for(i of game.selectedBeats) {
-                game.beat[i][11] = pulseHax.colorBank[pulseHax.editor.colorBankSel].color;
-                game.beat[i][16] = pulseHax.colorBank[pulseHax.editor.colorBankSel].saturation;
-                game.beat[i][17] = pulseHax.colorBank[pulseHax.editor.colorBankSel].brightness;
+                game.beat[i][11] = pulseHax.colorBank[pulseHax.editor.colorBank.sel].color;
+                game.beat[i][16] = pulseHax.colorBank[pulseHax.editor.colorBank.sel].saturation;
+                game.beat[i][17] = pulseHax.colorBank[pulseHax.editor.colorBank.sel].brightness;
             }
+        }
+    }, {
+        type: "string",
+        name: "edit_colorBank_bankName",
+        hint: "edit_colorBank_bankName_sub",
+        allowEmpty: false,
+        var: [pulseHax.editor.colorBank, "name"],
+        after: function() {
+            if(langs[langSel]["edit_colorBank_" + pulseHax.editor.colorBank.name] !== undefined) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_duplicateBank"
+                });
+                return;
+            }
+            if(pulseHax.editor.colorBank.name.includes("Color Bank ")) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_invalidBankName"
+                });
+                return;
+            }
+            langs[langSel]["edit_colorBank_" + pulseHax.editor.colorBank.name] = pulseHax.editor.colorBank.name;
+            delete langs[langSel]["edit_colorBank_" + pulseHax.editor.colorBank.sel]
+            pulseHax.editor.colorBank.colorBankLabels[pulseHax.editor.colorBank.colorBankLabels.indexOf("edit_colorBank_" + pulseHax.editor.colorBank.sel)] = "edit_colorBank_" + pulseHax.editor.colorBank.name;
+            pulseHax.editor.colorBank.colorBankOptions[pulseHax.editor.colorBank.colorBankOptions.indexOf(pulseHax.editor.colorBank.sel)] = pulseHax.editor.colorBank.name;
+            pulseHax.colorBank[pulseHax.editor.colorBank.name] = pulseHax.colorBank[pulseHax.editor.colorBank.sel];
+            pulseHax.colorBank[pulseHax.editor.colorBank.name].name = pulseHax.editor.colorBank.name;
+            game.extrasNSM.pages[3].items[0].name = "edit_colorBank_" + pulseHax.editor.colorBank.name
+            delete pulseHax.colorBank[pulseHax.editor.colorBank.sel];
+            pulseHax.editor.colorBank.sel = pulseHax.editor.colorBank.name;
+        }
+    }, {
+        name: "edit_colorBank_addBank",
+        hint: "edit_colorBank_addBank_sub",
+        type: "button",
+        event: function() {
+            pulseHax.colorBank["Color Bank " + pulseHax.colorBanksAdded] = {
+                ...makeColorFormat([141, 255, 255]),
+                name: "Color Bank " + pulseHax.colorBanksAdded
+            };
+            pulseHax.editor.colorBank.colorBankLabels.push("edit_colorBank_Color Bank " + pulseHax.colorBanksAdded)
+            langs[langSel]["edit_colorBank_Color Bank " + pulseHax.colorBanksAdded] = "Color Bank " + pulseHax.colorBanksAdded;
+            pulseHax.editor.colorBank.colorBankOptions.push("Color Bank " + pulseHax.colorBanksAdded);
+            pulseHax.editor.colorBank.sel = "Color Bank " + pulseHax.colorBanksAdded;
+            refreshColorBank(pulseHax.editor.colorBank.sel);
+            pulseHax.colorBanksAdded++;
+        }
+    }, {
+        name: "edit_colorBank_removeBank",
+        hint: "edit_colorBank_removeBank_sub",
+        type: "button",
+        event: function() {
+            if(pulseHax.editor.colorBank.colorBankLabels.length <=1) {
+                popupMessage({
+                    type: "error",
+                    message: "ERR_tooLittleBanks"
+                })
+                return;
+            }
+            let selNum = pulseHax.editor.colorBank.colorBankOptions.indexOf(pulseHax.editor.colorBank.sel);
+            delete langs[langSel]["edit_colorBank_" + pulseHax.colorBank[pulseHax.editor.colorBank.sel].name];
+            pulseHax.editor.colorBank.colorBankLabels.splice(selNum, 1)
+            pulseHax.editor.colorBank.colorBankOptions.splice(selNum, 1)
+            delete pulseHax.colorBank[pulseHax.editor.colorBank.sel];
+
+            pulseHax.editor.colorBank.sel = pulseHax.editor.colorBank.colorBankOptions[selNum === 0 ? selNum : selNum-1];
+            refreshColorBank(pulseHax.editor.colorBank.sel)
         }
     }]
 }, ])
