@@ -303,7 +303,7 @@ window.addEventListener("SetupComplete", function() {
                     }
                 }
             } else if(e.code === 'KeyE' && clevels[menu.lvl.sel]?.local) {
-                if(!confirm(`Export ${clevels[menu.lvl.sel].title}.pls?`)) { return; }
+                if(!confirm(`Export ${clevels[menu.lvl.sel].title}.phz?`)) { return; }
                 let zip = new JSZip();
                 let response = clevels[menu.lvl.sel];
                 zip.file(`${response.title.replace(/[^a-zA-Z0-9 ]/g, '')}.json`, JSON.stringify(response));
@@ -311,7 +311,7 @@ window.addEventListener("SetupComplete", function() {
                 const a = document.createElement("a");
                 const url = window.URL.createObjectURL(blob);
                 a.href = url;
-                a.download = `${response.title}.plsz`;
+                a.download = `${response.title}.phz`;
                 a.click();
                 URL.revokeObjectURL(url);
                 });
