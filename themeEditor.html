@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./util.js" defer></script>
+    <script src="./assets/script/p5.min.js" defer></script>
+    <script src="./assets/script/jszip.min.js" defer></script>
+    <script src="./loadTheme.js" defer></script>
+    <script src="./themeEditor.js" defer></script>
+    <link rel="stylesheet" href="./themeEditor.css">
+    <title>Theme Editor</title>
+</head>
+<body>
+    <h1 class="welcome">
+        PulseHax's Custom Theme Editor
+    </h1>
+    <hr>
+    <div class="parent">
+        <div>
+            <input type="button" id="theme-toggle" value="Switch to Light Theme">
+            <hr class="small-hr">
+            <h1 display="main">Main</h1>
+            <input type="color" id="main">
+            <h1 display="text">Text</h1>
+            <input type="color" id="text">
+            <h1 display="overlayShade">Overlay Shade</h1>
+            <input type="color" id="overlayShade">
+            <h1 display="shade">Shade</h1>
+            <input type="color" id="shade">
+            <h1 display="buttonDown">Button Down</h1>
+            <input type="color" id="buttonDown">
+            <h1 display="buttonUp">Button Up</h1>
+            <input type="color" id="buttonUp">
+            <h1 display="buttonText">Button Text</h1>
+            <input type="color" id="buttonText">
+            <h1 display="textDown">Text Down</h1>
+            <input type="color" id="textDown">
+            <h1 display="select">Select</h1>
+            <input type="color" id="select">
+            <h1 display="modText">Mod Text</h1>
+            <input type="color" id="modText">
+            <h1 display="scrollbar">Scrollbar</h1>
+            <input type="color" id="scrollbar">
+            <h1 display="checkmark">Checkmark</h1>
+            <input type="color" id="checkmark">
+            <h1 display="dropdown">Dropdown</h1>
+            <input type="color" id="dropdown">
+            <h1 display="lightTheme">Light Mode</h1>
+            <input type="checkbox" id="lightTheme">
+            <input type="button" id="reset-theme" value="Reset Custom Theme">
+            <input type="button" id="import-theme" value="Import Custom Theme" class="half">
+            <input type="button" id="export-theme" value="Export Custom Theme" class="half">
+            <input type="file" id="import-theme-action" accept=".phk" multiple="false" style="display:none;">
+            <hr>
+            <p class="save-popup-hidden" id="save-popup">Saved</p>
+        </div>
+        <div id="p5Canvas">
+            <h1 class="big">Theme Preview</h1>
+        </div>
+    </div>
+</body>
+</html>

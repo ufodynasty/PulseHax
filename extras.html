@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./util.js" defer></script>
+    <script src="./assets/script/jszip.min.js" defer></script>
+    <script src="./extras.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Extras</title>
+</head>
+<body>
+    <div class="topnav">
+        <a href="./extras.html" class="selected">Extras</a>
+        <a href="./editor.html">Editor</a>
+        <a href="./customTheme.html">Theme</a>
+        <a href="./plugins.html">Plugins</a>
+    </div>
+    <main>
+        <h1 class="welcome">
+            Welcome to PulseHax o/
+        </h1>
+        <hr>
+        <input type="button" id="theme-toggle" value="Switch to Light Theme">
+        <fieldset>
+            <legend>Startup</legend>
+            <input type="checkbox" id="wave" game-value="welcome.wave">   
+            <label for="wave" display="Welcome Wave">Welcome Wave</label>
+            <br>
+            <label for="welcomeText" display="Welcome Text" >Welcome Text</label>
+            <input type="text" id="welcomeText" game-value="langs[langSel].welcome" placeholder="Welcome Text...">
+        </fieldset>
+        <fieldset>
+            <legend>Menu</legend>
+            <input type="checkbox" id="additionalThemes" game-value="menu.PHSettings.additionalThemes">   
+            <label for="additionalThemes" display="Additional Themes">Additional Themes</label>
+            <br>
+            <input type="checkbox" id="customTheme" game-value="menu.PHSettings.customTheme">
+            <label for="customTheme" display="Custom Theme">Custom Theme</label>
+            <br>
+            <label for="sfxVolume" display="SFX Volume">SFX Volume: </label> <input type="number" id="sfxVolumeField" value="50" class="inline-field" target="sfxVolume">
+            <input type="range" id="sfxVolume" game-value="menu.PHSettings.sfxVolume">
+        </fieldset>
+        <fieldset>
+            <legend>Gameplay</legend>
+            <input type="checkbox" id="skipIntro" game-value="game.skipIntro">
+            <label for="skipIntro" display="Skip Intro">Skip Intro</label>
+            <br>
+            <label for="preferredFS" display="Preferred FS">Preferred FS: </label>
+            <input type="number" id="preferredFS" game-value="menu.PHSettings.preferredFS" value="1" complementary="false" min="0" max="10" round="false" step=".01">
+        </fieldset>
+        <fieldset>
+            <legend>Map Manipulation</legend>
+            <input type="button" id="copy-map" value="Copy Map" disabled>
+            <input type="button" id="export-map" value="Export Map" disabled>
+            <input type="button" id="import-maps-display" value="Import Maps">
+            <input type="file" id="import-maps" accept=".phz, .pls" multiple="true" style="display: none;">
+        </fieldset>
+        <fieldset>
+            <legend>Misc</legend>
+            <input type="checkbox" id="changeTab" game-value="menu.PHSettings.changeTab">
+            <label for="changeTab" display="Change Tab">Change Tab</label>
+            <input type="button" id="export-settings" value="Export Settings">
+            <input type="button" id="import-settings-display" value="Import Settings">
+            <input type="file" id="import-settings" accept=".phs" multiple="false" style="display:none;">
+        </fieldset>
+        <hr>
+        <p class="save-popup-hidden" id="save-popup">Saved</p>
+    </main>
+</body>
+</html>
