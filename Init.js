@@ -223,7 +223,10 @@ window.addEventListener("SetupComplete", function() {
         };
         drawScreens = function${
             drawScreens.toString()
-                .replace(`${musicManager.name}(),`, `(${musicManager.name}(), game.pulseHaxEditorDraw()),`)
+                .replace(`${musicManager.name}(),`, `(${musicManager.name}(), game.pulseHaxEditorDraw(),
+                (!game.edit && (game.disMode === 1 || game.disMode === 2) && screen === "game" && game.mods.startPos === 0) && (
+                    game.mods.startPos = game.beat[0][1] < 0 ? 60000 / game.beat[0][9] * game.beat[0][1] - 1 : -1
+                    )),`)
                 .replace(drawScreens.toString().split("{")[0], game.functionParams(drawScreens))
         };
         editorAction = function${
