@@ -16,7 +16,7 @@ PulseHax is a Pulsus extension that adds a lot of QoL features not yet added to 
 - Use PulseHax's fully fledged **Custom Editor** with plenty of features to choose from, such as **Custom Selecting**, **Custom Snaps**, **Playback Rates**, and **Color Banks**!
 - Move notes between maps with our **Buffers**!
 - Create your own **practice difficulties** of maps!
-...And much, much more to come!
+- ...And much, much more to come!
 
 ### Keybinds
 
