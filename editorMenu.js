@@ -587,9 +587,4 @@ window.addEventListener("SetupComplete", function() {
             game.shiftTab = !game.shiftTab;
         }
     });
-    document.addEventListener("click", function(e) {
-        if(game.shiftTab && !game.menu && game.edit === true && game.editorMode === 0 && hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
-            game.extrasNSM.click()
-        };
-    })
 });

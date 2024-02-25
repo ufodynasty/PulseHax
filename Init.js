@@ -3,12 +3,12 @@ function completeSetup() {
     Object.defineProperty(globalThis, 'clevels', { get: () => {return Rt},set: (val) => {Rt = val}});
     Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Mo},set: (val) => {Mo = val}});
     Object.defineProperty(globalThis, 'copyObject', { get: () => {return X},set: (val) => {X = val}});
-    Object.defineProperty(globalThis, 'fitText', { get: () => {return Dt},set: (val) => {Dt = val}});
+    // Object.defineProperty(globalThis, 'fitText', { get: () => {return Dt},set: (val) => {Dt = val}});
     Object.defineProperty(globalThis, 'game', { get: () => {return Tt},set: (val) => {Tt = val}});
     Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return qo},set: (val) => {qo = val}});
-    Object.defineProperty(globalThis, 'img', { get: () => {return St},set: (val) => {St = val}});
+    // Object.defineProperty(globalThis, 'img', { get: () => {return St},set: (val) => {St = val}});
     Object.defineProperty(globalThis, 'lang', { get: () => {return Pt},set: (val) => {Pt = val}});
-    Object.defineProperty(globalThis, 'langList', { get: () => {return U},set: (val) => {U = val}});
+    // Object.defineProperty(globalThis, 'langList', { get: () => {return U},set: (val) => {U = val}});
     Object.defineProperty(globalThis, 'langSel', { get: () => {return xt},set: (val) => {xt = val}});
     Object.defineProperty(globalThis, 'langs', { get: () => {return F},set: (val) => {F = val}});
     Object.defineProperty(globalThis, 'levels', { get: () => {return Ht},set: (val) => {Ht = val}});
@@ -25,7 +25,6 @@ function completeSetup() {
     Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ne},set: (val) => {Ne = val}});
     Object.defineProperty(globalThis, 'user', { get: () => {return T},set: (val) => {T = val}});
     Object.defineProperty(globalThis, 'welcome', { get: () => {return s},set: (val) => {s = val}});
-    // inGamePort
     Object.defineProperty(globalThis, 'newGrabUser', { get: () => {return Ut},set: (val) => {Ut = val}});
     Object.defineProperty(globalThis, 'drawScreens', { get: () => {return gs},set: (val) => {gs = val}}); // This is wrong
     Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
@@ -34,16 +33,17 @@ function completeSetup() {
     Object.defineProperty(globalThis, 'executePlay', { get: () => {return en},set: (val) => {en = val}});
     Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
     Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
-    Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
+   //  Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
     Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
     Object.defineProperty(globalThis, 'promptRes', { get: () => {return ki},set: (val) => {ki = val}});
-    Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
+    // Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
     Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
     Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
     Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
     Object.defineProperty(globalThis, 'server', { get: () => {return v},set: (val) => {v = val}});
-    game.pulseHax = {};
-    game.pulseHax.params = {};
+    Object.defineProperty(globalThis, 'prmptingString', { get: () => {return Nt},set: (val) => {Nt = val}});
+    Object.defineProperty(globalThis, 'scrollTimeline', { get: () => {return qn},set: (val) => {qn = val}}); // This is wrong
+    game.pulseHax = {params: {}};
     window.dispatchEvent(new CustomEvent('SetupComplete'));
 };
 eval(`
@@ -53,6 +53,31 @@ eval(`
         .slice(0,-1) + ";completeSetup()}" 
     }
 `);
+const importMapAction = document.createElement('input');
+importMapAction.type = 'file';
+importMapAction.style.display = "none";
+importMapAction.accept = ".phz, .pls";
+importMapAction.multiple = "true";
+document.body.appendChild(importMapAction);
+importMapAction.addEventListener("change",function() {
+    for(file of importMapAction.files) {
+        let zip = new JSZip();
+        if(/.pls$|.phz$/.exec(file.name)) {
+            zip.loadAsync(file).then(function(zip) {
+                zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
+                    let vtest = JSON.parse(fileData);
+                    if((Object.hasOwn(vtest,"beat") && Object.hasOwn(vtest,"effects"))) {
+                        levels.saved.push(vtest); levels.search = levels.saved;
+                    } else {
+                        window.alert(`Invalid .${file.name.split(".")[file.name.split(".").length-1]} file selected (${file.name})`);
+                    }
+                });
+            });
+        } else {
+            window.alert(`Invalid File Extension ".${file.name.split(".")[file.name.split(".").length-1]}"`);
+        }
+    }
+});
 
 window.addEventListener("SetupComplete", function() {
     game.hexToRgb = function(hex) {
@@ -252,18 +277,30 @@ window.addEventListener("SetupComplete", function() {
                         }, 500)
                     }; game.pulseHax.dropdownClosed = false}})`)
                     .replace(`${game.pulseHax.params.NSMItem}.animation.height=0,`, `(${game.pulseHax.params.NSMItem}.animation.height = 0, game.pulseHax.dropdownClosed = false),`)
-            };
-            saveGameData = function${
-                saveGameData.toString()
-                    .replace('{', `{
-                    var pulseHaxColorBank = game.pulseHax.colorBank;
-                    var pulseHaxColorBanksAdded = game.pulseHax.colorBanksAdded;
-                    localStorage.setItem("pulseHaxColorBankNew", JSON.stringify(pulseHaxColorBank));
-                    localStorage.setItem("pulseHaxColorBanksAdded", JSON.stringify(pulseHaxColorBanksAdded));
-                    `)
-                    .replace(saveGameData.toString().split("{")[0], game.functionParams(saveGameData))
         };
-        `)
+        saveGameData = function${
+            saveGameData.toString()
+                .replace('{', `{
+                var pulseHaxColorBank = game.pulseHax.colorBank;
+                var pulseHaxColorBanksAdded = game.pulseHax.colorBanksAdded;
+                localStorage.setItem("pulseHaxColorBankNew", JSON.stringify(pulseHaxColorBank));
+                localStorage.setItem("pulseHaxColorBanksAdded", JSON.stringify(pulseHaxColorBanksAdded));
+                `)
+                .replace(saveGameData.toString().split("{")[0], game.functionParams(saveGameData))
+        };
+        scrollTimeline = function${
+            scrollTimeline.toString()
+                .replace("{", "{if(game.extrasNSM.data.dropdownHitbox) {return;};")
+                .replace(scrollTimeline.toString().split("{")[0], game.functionParams(scrollTimeline))
+        };
+        mouseClicked = ${
+            mouseClicked.toString()
+                .replace("{", `{if(!prmptingString.active && game.shiftTab && !game.menu && game.edit === true && game.editorMode === 0 && hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
+                        game.extrasNSM.click()
+                    };
+                `)
+        };
+        `);
         clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;
         clickMenu.screens.accountSignedOut = clickMenuBuffer.accountSignedOut;
         clickMenu.screens.click = clickMenuBuffer.click;
@@ -317,7 +354,7 @@ window.addEventListener("SetupComplete", function() {
                 });
             } else if(e.code === 'KeyI') {
                 if(!confirm("Import Maps?")) { return; }
-                lvlImport.click();
+                importMapAction.click();
             }
         }
         if(menu.screen === 'lvl' && clevels.length > 0 && screen === "menu") {
