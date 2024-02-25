@@ -8,16 +8,15 @@ PulseHax is a Pulsus extension that adds a lot of QoL features not yet added to 
 
 ## Features
 
-- **Skip long intros** so you can cut right to the chase instead of having to waiting around for a map to start;
-- **Quickly retry** on `Tab` for extra efficiency when grinding out maps;
-- **Use custom themes** made by the PulseHax team, or even make your own!
-- **Copy, import and export any map** of your choice so you can practice ranked maps more easily, or save one of your own maps for later so it doesn't clog up your Pulsus local storage;
-- **Import and export** custom themes for more accessibility when sharing your own themes between yourselves;
-- Use PulseHax's **Custom Selection** to select specific things in the editor, like doubles, 1/6s, holds, and much more!
-- While in the editor, use our **Custom Snap** to place notes in the 1/5, 1/7 or whichever time signature you want, and also our **Custom Playback Rate**, for much needed extra accuracy at determining offset and going past the limitation of a minimum of 0.5x;
-- Easily **create practice maps** in no less than 4 clicks to easily practice the diffspikes in your map of choice
-- **Globally copy notes**, effects and bookmarks so you can paste them in other maps;
-- **Store your signature colors** in our **Color Banks** instead of having to make a Notepad file for your own palette!
+- **Copy, export and import** maps of your choice for personal use, sharing or editing!
+- **Sync your settings across browsers** using PulseHax's Settings Imports!
+- **Use fully customizable themes** with our brand new Custom Theme editor, now with previews!
+- **Automatically apply your own preferred foresight** to maps (No math required)!
+- **Skip long, boring intros of maps** using PulseHax's Skip Intro!
+- Use PulseHax's fully fledged **Custom Editor** with plenty of features to choose from, such as **Custom Selecting**, **Custom Snaps**, **Playback Rates**, and **Color Banks**!
+- Move notes between maps with our **Buffers**!
+- Create your own **practice difficulties** of maps!
+- ...And much, much more to come!
 
 ### Keybinds
 

@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link href="popup.css" rel="stylesheet" type="text/css">
-    <script src="popup.js"></script>
-  </head>
-  <body>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./util.js"></script>
+    <script src="./popup.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Popup</title>
+</head>
+<body>
     <h1>
-      Pulsus
+        PulseHax
     </h1>
-    <h1>
-      Thisn't
-    </h1>
-  </body>
+    <hr>
+    <input type="button" id="theme-toggle" value="Switch to Light Theme">
+    <p>
+        PulseHax is only available in Pulsus γ (gamma)! If you are currently in Pulsus γ and this popup is being shown, please report this issue to PulseHax support.
+    </p>
+    <hr>
+    <p class="save-popup-hidden" id="save-popup">Saved</p>
+</body>
 </html>

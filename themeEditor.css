@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+.dark-theme {
+    --bg: rgb(35, 35, 45);
+    --text: rgb(255, 255, 185);
+    --bind-bg: rgb(50, 50, 60);
+    --bind-text: rgb(200, 200, 200);
+    --welcome-gradient-1: rgb(200, 200, 130);
+    --welcome-gradient-2: rgb(150, 150, 80);
+    --topnav-bg: rgb(70, 70, 80);
+    --topnav-bg-selected: rgb(85, 155, 155);
+    --topnav-text: rgb(35, 35, 45);
+    --user-select: rgb(200, 125, 125);
+    --fieldset-border: rgb(205, 205, 135);
+    --hr-border: rgb(180, 180, 110);
+    --hr-border-small: rgba(180, 180, 110, .25);
+    --button-bg: rgb(50, 50, 75);
+    --button-bg-hover: rgb(65, 65, 90);
+    --button-bg-click: rgb(80, 80, 105);
+    --button-bg-focus: rgb(25, 25, 50);
+    --button-bg-focus-click: rgb(40, 40, 65);
+    --checkmark-checked: rgb(135, 205, 205);
+    --checkmark-checked-hover: rgb(185, 255, 255);
+    --checkmark-checked-click: rgb(200, 255, 255);
+    --slider-thumb: rgb(255, 255, 185);
+    --file-error-color: rgb(255, 50, 75);
+    --file-success-color: rgb(50, 255, 75);
+    --button-bg-disabled: rgb(25, 25, 50);
+    --button-text-disabled: rgb(205, 205, 135);
+}
+.light-theme {
+    --bg: rgb(220, 220, 230);
+    --text: rgb(35, 35, 45);
+    --bind-bg: rgb(200, 200, 210);
+    --bind-text: rgb(20, 20, 30);
+    --welcome-gradient-1: rgb(0, 0, 20);
+    --welcome-gradient-2: rgb(50, 50, 70);
+    --topnav-bg: rgb(185, 185, 195);
+    --topnav-bg-selected: rgb(75, 155, 155);
+    --topnav-text: rgb(35, 35, 45);
+    --user-select: rgb(255, 150, 150);
+    --fieldset-border: rgb(10, 10, 20);
+    --hr-border: rgb(0, 0, 0);
+    --hr-border-small: rgba(0, 0, 0, 0.25);
+    --button-bg: rgb(190, 190, 190);
+    --button-bg-hover: rgb(175, 175, 175);
+    --button-bg-click: rgb(150, 150, 150);
+    --button-bg-focus: rgb(205, 205, 205);
+    --button-bg-focus-click: rgb(190, 190, 190);
+    --checkmark-checked: rgb(100, 170, 170);
+    --checkmark-checked-hover: rgb(150, 220, 220);
+    --checkmark-checked-click: rgb(135, 205, 205);
+    --slider-thumb: rgb(35, 35, 45);
+    --file-error-color: rgb(180, 0, 0);
+    --file-success-color: rgb(0, 180, 0);
+    --button-bg-disabled: rgb(140, 140, 140);
+    --button-text-disabled: rgb(85, 85, 95);
+}
+
+::selection {
+    background-color: var(--user-select)
+}
+
+html {
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+    font-size: .75em;
+    background-color: var(--bg);
+    color: var(--text);
+    user-select: none;
+    transition: 300ms;
+}
+
+.parent {
+    margin: 0;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+div {
+    margin: 0;
+    vertical-align: middle;
+    width: 50%;
+    float: left;
+}
+#p5Canvas {
+    float: right;
+}
+.big {
+    margin: 0;
+    font-size: 5em;
+    text-shadow: #000 3px 2px 2px;
+}
+.active {
+    display: block !important;
+}
+
+canvas {
+    border-radius: 12px;
+    border-width: .1em;
+    border-style: solid;
+    border-color: white;
+}
+
+#import-theme, #export-theme {
+    width: 30%
+}
+
+h1.welcome {
+    margin: 10px 0;
+    color: var(--bg);
+    background: linear-gradient(
+        235deg,
+        var(--welcome-gradient-1),
+        var(--welcome-gradient-2)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0.2em transparent;
+    font-size: 3em;
+    transition: 300ms;
+}
+
+h1 {
+    margin: 5px auto 0 auto;
+}
+
+h1, h2, h3, p {
+    text-align: center;
+}
+
+
+hr {
+    margin: .5em 5%;
+    border-radius: .5em;
+    border-color: var(--hr-border);
+    background-color: var(--hr-border);
+}
+.small-hr {
+    margin: .5em 25%;
+    border-color: var(--hr-border-small);
+    background-color: var(--hr-border-small);
+}
+
+fieldset {
+    border-color: var(--fieldset-border);
+    border-radius: .5em;
+} legend {
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+input {
+    background-color: var(--button-bg);
+    border-radius: .2em;
+    transition: 150ms;
+    margin: 0;
+    color: var(--text);
+    height: 1.5em;
+    font-size: 1.5em;
+}
+input:hover {
+    background-color: var(--button-bg-hover);
+}
+input:focus {
+    outline: none;
+}
+input:active {
+    background-color: var(--button-bg-click);
+}
+input:checked {
+    background-color: var(--checkmark-checked);
+}
+input:checked:hover {
+    background-color: var(--checkmark-checked-hover);
+}
+input:checked:active {
+    background-color: var(--checkmark-checked-click);
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 2em;
+    height: 2em;
+    margin: 2px calc(50% - 1em);
+}input[type="checkbox"]:hover {
+    width: 2.5em;
+    height: 2.5em;
+    margin: 2px calc(50% - 1.25em);
+}
+
+input[type="button"] {
+    margin: 2px 7.5%;
+    border: none;
+    border-radius: .2em;
+    width: 85%;
+}
+
+input[type="number"], input[type="text"] {
+    margin-bottom: 5px;
+    border: none;
+    border-radius: .2em;
+    width: 85%;
+}
+input[type="number"]:focus, input[type="text"]:focus {
+    background-color: var(--button-bg-focus);
+}
+input[type="number"]:focus:active, input[type="text"]:focus:active {
+    background-color: var(--button-bg-focus-click);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 40%;
+    height: 2em;
+    margin: 0 30%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+::-webkit-color-swatch {
+    border: none;
+    border-radius: 10px;
+}input[type="color"]:hover {
+    width: 50%;
+    height: 2.5em;
+    margin: 0 25%;
+}
+::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input:disabled {
+    background-color: var(--button-bg-disabled);
+    color: var(--button-text-disabled);
+}
+
+input[type="range"] {
+    appearance: none;
+    width: 85%;
+    height: .5em;
+}::-webkit-slider-thumb {
+    appearance: none;
+    width: .9em;
+    height: .9em;
+    border-radius: .2em;
+    background: var(--slider-thumb);
+    transform: rotate(var(--r));
+    transition: width 150ms, height 150ms, background 300ms;
+}::-webkit-slider-thumb:active {
+    width: 1.1em;
+    height: 1.1em;
+}
+::-webkit-scrollbar {
+    appearance: none;
+    width: 0px;
+}
+
+#sfxVolumeField, #preferredFS {
+    display: inline-block;
+    width: 25%;
+}
+
+.save-popup-hidden {
+    font-size: 2em;
+    font-weight: 400;
+    margin: 0;
+    opacity: 0;
+    transition: all 1s;
+}
+
+.save-popup-show {
+    font-size: 2em;
+    font-weight: 400;
+    margin: 0;
+    opacity: 1;
+}
+
+.error {
+    color: var(--file-error-color);
+}
+
+.success {
+    color: var(--file-success-color);
+}
+
+span.bind {
+    font-family: 'JetBrains Mono', sans-serif;
+    color: var(--bind-text);
+    background-color: var(--bind-bg);
+    background-clip: padding-box;
+    padding: 0 5px;
+    border-radius: 5px;
+    transition: all 300ms;
+}

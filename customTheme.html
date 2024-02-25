@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./util.js" defer></script>
-    <script src="./assets/script/jszip.min.js" defer></script>
-    <script src="./editor.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="./customTheme.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
     <title>Editor</title>
 </head>
 <body>
     <div class="topnav">
         <a href="./extras.html">Extras</a>
-        <a href="./editor.html" class="selected">Editor</a>
-        <a href="./customTheme.html">Theme</a>
+        <a href="./editor.html">Editor</a>
+        <a href="./customTheme.html" class="selected">Theme</a>
         <a href="./plugins.html">Plugins</a>
     </div>
     <main>
         <h1 class="welcome">
-            Editor
+            Custom Theme
         </h1>
         <hr>
         <input type="button" id="theme-toggle" value="Switch to Light Theme">
-        <p>
-            PulseHax's Edit menu is now available in-game by pressing <span class="bind">Shift+Tab</span> while in the editor!
-        </p>
-        <input type="button" id="open-editor-menu" value="Open Editor Menu">
+        <hr class="small-hr">
+        <input type="button" id="open-theme-editor" value="Open Theme Editor">
         <hr>
         <p class="save-popup-hidden" id="save-popup">Saved</p>
     </main>
