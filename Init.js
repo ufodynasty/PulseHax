@@ -233,11 +233,15 @@ window.addEventListener("SetupComplete", function() {
             )
             .replace(".time),", ".time, game.pulseHax.editor.customPlaybackRate = game.playbackRate),")
             .replace(":.5===", ":0<")
+            .replace(`.editorMode){`, `.editorMode){
+                if (hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
+                    game.extrasNSM.click()
+                }`)
             .replace(clickMenu.screens.toString().split("{")[0], game.functionParams(clickMenu.screens))
         };
         loadLevel = function${
             loadLevel.toString()
-                .replace(`{`, `{game.shiftTab = false; if(!game.edit && menu.PHSettings.preferredFS !== "" && menu.PHSettings.preferredFS !== 0){
+                .replace(`{`, `{if(!game.edit && menu.PHSettings.preferredFS !== "" && menu.PHSettings.preferredFS !== 0){
                     foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
                     foresight = Math.round(menu.PHSettings.preferredFS / foresight * 100) / 100;
                     if(foresight<.25) {foresight = .25};
@@ -248,7 +252,7 @@ window.addEventListener("SetupComplete", function() {
         };
         drawScreens = function${
             drawScreens.toString()
-                .replace(`${musicManager.name}(),`, `(${musicManager.name}(), game.pulseHaxEditorDraw(),
+                .replace(`${musicManager.name}(),`, `(${musicManager.name}(),
                 (!game.edit && (game.disMode === 1 || game.disMode === 2) && screen === "game" && game.mods.startPos === 0) && (
                     game.mods.startPos = game.beat[0][1] < 0 ? 60000 / game.beat[0][9] * game.beat[0][1] - 1 : -1
                     )),`)
@@ -292,13 +296,6 @@ window.addEventListener("SetupComplete", function() {
             scrollTimeline.toString()
                 .replace("{", "{if(game.extrasNSM.data.dropdownHitbox) {return;};")
                 .replace(scrollTimeline.toString().split("{")[0], game.functionParams(scrollTimeline))
-        };
-        mouseClicked = ${
-            mouseClicked.toString()
-                .replace("{", `{if(!prmptingString.active && game.shiftTab && !game.menu && game.edit === true && game.editorMode === 0 && hitbox("rcorner", 0, height / 16 * 8/3, width / 4, height / 16 * 31/3)) {
-                        game.extrasNSM.click()
-                    };
-                `)
         };
         `);
         clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;

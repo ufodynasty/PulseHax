@@ -68,6 +68,7 @@ window.addEventListener("SetupComplete", function() {
         ERR_noSelect: "No notes selected!",
         ERR_multiSelect: "Too many notes selected!",
         ERR_noBuffer: "No notes buffered!",
+        ERR_tooLittleSelected: "Please select at least 2 notes before using Range!",
         ERR_duplicateBank: "A color bank with this name already exists!",
         ERR_tooLittleBanks: "Cannot delete when there is only 1 color bank added!",
         ERR_invalidBankName: "Don't even try bruh",
@@ -81,9 +82,7 @@ window.addEventListener("SetupComplete", function() {
         edit_edit_customSnap_sub: "Sets the timeline snap to 1 / (your input)",
         edit_edit_customPlaybackRate: "Playback Rate",
         edit_edit_customPlaybackRate_sub: "Sets the song playback rate",
-        edit_selectionManip: "Selection",
-        edit_selectionManip_createPracticeDiff: "Create Practice Diff",
-        edit_selectionManip_createPracticeDiff_sub: "Trims the map to only have the selected notes",
+        edit_select: "Selection",
         edit_buffers: "Buffers",
         edit_buffers_bufferSelectedBeats: "Buffer Selected Beats",
         edit_buffers_bufferSelectedBeats_sub: "Copies the selected notes globally so you can paste it in other maps",
@@ -118,24 +117,27 @@ window.addEventListener("SetupComplete", function() {
         edit_select_item_selectAll: "Select All",
         edit_select_item_selectAll_sub: "Selects all notes in the map (using the above filters)",
         edit_select_noteType: "Note Type",
-        edit_select_noteType_sub: "Filters for beats or holds in Quick Select (Default is all)",
+        edit_select_noteType_sub: "Filters for beats, holds and anchors",
         edit_select_noteType_any: "Any",
         edit_select_noteType_beat: "Beat",
         edit_select_noteType_hold: "Hold",
+        edit_select_noteType_anchor: "Anchor",
         edit_select_chordType: "Chord Type",
-        edit_select_chordType_sub: "Filters for singles, doubles and triples+ in Quick Select (Default is all) SNAP OVERRIDES THIS",
-        edit_select_chordType_any: "Any",
-        edit_select_chordType_singles: "Singles",
-        edit_select_chordType_doubles: "Doubles",
-        edit_select_chordType_triplesFwd: "Triples+",
-        edit_select_snapDenominator: "Snap Denominator",
-        edit_select_snapDenominator_sub: "Sets a filter for a specific snap to look for (i.e '4' looks for 1/4s, leave 0 for all)"
+        edit_select_chordType_sub: "Chooses how many notes should be in each tick (0 for any)",
+        edit_select_snapSelect: "Snap Select",
+        edit_select_snapSelect_sub: "Takes an expression a/b and applies it to the snap filter (Leave blank for any)",
+        edit_select_selectStreamEnd: "Select Stream End",
+        edit_select_selectStreamEnd_sub: "Toggles if the last beat of a stream is selected",
+        edit_select_createPracticeDiff: "Create Practice Diff",
+        edit_select_createPracticeDiff_sub: "Trims the map to only have the selected notes"
     }; 
     game.pulseHax.dropdownClosed = true;
     game.pulseHax.editor = {
         noteType: "any",
-        chordType: "any",
-        snapDenominator: 0,
+        chordType: 0,
+        snapSelect: 0,
+        snapSelectDis: "All",
+        selectStreamEnd: false,
         customSnap: 4,
         playbackRate: 1,
         beatBuffer: null,
@@ -167,102 +169,67 @@ window.addEventListener("SetupComplete", function() {
     Object.keys(game.pulseHax.colorBank).forEach((e) => game.pulseHax.colorBankLangItems[`edit_colorBank_${game.pulseHax.colorBank[e].name}`] = game.pulseHax.colorBank[e].name)
 
     langs[langSel] = {...langs[langSel], ...langItems, ...game.pulseHax.colorBankLangItems};
-    game.customSelect = function(e) {
-        if(game.selectedBeats.length === 0 && (e === "after" || e === "before" || e === "inRange")) {
-            popupMessage({
-                type: "error",
-                message: "ERR_noSelect"
-            })
-            return;
-        }
-        game.beat.sort((a, b) => a[1] - b[1])
-        let lb = e === "before" || e === "all" ? 0 : game.selectedBeats[0]
-        let ub = e === "after" || e === "all" ? game.beat.length : game.selectedBeats[game.selectedBeats.length - 1]+1
-        let selectedBuffer = [];
-        game.selectedBeats = [];
-        game.timelineMode = "select";
-        for(let i=lb; i<ub; i++) {
-            selectedBuffer.push(i);
-        }
-        const bValue = game.pulseHax.editor.noteType;
-        const chValue = game.pulseHax.editor.chordType;
-        const snapValue = game.pulseHax.editor.snapDenominator !== 0 ? 1/game.pulseHax.editor.snapDenominator : false;
-        for (let i of selectedBuffer){
-            if(bValue === "beat" ? !game.beat[i][5] : bValue === "hold" ? game.beat[i][5] : true){
-                if(snapValue !== false){
-                    if((i-1 >= 0 && (Math.abs((game.beat[i][1]-game.beat[i-1][1])*game.beat[i][9]/120-snapValue) < 1e-10 || Math.abs((game.beat[i][1]-game.beat[i-1][1])*game.beat[i-1][9]/120-snapValue) < 1e-10)) || (i+1 < game.beat.length && (Math.abs((game.beat[i+1][1]-game.beat[i][1])*game.beat[i][9]/120-snapValue) < 1e-10 || Math.abs((game.beat[i+1][1]-game.beat[i][1])*game.beat[i+1][9]/120-snapValue) < 1e-10))) {
-                        game.selectedBeats.push(i);
-                        let j = 1;
-                        while(i-j >= 0 && game.beat[i][1] == game.beat[i-j][1]) {
-                            game.selectedBeats.push(i-j);
-                            j++;
-                        }
-                while(i+1 < game.beat.length && game.beat[i][1] == game.beat[i+1][1]) {
-                    game.selectedBeats.push(i+1);
-                    i++;
-                }
-                    }
-                } else {
-            if(chValue == "1" || chValue == "2" ? i+1 >= game.beat.length || game.beat[i][1] != game.beat[i+1][1] : chValue == "3+" ? i+1 < game.beat.length && game.beat[i][1] == game.beat[i+1][1] : true) {
-                if(chValue == "1" ? i-1 < 0 || game.beat[i][1] != game.beat[i-1][1] : chValue == "2" ? i-1 >= 0 && game.beat[i][1] == game.beat[i-1][1] && (i-2 < 0 || game.beat[i][1] != game.beat[i-2][1]) : chValue == "3+" ? i-1 >= 0 && game.beat[i][1] == game.beat[i-1][1] : true){
-                    game.selectedBeats.push(i);
-                    chValue == "2" || chValue == "3+" ? game.selectedBeats.push(i-1) : ""
-                    chValue == "3+" ? game.selectedBeats.push(i+1) : ""
-                }
-            }
-                }
-            }
-        }
-        game.selectedBeats = [...new Set(game.selectedBeats)];
-    }
     game.extrasNSM = new newSettingsMenu([{
-        title: "edit_selectionManip",
+        title: "edit_select",
         items: [{
             name: "edit_select_noteType",
             hint: "edit_select_noteType_sub",
             type: "dropdown",
-            labels: ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold"],
-            options: ["any", "beat", "hold"],
+            labels: ["edit_select_noteType_any", "edit_select_noteType_beat", "edit_select_noteType_hold", "edit_select_noteType_anchor"],
+            options: ["any", "beat", "hold", "anchor"],
             var: [game.pulseHax.editor, "noteType"]
         }, {
             name: "edit_select_chordType",
             hint: "edit_select_chordType_sub",
-            type: "dropdown",
-            labels: ["edit_select_chordType_any", "edit_select_chordType_singles", "edit_select_chordType_doubles", "edit_select_chordType_triplesFwd"],
-            options: ["any", "1", "2", "3+"],
-            var: [game.pulseHax.editor, "chordType"]
-        }, {
-            name: "edit_select_snapDenominator",
-            hint: "edit_select_snapDenominator_sub",
             type: "number",
             min: 0,
-            max: false,
+            max: 9,
             smallChange: 1,
-            bigChange: 4,
-            var: [game.pulseHax.editor, "snapDenominator"]
+            bigChange: 2,
+            var: [game.pulseHax.editor, "chordType"],
+            update: () => game.pulseHax.editor.chordType = Math.floor(game.pulseHax.editor.chordType)
+        }, {
+            name: "edit_select_snapSelect",
+            hint: "edit_select_snapSelect_sub",
+            type: "string",
+            allowEmpty: true,
+            var: [game.pulseHax.editor, "snapSelectDis"],
+            after: function() {
+                let splitVer = game.pulseHax.editor.snapSelectDis.split("/");
+                game.pulseHax.editor.snapSelect = splitVer[0] / splitVer[1];
+                if(isNaN(game.pulseHax.editor.snapSelect) || game.pulseHax.editor.snapSelectDis === "") {
+                    game.pulseHax.editor.snapSelectDis = "All";
+                    game.pulseHax.editor.snapSelect = 0;
+                }
+            }
+        }, {
+            name: "edit_select_selectStreamEnd",
+            hint: "edit_select_selectStreamEnd_sub",
+            type: "boolean",
+            var: [game.pulseHax.editor, "selectStreamEnd"]
         }, {
             type: "button",
             name: "edit_select_item_selectInRange",
             hint: "edit_select_item_selectInRange_sub",
-            event: () => game.customSelect("inRange")
+            event: () => game.selectBeats("range", game.pulseHax.editor)
         }, {
             type: "button",
             name: "edit_select_item_selectAll",
             hint: "edit_select_item_selectAll_sub",
-            event: () => game.customSelect("all")
+            event: () => game.selectBeats("all", game.pulseHax.editor)
         }, {
             type: "button",
             name: "edit_select_item_selectBefore",
             hint: "edit_select_item_selectBefore_sub",
-            event: () => game.customSelect("before")
+            event: () => game.selectBeats("before", game.pulseHax.editor)
         }, {
             type: "button",
             name: "edit_select_item_selectAfter",
             hint: "edit_select_item_selectAfter_sub",
-            event: () => game.customSelect("after")
+            event: () => game.selectBeats("after", game.pulseHax.editor)
         }, {
-            name: "edit_selectionManip_createPracticeDiff",
-            hint: "edit_selectionManip_createPracticeDiff_sub",
+            name: "edit_select_createPracticeDiff",
+            hint: "edit_select_createPracticeDiff_sub",
             type: "button",
             event: function() {
                 if(game.selectedBeats.length === 0) {
@@ -568,23 +535,166 @@ window.addEventListener("SetupComplete", function() {
     }
     ]);
 
-    game.pulseHaxEditorDraw = function() {
-        if(game.shiftTab && !game.menu && game.edit === true && game.editorMode === 0) {
-            game.extrasNSM.draw({
-                x: 0,
-                y: height / 16 * 8/3,
-                width: width / 4,
-                height: height / 16 * 31/3,
-                stacked: !0,
-                maxBarHeight: height / 16 / 1.25,
-                buffer: height / 16 * 12 / 128
-            });
-        }
+    eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`128})}`, `128})} if(game.editorMode === 0 && game.shiftTab) {
+        if (fill(0, 0, 0, 200),
+            rectMode(CORNER),
+            noStroke(),
+            rect(-width/16, height / 16 * 8/3, width / 4 + width / 16, height / 16 * 31/3, (width < height ? width : height) / 32)) {
+        game.extrasNSM.draw({
+        x: 0,
+        y: height / 16 * 8/3,
+        width: width / 4,
+        height: height / 16 * 31/3,
+        stacked: !0,
+        maxBarHeight: height / 16 / 1.25,
+        buffer: height / 16 * 12 / 128
+        })
     }
+}`)
+);
+
+game.selectBeats = function(condition, options) {
+    if(condition === "current") {
+        if(options === "checkCurrent") {
+            return game.beat.filter((b) => b[1] === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).length === 0;
+        };
+        game.beat.filter((b) => b[1] === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).forEach((b) => {
+            if(game.selectedBeats.includes(b)) {
+                game.selectedBeats.splice(game.selectedBeats.indexOf(b), 1)
+            } else {
+                game.selectedBeats.push(b)
+            }
+            game.selectedBeats.sort((a, b) => a-b)
+        });
+        return true;
+    };
+    let basicTest = new Function();
+    options = options === undefined ? null : options
+    switch(condition) {
+        case "all":
+            basicTest = (() => true);
+            break;
+        case "before":
+            basicTest = ((a, b) => a >= b);
+            break;
+        case "after":
+            basicTest = ((a, b) => a <= b);
+            break;
+        case "current":
+            basicTest = ((a, b) => a === b);
+            options = null;
+            break;
+        case "range":
+            basicTest = ((a, b, c) => b >= a - 1/1e6 && b <= c + 1/1e6);
+            break;
+        default:
+            basicTest = (() => true);
+            break;
+    };
+    if(game.selectedBeats.length < 2 && condition === "range") {
+        popupMessage({
+            type: "error",
+            message: "ERR_tooLittleSelected"
+        });
+        return;
+    };
+    game.timelineMode = "select";
+    function testOptions(options, beat) {
+        // Return true if no options are given (specifically for current select which should not take any filters)
+        if(options === null) {
+            return true;
+        };
+        // Setting some useful variables
+        const beatTime = game.timelineTickFor(beat[1]);
+        const currentBeatChord = game.beat.filter((b) => game.timelineTickFor(b[1]) === beatTime);
+        const beatToCheck = game.beat[Math.min(...currentBeatChord.map((b) => game.beat.indexOf(b)))];
+        // Run checks for note type if it's not all
+        if(options.noteType !== "any") {
+            const noteType = options.noteType === "beat" ? 0 : options.noteType === "hold" ? 1 : 2;
+            // Check for anchors
+            if(noteType === 2) {
+                let returnValue = false;
+                if(beat[5] === 1 && game.beat.filter((b) => b[1] > beat[1] && b[1] < beat[1] + beat[6]).length !== 0) {
+                    returnValue = true;
+                }
+                if(!returnValue) {
+                    return false;
+                }
+            }
+            // Check if current beat is a beat (0) or a hold (1). If not, return false
+            if(beat[5] !== noteType && noteType !== 2) {
+                return false;
+            };
+        };
+        // Run checks for chord type if it's not all
+        if(options.chordType !== 0) {
+            const chordType = options.chordType;
+            // Check if the current tick has a n-chord that matches with chordType. If not, return false
+            if(currentBeatChord.length !== chordType) {
+                return false;
+            };
+        };
+        // Run checks for snap select if it's not all
+        if(options.snapSelect !== 0) {
+            const snapSelect = options.snapSelect;
+            const successor = game.beat[game.beat.indexOf(beatToCheck)+1];
+            const predescescor = game.beat[game.beat.indexOf(beatToCheck)-1];
+            // Failsafe
+            if(predescescor === undefined || successor === undefined) {return false;}
+            else if(predescescor !== undefined && successor !== undefined) {
+                // Check for stream end
+                if(!options.selectStreamEnd) {
+                    if(round(beatTime + snapSelect, 5) !== round(game.timelineTickFor(successor[1]), 5)) {
+                        return false;
+                    }
+                }
+
+                // Check if it is snapped
+                if(round(game.timelineTickFor(predescescor[1]) + snapSelect, 5) !== round(beatTime, 5)
+                && round(game.timelineTickFor(successor[1]) - snapSelect, 5) !== round(beatTime, 5)) {
+                    return false;
+                }
+            };
+        };
+
+        // If everything matches up, return true
+        return true;
+    };
+    const beforeAfter = game.beat.filter((b) => condition === "before" ? b[1] <= game.time + 1/1e6 : b[1] >= game.time - 1/1e6).map((b) => game.beat.indexOf(b))
+    var firstSelected = condition === "all" ? 0 : condition === "after" ? beforeAfter[0] : condition === "before" ? beforeAfter[beforeAfter.length - 1] : game.selectedBeats[0];
+    var lastSelected = condition === "all" ? game.beat.length-1 : condition === "after" ? beforeAfter[beforeAfter.length - 1] : condition === "before" ? beforeAfter[0] : game.selectedBeats[game.selectedBeats.length - 1];
+    if(firstSelected !== undefined && lastSelected !== undefined) {
+        const firstBeat = game.beat[firstSelected];
+        const lastBeat = game.beat[lastSelected];
+        if(firstBeat && lastBeat) {
+            var fbTime = game.timelineTickFor(firstBeat[1]);
+            var lbTime = game.timelineTickFor(lastBeat[1]);
+            for(let note = game.selectedBeats.length = 0; note < game.beat.length; note++) {
+                const currentBeat = game.beat[note];
+                if(basicTest(condition === "current" ? game.timelineTickFor(game.time) : fbTime, game.timelineTickFor(currentBeat[1]), lbTime)
+                    && testOptions(game.pulseHax.editor, currentBeat, note)) {
+                    game.selectedBeats.push(note);
+                }
+            };
+        }
+    };
+};
 
     document.addEventListener("keydown", function(e) {
         if(e.shiftKey && e.code === "Tab") {
             game.shiftTab = !game.shiftTab;
+        }
+        if(e.code === "KeyT" && screen === "game" && game.disMode === 1 && game.edit && game.editorMode === 0 && !game.menu) {
+            if(game.selectBeats("current", "checkCurrent")) {return;}
+            game.timelineMode = "select";
+            game.selectBeats("current");
+        }
+    });
+    document.addEventListener("contextmenu", function(e) {
+        if(e.button === 2) {
+            if(game.selectBeats("current", "checkCurrent")) {return;}
+            game.timelineMode = "select";
+            game.selectBeats("current")
         }
     });
 });
