@@ -556,9 +556,9 @@ window.addEventListener("SetupComplete", function() {
 game.selectBeats = function(condition, options) {
     if(condition === "current") {
         if(options === "checkCurrent") {
-            return game.beat.filter((b) => b[1] === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).length === 0;
+            return game.beat.filter((b) => game.timelineTickFor(b[1]) === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).length === 0;
         };
-        game.beat.filter((b) => b[1] === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).forEach((b) => {
+        game.beat.filter((b) => game.timelineTickFor(b[1]) === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).forEach((b) => {
             if(game.selectedBeats.includes(b)) {
                 game.selectedBeats.splice(game.selectedBeats.indexOf(b), 1)
             } else {
