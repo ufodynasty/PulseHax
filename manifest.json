@@ -1,6 +1,6 @@
 {
     "name": "PulseHax",
-    "version": "0.11.1-2",
+    "version": "0.11.2",
     "description": "Hacking pulsus has never been so easy",
     "permissions": ["storage"],
     "host_permissions": ["https://pulsus.cc/*","https://www.pulsus.cc/*"],
@@ -13,6 +13,7 @@
         "resources": [
         "/Init.js",
         "/editorMenu.js",
+        "/colorBankMenu.js",
         "/assets/game/icon.ico",
         "/assets/audio/retry.wav",
         "/assets/audio/scroll.wav",
