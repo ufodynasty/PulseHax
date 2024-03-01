@@ -556,9 +556,22 @@ window.addEventListener("SetupComplete", function() {
 game.selectBeats = function(condition, options) {
     if(condition === "current") {
         if(options === "checkCurrent") {
-            return game.beat.filter((b) => game.timelineTickFor(b[1]) === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).length === 0;
-        };
-        game.beat.filter((b) => game.timelineTickFor(b[1]) === Math.round(game.timelineTickFor(game.time) / game.snap) * game.snap).map((b) => game.beat.indexOf(b)).forEach((b) => {
+            return game.beat.filter((b) => { 
+                if(!game.playing) {
+                    return game.timelineTickFor(b[1]) === round(game.timelineTickFor(game.time) / game.snap, 6) * game.snap;
+                } else {
+                    return game.timelineTickFor(b[1]) <= round(game.timelineTickFor(game.time) / game.snap, 6) * game.snap + game.snap/2 && game.timelineTickFor(b[1]) >= round(game.timelineTickFor(game.time) / game.snap, 6) * game.snap - game.snap/2;
+                }
+            }
+        ).map((b) => game.beat.indexOf(b)).length === 0};
+        game.beat.filter((b) => { 
+            if(!game.playing) {
+                return game.timelineTickFor(b[1]) === round(game.timelineTickFor(game.time) / game.snap, 6) * game.snap;
+            } else {
+                return game.timelineTickFor(b[1]) <= round(game.timelineTickFor(game.time) / game.snap, 6) * game.snap + game.snap/2 && game.timelineTickFor(b[1]) >= round(game.timelineTickFor(game.time) / game.snap, 6) * game.snap - game.snap/2;
+            }
+        }
+    ).map((b) => game.beat.indexOf(b)).forEach((b) => {
             if(game.selectedBeats.includes(b)) {
                 game.selectedBeats.splice(game.selectedBeats.indexOf(b), 1)
             } else {
@@ -644,14 +657,14 @@ game.selectBeats = function(condition, options) {
             else if(predescescor !== undefined && successor !== undefined) {
                 // Check for stream end
                 if(!options.selectStreamEnd) {
-                    if(round(beatTime + snapSelect, 5) !== round(game.timelineTickFor(successor[1]), 5)) {
+                    if(round(beatTime + snapSelect, 6) !== round(game.timelineTickFor(successor[1]), 6)) {
                         return false;
                     }
                 }
 
                 // Check if it is snapped
-                if(round(game.timelineTickFor(predescescor[1]) + snapSelect, 5) !== round(beatTime, 5)
-                && round(game.timelineTickFor(successor[1]) - snapSelect, 5) !== round(beatTime, 5)) {
+                if(round(game.timelineTickFor(predescescor[1]) + snapSelect, 6) !== round(beatTime, 6)
+                && round(game.timelineTickFor(successor[1]) - snapSelect, 6) !== round(beatTime, 6)) {
                     return false;
                 }
             };

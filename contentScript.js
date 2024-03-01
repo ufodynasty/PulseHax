@@ -3,12 +3,12 @@ initScript.src = chrome.runtime.getURL(`Init.js`);
 initScript.onload = function() {
   this.remove();
 };
-let phDraw = document.createElement('script');
-phDraw.src = chrome.runtime.getURL(`editorMenu.js`);
-phDraw.onload = function() {
+let editorMenu = document.createElement('script');
+editorMenu.src = chrome.runtime.getURL(`editorMenu.js`);
+editorMenu.onload = function() {
   this.remove();
 };
-(document.documentElement || document.head).append(initScript, phDraw);
+(document.documentElement || document.head).append(initScript, editorMenu);
 
 chrome.storage.onChanged.addListener(function(changes, areaName) {
     if(areaName === "local" && Object.hasOwn(changes, "CustomTheme")) {

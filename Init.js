@@ -1,49 +1,51 @@
 function completeSetup() {
-    Object.defineProperty(globalThis, 'calcLevelStars', { get: () => {return Bn},set: (val) => {Bn = val}});
-    Object.defineProperty(globalThis, 'clevels', { get: () => {return Rt},set: (val) => {Rt = val}});
-    Object.defineProperty(globalThis, 'copyLevel', { get: () => {return Mo},set: (val) => {Mo = val}});
-    Object.defineProperty(globalThis, 'copyObject', { get: () => {return X},set: (val) => {X = val}});
-    // Object.defineProperty(globalThis, 'fitText', { get: () => {return Dt},set: (val) => {Dt = val}});
-    Object.defineProperty(globalThis, 'game', { get: () => {return Tt},set: (val) => {Tt = val}});
-    Object.defineProperty(globalThis, 'getLevelDownloadState', { get: () => {return qo},set: (val) => {qo = val}});
-    // Object.defineProperty(globalThis, 'img', { get: () => {return St},set: (val) => {St = val}});
-    Object.defineProperty(globalThis, 'lang', { get: () => {return Pt},set: (val) => {Pt = val}});
-    // Object.defineProperty(globalThis, 'langList', { get: () => {return U},set: (val) => {U = val}});
-    Object.defineProperty(globalThis, 'langSel', { get: () => {return xt},set: (val) => {xt = val}});
-    Object.defineProperty(globalThis, 'langs', { get: () => {return F},set: (val) => {F = val}});
-    Object.defineProperty(globalThis, 'levels', { get: () => {return Ht},set: (val) => {Ht = val}});
-    Object.defineProperty(globalThis, 'lvlHowl', { get: () => {return Qt},set: (val) => {Qt = val}});
-    Object.defineProperty(globalThis, 'menu', { get: () => {return Bt},set: (val) => {Bt = val}});
-    Object.defineProperty(globalThis, 'menuMusic', { get: () => {return to},set: (val) => {to = val}});
-    Object.defineProperty(globalThis, 'musicManager', { get: () => {return cs},set: (val) => {cs = val}}); // This name is wrong
-    Object.defineProperty(globalThis, 'nav', { get: () => {return c},set: (val) => {c = val}}); // This name is wrong
-    Object.defineProperty(globalThis, 'newGrabLevelMeta', { get: () => {return H},set: (val) => {H = val}});
-    Object.defineProperty(globalThis, 'newGrabLevel', { get: () => {return m},set: (val) => {m = val}});
-    Object.defineProperty(globalThis, 'screen', { get: () => {return He},set: (val) => {He = val}});
-    Object.defineProperty(globalThis, 'theme', { get: () => {return $},set: (val) => {$ = val}});
-    Object.defineProperty(globalThis, 'themes', { get: () => {return qe},set: (val) => {qe = val}});
-    Object.defineProperty(globalThis, 'toLoad', { get: () => {return Ne},set: (val) => {Ne = val}});
-    Object.defineProperty(globalThis, 'user', { get: () => {return T},set: (val) => {T = val}});
-    Object.defineProperty(globalThis, 'welcome', { get: () => {return s},set: (val) => {s = val}});
-    Object.defineProperty(globalThis, 'newGrabUser', { get: () => {return Ut},set: (val) => {Ut = val}});
-    Object.defineProperty(globalThis, 'drawScreens', { get: () => {return gs},set: (val) => {gs = val}}); // This is wrong
-    Object.defineProperty(globalThis, 'clickMenu', { get: () => {return fs},set: (val) => {fs = val}}); // This is wrong
-    Object.defineProperty(globalThis, 'ease', { get: () => {return At},set: (val) => {At = val}});
-    Object.defineProperty(globalThis, 'editorAction', { get: () => {return kn},set: (val) => {kn = val}});
-    Object.defineProperty(globalThis, 'executePlay', { get: () => {return en},set: (val) => {en = val}});
-    Object.defineProperty(globalThis, 'hitbox', { get: () => {return Ft},set: (val) => {Ft = val}});
-    Object.defineProperty(globalThis, 'loadLevel', { get: () => {return qi},set: (val) => {qi = val}});
-   //  Object.defineProperty(globalThis, 'loadStartScreens', { get: () => {return Cs},set: (val) => {Cs = val}}); // This is wrong
-    Object.defineProperty(globalThis, 'newSettingsMenu', { get: () => {return Jo},set: (val) => {Jo = val}});
-    Object.defineProperty(globalThis, 'promptRes', { get: () => {return ki},set: (val) => {ki = val}});
-    // Object.defineProperty(globalThis, 'prmpt', { get: () => {return Ri},set: (val) => {Ri = val}});
-    Object.defineProperty(globalThis, 'popupMessage', { get: () => {return Gn},set: (val) => {Gn = val}}); // This is wrong
-    Object.defineProperty(globalThis, 'prmpting', { get: () => {return g},set: (val) => {g = val}});
-    Object.defineProperty(globalThis, 'saveGameData', { get: () => {return Qn},set: (val) => {Qn = val}});
-    Object.defineProperty(globalThis, 'server', { get: () => {return v},set: (val) => {v = val}});
-    Object.defineProperty(globalThis, 'prmptingString', { get: () => {return Nt},set: (val) => {Nt = val}});
-    Object.defineProperty(globalThis, 'scrollTimeline', { get: () => {return qn},set: (val) => {qn = val}}); // This is wrong
-    game.pulseHax = {params: {}};
+    Object.defineProperty(globalThis, 'calcLevelStars', {get:()=>{  return  Bn  },set:(val)=>{  Bn  =val}});
+    Object.defineProperty(globalThis, 'clevels', {get:()=>{  return  Rt  },set:(val)=>{  Rt  =val}});
+    Object.defineProperty(globalThis, 'clickMenu', {get:()=>{  return  fs  },set:(val)=>{  fs  =val}});
+    Object.defineProperty(globalThis, 'copyLevel', {get:()=>{  return  Mo  },set:(val)=>{  Mo  =val}});
+    Object.defineProperty(globalThis, 'copyObject', {get:()=>{  return  X  },set:(val)=>{  X  =val}});
+    Object.defineProperty(globalThis, 'drawScreens', {get:()=>{  return  gs  },set:(val)=>{  gs  =val}});
+    Object.defineProperty(globalThis, 'ease', {get:()=>{  return  At  },set:(val)=>{  At  =val}});
+    Object.defineProperty(globalThis, 'editorAction', {get:()=>{  return  kn  },set:(val)=>{  kn  =val}});
+    Object.defineProperty(globalThis, 'executePlay', {get:()=>{  return  en  },set:(val)=>{  en  =val}});
+    Object.defineProperty(globalThis, 'fitText', {get:()=>{  return  Dt  },set:(val)=>{  Dt  =val}});
+    Object.defineProperty(globalThis, 'game', {get:()=>{  return  Tt  },set:(val)=>{  Tt  =val}});
+    Object.defineProperty(globalThis, 'getLevelDownloadState', {get:()=>{  return  qo  },set:(val)=>{  qo  =val}});
+    Object.defineProperty(globalThis, 'getObject', {get:()=>{  return  te  },set:(val)=>{  te  =val}});
+    Object.defineProperty(globalThis, 'hitbox', {get:()=>{  return  Ft  },set:(val)=>{  Ft  =val}});
+    Object.defineProperty(globalThis, 'img', {get:()=>{  return  St  },set:(val)=>{  St  =val}});
+    Object.defineProperty(globalThis, 'lang', {get:()=>{  return  Pt  },set:(val)=>{  Pt  =val}});
+    Object.defineProperty(globalThis, 'langList', {get:()=>{  return  U  },set:(val)=>{  U  =val}});
+    Object.defineProperty(globalThis, 'langSel', {get:()=>{  return  xt  },set:(val)=>{  xt  =val}});
+    Object.defineProperty(globalThis, 'langs', {get:()=>{  return  F  },set:(val)=>{  F  =val}});
+    Object.defineProperty(globalThis, 'levels', {get:()=>{  return  Ht  },set:(val)=>{  Ht  =val}});
+    Object.defineProperty(globalThis, 'loadLevel', {get:()=>{  return  qi  },set:(val)=>{  qi  =val}});
+    Object.defineProperty(globalThis, 'loadStartScreens', {get:()=>{  return  Cs  },set:(val)=>{  Cs  =val}});
+    Object.defineProperty(globalThis, 'lvlHowl', {get:()=>{  return  Qt  },set:(val)=>{  Qt  =val}});
+    Object.defineProperty(globalThis, 'matrix', {get:()=>{  return  zt  },set:(val)=>{  zt  =val}});
+    Object.defineProperty(globalThis, 'menu', {get:()=>{  return  Bt  },set:(val)=>{  Bt  =val}});
+    Object.defineProperty(globalThis, 'menuMusic', {get:()=>{  return  to  },set:(val)=>{  to  =val}});
+    Object.defineProperty(globalThis, 'musicManager', {get:()=>{  return  cs  },set:(val)=>{  cs  =val}});
+    Object.defineProperty(globalThis, 'nav', {get:()=>{  return  c  },set:(val)=>{  c  =val}});
+    Object.defineProperty(globalThis, 'newGrabLevel', {get:()=>{  return  m  },set:(val)=>{  m  =val}});
+    Object.defineProperty(globalThis, 'newGrabLevelMeta', {get:()=>{  return  H  },set:(val)=>{  H  =val}});
+    Object.defineProperty(globalThis, 'newGrabUser', {get:()=>{  return  Ut  },set:(val)=>{  Ut  =val}});
+    Object.defineProperty(globalThis, 'newSettingsMenu', {get:()=>{  return  Jo  },set:(val)=>{  Jo  =val}});
+    Object.defineProperty(globalThis, 'popupMessage', {get:()=>{  return  Gn  },set:(val)=>{  Gn  =val}});
+    Object.defineProperty(globalThis, 'prmpt', {get:()=>{  return  Ri  },set:(val)=>{  Ri  =val}});
+    Object.defineProperty(globalThis, 'prmpting', {get:()=>{  return  g  },set:(val)=>{  g  =val}});
+    Object.defineProperty(globalThis, 'prmptingString', {get:()=>{  return  Nt  },set:(val)=>{  Nt  =val}});
+    Object.defineProperty(globalThis, 'promptRes', {get:()=>{  return  ki  },set:(val)=>{  ki  =val}});
+    Object.defineProperty(globalThis, 'saveGameData', {get:()=>{  return  Qn  },set:(val)=>{  Qn  =val}});
+    Object.defineProperty(globalThis, 'screen', {get:()=>{  return  He  },set:(val)=>{  He  =val}});
+    Object.defineProperty(globalThis, 'scrollTimeline', {get:()=>{  return  qn  },set:(val)=>{  qn  =val}});
+    Object.defineProperty(globalThis, 'server', {get:()=>{  return  v  },set:(val)=>{  v  =val}});
+    Object.defineProperty(globalThis, 'theme', {get:()=>{  return  $  },set:(val)=>{  $  =val}});
+    Object.defineProperty(globalThis, 'themes', {get:()=>{  return  qe  },set:(val)=>{  qe  =val}});
+    Object.defineProperty(globalThis, 'toLoad', {get:()=>{  return  Ne  },set:(val)=>{  Ne  =val}});
+    Object.defineProperty(globalThis, 'user', {get:()=>{  return  T  },set:(val)=>{  T  =val}});
+    Object.defineProperty(globalThis, 'welcome', {get:()=>{  return  s  },set:(val)=>{  s  =val}});
+    game.pulseHax = {};
     window.dispatchEvent(new CustomEvent('SetupComplete'));
 };
 eval(`
@@ -91,9 +93,11 @@ window.addEventListener("SetupComplete", function() {
     game.rgbToHex = function(r, g, b) {
         return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
     }
-    game.pulseHax.params.NSMItem = newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-2] === "=" ?
+    game.pulseHax.params = {
+        NSMItem: newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-2] === "=" ?
     newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-1] :
-    newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-1] + newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().search(`.type`)-2]
+    newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().indexOf(`.type`)-1] + newSettingsMenu.prototype.draw.toString()[newSettingsMenu.prototype.draw.toString().search(`.type`)-2],
+    };
     const themeNames = {
         theme_addt_gufo: "Gufo's theme",
         theme_addt_floopy: "Floopy's theme",
@@ -268,19 +272,6 @@ window.addEventListener("SetupComplete", function() {
         game.menuNSM.pages[0].items[10].event = ${
             game.menuNSM.pages[0].items[10].event.toString()
                 .slice(0, -1) + ",game.mods.hidden=false}"
-        };
-        newSettingsMenu.prototype.draw = ${
-            newSettingsMenu.prototype.draw.toString()
-                .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`)
-                .replace(`open}})`, `open; if(!game.pulseHax.dropdownClosed) {
-                        let interval = setInterval(() => {
-                            if(e.animation.height === 0) {
-                                clearInterval(interval);
-                                e.after?.();
-                            }
-                        }, 500)
-                    }; game.pulseHax.dropdownClosed = false}})`)
-                    .replace(`${game.pulseHax.params.NSMItem}.animation.height=0,`, `(${game.pulseHax.params.NSMItem}.animation.height = 0, game.pulseHax.dropdownClosed = false),`)
         };
         saveGameData = function${
             saveGameData.toString()
