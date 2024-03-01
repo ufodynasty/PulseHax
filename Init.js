@@ -288,6 +288,19 @@ window.addEventListener("SetupComplete", function() {
                 .replace("{", "{if(game.extrasNSM.data.dropdownHitbox) {return;};")
                 .replace(scrollTimeline.toString().split("{")[0], game.functionParams(scrollTimeline))
         };
+        newSettingsMenu.prototype.draw = ${
+            newSettingsMenu.prototype.draw.toString()
+                .replace(`hue:e.hue,`, `hue:e.hue, after: e.after,`)
+                .replace(`open}})`, `open; if(!game.pulseHax.dropdownClosed) {
+                        let interval = setInterval(() => {
+                            if(e.animation.height === 0) {
+                                clearInterval(interval);
+                                e.after?.();
+                            }
+                        }, 500)
+                    }; game.pulseHax.dropdownClosed = false}})`)
+                .replace(`${game.pulseHax.params.NSMItem}.animation.height=0,`, `(${game.pulseHax.params.NSMItem}.animation.height = 0, game.pulseHax.dropdownClosed = false),`)
+        };
         `);
         clickMenu.screens.accountSignedIn = clickMenuBuffer.accountSignedIn;
         clickMenu.screens.accountSignedOut = clickMenuBuffer.accountSignedOut;
