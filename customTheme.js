@@ -30,3 +30,11 @@ openThemeEditor.addEventListener("click", function() {
         window.open(chrome.runtime.getURL("/themeEditor.html"), "_blank")
     })
 });
+const browseThemes = document.getElementById("browse-themes");
+browseThemes.addEventListener("click", function() {
+    execute(`response = {user: newGrabUser(user.uuid, "uuid")}`, function(response) {
+        userData = response.response.user;
+        chrome.storage.local.set({UserData:userData})
+        window.open(chrome.runtime.getURL("/themeBrowser.html"), "_blank")
+    })
+});

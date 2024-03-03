@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./util.js" defer></script>
+    <script src="./assets/script/p5.min.js" defer></script>
+    <script src="./assets/script/jszip.min.js" defer></script>
+    <script src="./loadTheme.js" defer></script>
+    <script src="./themeBrowser.js" defer></script>
+    <link rel="stylesheet" href="./themeEditor.css">
+    <title>Theme Browser</title>
+</head>
+<body>
+    <h1 class="welcome">Theme Browser</h1>
+    <hr>
+    <div class="parent">
+        <div>
+            <input type="button" id="theme-toggle" value="Switch to Light Theme">
+            <p class="save-popup-hidden" id="save-popup">Saved</p>
+            <hr class="small-hr">
+            <input type="text" id="search" placeholder="Search theme" style="width: 45%;">
+            <select id="searchFilter" style="width: 15%;">
+                <option value="name" selected>Search for: Name</option>
+                <option value="author">Search for: Author</option>
+            </select>
+            <select id="sortBy" style="width: 15%;">
+                <option value="name asc" sort="asc" selected>Sort by: Name (asc)</option>
+                <option value="name desc" sort="desc">Sort by: Name (desc)</option>
+                <option value="author asc" sort="asc">Sort by: Author (asc)</option>
+                <option value="author desc" sort="desc">Sort by: Author (desc)</option>
+            </select>
+            <main id="theme-main">
+                <h1 id="loading">Loading...</h1>
+            </main>
+        </div>
+        <div id="p5Canvas">
+            <h1 class="big">Theme Preview</h1>
+        </div>
+    </div>
+</body>
+</html>
