@@ -81,7 +81,6 @@ html {
     overflow: hidden;
     background-color: var(--topnav-bg);
     position: relative;
-    transition: 300ms;
 }
 .topnav .selected {
     background-color: var(--topnav-bg-selected);
@@ -97,7 +96,6 @@ a {
     text-decoration: none;
     color: var(--text);
     font-weight: bold;
-    transition: 300ms;
 }
 
 .welcome {
@@ -141,7 +139,6 @@ fieldset {
 input {
     background-color: var(--button-bg);
     border-radius: .2em;
-    transition: 150ms;
     margin: 0;
     color: var(--text);
 }
@@ -199,6 +196,7 @@ input[type="number"]::-webkit-outer-spin-button {
 input:disabled {
     background-color: var(--button-bg-disabled);
     color: var(--button-text-disabled);
+    user-select: none !important;
 }
 
 input[type="range"] {
@@ -212,7 +210,6 @@ input[type="range"] {
     border-radius: .2em;
     background: var(--slider-thumb);
     transform: rotate(var(--r));
-    transition: width 150ms, height 150ms, background 300ms;
 }::-webkit-slider-thumb:active {
     width: 1.1em;
     height: 1.1em;
@@ -257,5 +254,12 @@ span.bind {
     background-clip: padding-box;
     padding: 0 5px;
     border-radius: 5px;
-    transition: all 300ms;
+}
+
+[buffer="no-transition"] *, [buffer="no-transition"] {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
 }

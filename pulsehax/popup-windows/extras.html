@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html id="html" lang="en" class="dark-theme" buffer="no-transition">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/script/util.js" defer></script>
+    <script src="/assets/script/jszip.min.js" defer></script>
+    <script src="/pulsehax/popup-windows/extras.js" defer></script>
+    <link rel="stylesheet" href="/assets/style/style.css">
+    <style id="pseudo-style"></style>
+    <title>Extras</title>
+</head>
+<body>
+    <div class="topnav">
+        <a href="/pulsehax/popup-windows/extras.html" class="selected">Extras</a>
+        <a href="/pulsehax/popup-windows/editor.html">Editor</a>
+        <a href="/pulsehax/popup-windows/customTheme.html">Theme</a>
+        <a href="/pulsehax/popup-windows/plugins.html">Plugins</a>
+    </div>
+    <main>
+        <h1 class="welcome">
+            Welcome to PulseHax o/
+        </h1>
+        <hr>
+        <input type="button" id="theme-toggle" value="Switch to Light Theme">
+        <p class="save-popup-hidden" id="save-popup">Saved</p>
+        <hr class="small-hr">
+        <fieldset>
+            <legend>Startup</legend>
+            <input type="checkbox" id="wave" game-value="welcome.wave" hint="extras_wave">   
+            <label for="wave" display="Welcome Wave">Welcome Wave</label>
+            <br>
+            <label for="welcomeText" display="Welcome Text">Welcome Text</label>
+            <input type="text" id="welcomeText" game-value="langs[langSel].welcome" hint="extras_welcomeText" placeholder="Welcome Text...">
+        </fieldset>
+        <fieldset>
+            <legend>Menu</legend>
+            <input type="checkbox" id="additionalThemes" game-value="menu.PHSettings.additionalThemes" hint="extras_additionalThemes">   
+            <label for="additionalThemes" display="Additional Themes">Additional Themes</label>
+            <br>
+            <input type="checkbox" id="customTheme" game-value="menu.PHSettings.customTheme" hint="extras_customTheme">
+            <label for="customTheme" display="Custom Theme">Custom Theme</label>
+            <br>
+            <label for="sfxVolume" display="SFX Volume">SFX Volume: </label> <input type="number" id="sfxVolumeField" value="50" class="inline-field" target="sfxVolume">
+            <input type="range" id="sfxVolume" game-value="menu.PHSettings.sfxVolume" hint="extras_sfxVolume">
+        </fieldset>
+        <fieldset>
+            <legend>Gameplay</legend>
+            <input type="checkbox" id="skipIntro" game-value="game.skipIntro" hint="extras_skipIntro">
+            <label for="skipIntro" display="Skip Intro">Skip Intro</label>
+            <br>
+            <input type="checkbox" id="preferredFSEnabled" game-value="menu.PHSettings.preferredFSEnabled" hint="extras_preferredFSEnabled" disable-target="preferredFS">
+            <label for="preferredFSEnabled" display="Enable Preferred FS">Enable Preferred FS</label>
+            <label for="preferredFS" display="Preferred FS">Preferred FS: </label>
+            <input type="number" id="preferredFS" game-value="menu.PHSettings.preferredFS" hint="extras_preferredFS" value="1" complementary="false" min="0" max="10" round="false" step=".01">
+        </fieldset>
+        <fieldset>
+            <legend>Map Manipulation</legend>
+            <input type="button" id="copy-map" value="Copy Map" hint="extras_copyMap" disabled>
+            <input type="button" id="export-map" value="Export Map" hint="extras_exportMap" disabled>
+            <input type="button" id="import-maps-display" value="Import Maps" hint="extras_importMaps">
+            <input type="file" id="import-maps" accept=".phz, .pls" multiple="true" style="display: none;">
+        </fieldset>
+        <fieldset>
+            <legend>Misc</legend>
+            <input type="checkbox" id="changeTab" game-value="menu.PHSettings.changeTab" hint="extras_changeTab">
+            <label for="changeTab" display="Change Tab">Change Tab</label>
+            <input type="button" id="export-settings" value="Export Settings" hint="extras_exportSettings">
+            <input type="button" id="import-settings-display" value="Import Settings" hint="extras_importSettings">
+            <input type="file" id="import-settings" accept=".phs" multiple="false" style="display:none;">
+        </fieldset>
+    </main>
+</body>
+</html>

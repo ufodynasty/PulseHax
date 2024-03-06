@@ -1,30 +1,5 @@
-const html = document.getElementsByTagName("html")[0];
-const themeToggle = document.getElementById("theme-toggle");
-const save = document.getElementById("save-popup");
-let saveTransCompleted = true;
-function savePopup(text) {
-    save.innerText = `Saved ${text}!`;
-    save.className = "save-popup-show";
-    if(saveTransCompleted) {
-        saveTransCompleted = false;
-        setTimeout(() => {
-            save.className = "save-popup-hidden";
-            saveTransCompleted = true;
-        }, 1000);
-    }
-};
-themeToggle.addEventListener("click", function() {
-    userSettings.theme = userSettings.theme === "dark-theme" ? "light-theme" : "dark-theme";
-    chrome.storage.local.set({Settings:userSettings}, function() {
-        savePopup("Theme");
-    });
-    html.className = userSettings.theme;
-    themeToggle.value = userSettings.theme === "dark-theme" ? "Switch to Light Theme" : "Switch to Dark Theme";
-});
-
-// extras.js
-
 document.addEventListener("FetchLocalStorage", function() {
+    document.getElementById("preferredFSEnabled").value = userSettings.preferredFSEnabled
     document.querySelectorAll('input[type="range"]').forEach((element) => {
         let id = element.id;
         let numberField = document.querySelector(`.inline-field[target="${id}"]`);
@@ -83,6 +58,11 @@ document.addEventListener("FetchLocalStorage", function() {
                 }
         });
     });
+    document.querySelectorAll("[disable-target]").forEach((checkbox) => {
+        const targetValue = checkbox.getAttribute("disable-target");
+        const targetElement = document.getElementById(targetValue);
+        targetElement.disabled = !checkbox.checked;
+    });
 });
 document.querySelectorAll('input[type="number"][complementary="false"]').forEach((element) => {
     let id = element.id;
@@ -128,6 +108,11 @@ document.querySelectorAll('input[type="checkbox"], input[type="text"]').forEach(
                 refreshValue(element.id, valueArg);
             });
         });
+        console.log(element.getAttribute("disable-target"))
+        console.log(element)
+        if(element.getAttribute("disable-target") !== null) {
+            document.getElementById(element.getAttribute("disable-target")).disabled = !event.target.checked;
+        }
     });
 });
 
@@ -183,7 +168,7 @@ importMap.addEventListener("click", function() {
 importMapAction.addEventListener("change",function() {
     for(file of importMapAction.files) {
         let zip = new JSZip();
-        if(/.pls$|.phz$/.exec(file.name)) {
+        if(/\.pls$|\.phz$/.exec(file.name)) {
             zip.loadAsync(file).then(function(zip) {
                 zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
                     let vtest = JSON.parse(fileData);

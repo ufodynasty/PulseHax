@@ -2,13 +2,13 @@ window.addEventListener("SetupComplete", function() {
     const colorBankImport = document.createElement('input');
     colorBankImport.type = "file";
     colorBankImport.id = "colorBankImportAction";
-    colorBankImport.accept = ".phb";
+    colorBankImport.accept = ".phb, .plsb";
     colorBankImport.multiple = "false";
     colorBankImport.style = "display:none;";
     document.body.appendChild(colorBankImport);
     colorBankImport.addEventListener("change", function() {
         let zip = new JSZip();
-        if(/\.plsb$/.exec(colorBankImport.files[0].name)){
+        if(/\.phb$|\.plsb$/.exec(colorBankImport.files[0].name)){
             zip.loadAsync(colorBankImport.files[0])
             .then(function(zip) {
             zip.files[Object.keys(zip.files)[0]].async('string').then(function (fileData) {
@@ -108,9 +108,9 @@ window.addEventListener("SetupComplete", function() {
         edit_colorBank_removeBank: "Remove Color Bank",
         edit_colorBank_removeBank_sub: "Removes the selected color bank from dropdown",
         edit_colorBank_export: "Export Color Bank",
-        edit_colorBank_export_sub: "Exports your color banks to a .plsb file",
+        edit_colorBank_export_sub: "Exports your color banks to a .phb file",
         edit_colorBank_import: "Import Color Bank",
-        edit_colorBank_import_sub: "Imports a .plsb file as a color bank and overrides your current one",
+        edit_colorBank_import_sub: "Imports a .phb file as a color bank and overrides your current one",
     
         edit_select_item_selectInRange: "Select In Range",
         edit_select_item_selectInRange_sub: "Selects all notes in the selected range",
@@ -122,10 +122,12 @@ window.addEventListener("SetupComplete", function() {
         edit_select_noteType_beat: "Beat",
         edit_select_noteType_hold: "Hold",
         edit_select_noteType_anchor: "Anchor",
+        edit_select_holdLength: "Hold Length",
+        edit_select_holdLength_sub: "Selects holds with the selected length",
         edit_select_chordType: "Chord Type",
-        edit_select_chordType_sub: "Chooses how many notes should be in each tick (0 for any)",
+        edit_select_chordType_sub: "Chooses how many notes should be in each tick",
         edit_select_snapSelect: "Snap Select",
-        edit_select_snapSelect_sub: "Takes an expression a/b and applies it to the snap filter (Leave blank for any)",
+        edit_select_snapSelect_sub: "Takes an expression a/b and applies it to the snap filter",
         edit_select_selectStreamEnd: "Select Stream End",
         edit_select_selectStreamEnd_sub: "Toggles if the last beat of a stream is selected",
         edit_select_createPracticeDiff: "Create Practice Diff",
@@ -134,9 +136,10 @@ window.addEventListener("SetupComplete", function() {
     game.pulseHax.dropdownClosed = true;
     game.pulseHax.editor = {
         noteType: "any",
+        holdLength: 0,
         chordType: 0,
         snapSelect: 0,
-        snapSelectDis: "All",
+        snapSelectDis: "Any",
         selectStreamEnd: false,
         customSnap: 4,
         playbackRate: 1,
@@ -179,6 +182,16 @@ window.addEventListener("SetupComplete", function() {
             options: ["any", "beat", "hold", "anchor"],
             var: [game.pulseHax.editor, "noteType"]
         }, {
+            name: "edit_select_holdLength",
+            hint: "edit_select_holdLength_sub",
+            type: "number",
+            min: 0,
+            max: false,
+            smallChange: .25,
+            bigChange: 1,
+            var: [game.pulseHax.editor, "holdLength"],
+            display: () => game.pulseHax.editor.holdLength === 0 ? "Any" : game.pulseHax.editor.holdLength
+        }, {
             name: "edit_select_chordType",
             hint: "edit_select_chordType_sub",
             type: "number",
@@ -187,7 +200,8 @@ window.addEventListener("SetupComplete", function() {
             smallChange: 1,
             bigChange: 2,
             var: [game.pulseHax.editor, "chordType"],
-            update: () => game.pulseHax.editor.chordType = Math.floor(game.pulseHax.editor.chordType)
+            update: () => game.pulseHax.editor.chordType = Math.floor(game.pulseHax.editor.chordType),
+            display: () => game.pulseHax.editor.chordType === 0 ? "Any" : game.pulseHax.editor.chordType
         }, {
             name: "edit_select_snapSelect",
             hint: "edit_select_snapSelect_sub",
@@ -198,7 +212,7 @@ window.addEventListener("SetupComplete", function() {
                 let splitVer = game.pulseHax.editor.snapSelectDis.split("/");
                 game.pulseHax.editor.snapSelect = splitVer[0] / splitVer[1];
                 if(isNaN(game.pulseHax.editor.snapSelect) || game.pulseHax.editor.snapSelectDis === "") {
-                    game.pulseHax.editor.snapSelectDis = "All";
+                    game.pulseHax.editor.snapSelectDis = "Any";
                     game.pulseHax.editor.snapSelect = 0;
                 }
             }
@@ -518,7 +532,7 @@ window.addEventListener("SetupComplete", function() {
                 const a = document.createElement("a");
                 const url = window.URL.createObjectURL(blob);
                 a.href = url;
-                a.download = `${newGrabUser(user.uuid, "uuid").user}'s Color Bank.plsb`;
+                a.download = `${newGrabUser(user.uuid, "uuid").user}'s Color Bank.phb`;
                 a.click();
                 URL.revokeObjectURL(url);
                 });
@@ -633,12 +647,19 @@ game.selectBeats = function(condition, options) {
                 if(!returnValue) {
                     return false;
                 }
-            }
+            };
             // Check if current beat is a beat (0) or a hold (1). If not, return false
             if(beat[5] !== noteType && noteType !== 2) {
                 return false;
             };
         };
+        if(options.noteType !== "beat") {
+            // Check if it's in the selected hold length
+            const holdLength = options.holdLength;
+            if(beat[5] === 1 && game.timelineTickFor(beat[6]) !== holdLength && holdLength !== 0) {
+                return false;
+            }
+        }
         // Run checks for chord type if it's not all
         if(options.chordType !== 0) {
             const chordType = options.chordType;

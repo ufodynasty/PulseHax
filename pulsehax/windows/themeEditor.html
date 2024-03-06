@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" class="dark-theme">
+<html id="html" lang="en" class="dark-theme" buffer="no-transition">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./util.js" defer></script>
-    <script src="./assets/script/p5.min.js" defer></script>
-    <script src="./assets/script/jszip.min.js" defer></script>
-    <script src="./loadTheme.js" defer></script>
-    <script src="./themeEditor.js" defer></script>
-    <link rel="stylesheet" href="./themeEditor.css">
+    <script src="/assets/script/util.js" defer></script>
+    <script src="/assets/script/p5.min.js" defer></script>
+    <script src="/assets/script/jszip.min.js" defer></script>
+    <script src="/assets/script/loadTheme.js" defer></script>
+    <script src="/assets/script/themePreview.js" defer></script>
+    <script src="/pulsehax/windows/themeEditor.js" defer></script>
+    <link rel="stylesheet" href="/assets/style/themeEditor.css">
+    <style id="pseudo-style"></style>
     <title>Theme Editor</title>
 </head>
 <body>
@@ -19,6 +21,7 @@
     <div class="parent">
         <div>
             <input type="button" id="theme-toggle" value="Switch to Light Theme">
+            <p class="save-popup-hidden" id="save-popup">Saved</p>
             <hr class="small-hr">
             <h1 display="main">Main</h1>
             <input type="color" id="main">
@@ -53,8 +56,6 @@
             <input type="button" id="import-theme" value="Import Custom Theme" class="half">
             <input type="button" id="export-theme" value="Export Custom Theme" class="half">
             <input type="file" id="import-theme-action" accept=".phk" multiple="false" style="display:none;">
-            <hr>
-            <p class="save-popup-hidden" id="save-popup">Saved</p>
         </div>
         <div id="p5Canvas">
             <h1 class="big">Theme Preview</h1>

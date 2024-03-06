@@ -245,7 +245,7 @@ window.addEventListener("SetupComplete", function() {
         };
         loadLevel = function${
             loadLevel.toString()
-                .replace(`{`, `{if(!game.edit && menu.PHSettings.preferredFS !== "" && menu.PHSettings.preferredFS !== 0){
+                .replace(`{`, `{if(menu.PHSettings.preferredFSEnabled){
                     foresight = clevels[menu.lvl.sel]?.local ? (clevels[menu.lvl.sel].ar <= 0 ? 1 : clevels[menu.lvl.sel].ar) : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar <=0 ? 1 : newGrabLevelMeta(clevels[menu.lvl.sel], "id").ar;
                     foresight = Math.round(menu.PHSettings.preferredFS / foresight * 100) / 100;
                     if(foresight<.25) {foresight = .25};
