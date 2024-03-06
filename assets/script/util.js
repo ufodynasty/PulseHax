@@ -1,5 +1,48 @@
 let userSettings = {};
 let userData = {};
+const html = document.getElementById("html");
+setTimeout(() => {
+    html.setAttribute("buffer", "")
+    document.getElementById("pseudo-style").innerHTML = `
+        ::-webkit-slider-thumb {
+            transition: width 150ms, height 150ms, background 300ms;
+        }
+        .topnav, a {
+            transition: 300ms;
+        }
+        span.bind {
+            transition: all 300ms;
+        }
+        input {
+            transition: 150ms;
+        }
+        select {
+            transition: 150ms;
+        }`;
+}, 100);
+const themeToggle = document.getElementById("theme-toggle");
+const save = document.getElementById("save-popup");
+let saveTransCompleted = true;
+function savePopup(text) {
+    save.innerText = `Saved ${text}!`;
+    save.className = "save-popup-show";
+    if(saveTransCompleted) {
+        saveTransCompleted = false;
+        setTimeout(() => {
+            save.className = "save-popup-hidden";
+            saveTransCompleted = true;
+        }, 1000);
+    }
+};
+
+themeToggle.addEventListener("click", function() {
+    userSettings.theme = userSettings.theme === "dark-theme" ? "light-theme" : "dark-theme";
+    chrome.storage.local.set({Settings:userSettings}, function() {
+        savePopup("Theme");
+    });
+    html.className = userSettings.theme;
+    themeToggle.value = userSettings.theme === "dark-theme" ? "Switch to Light Theme" : "Switch to Dark Theme";
+});
 chrome.storage.local.get({Settings:{
     theme: "dark-theme",
 
@@ -11,6 +54,7 @@ chrome.storage.local.get({Settings:{
     sfxVolume: 50,
 
     skipIntro: false,
+    preferredFSEnabled: false,
     preferredFS: 1,
 
     changeTab: false
@@ -19,7 +63,6 @@ chrome.storage.local.get({Settings:{
 }}, function(response) {
     userSettings = response.Settings;
     userData = response.UserData;
-    const html = document.getElementsByTagName("html")[0];
     const themeToggle = document.getElementById("theme-toggle");
     html.className = userSettings.theme;
     themeToggle.value = userSettings.theme === "dark-theme" ? "Switch to Light Theme" : "Switch to Dark Theme";
@@ -36,8 +79,8 @@ chrome.storage.local.get({Settings:{
             if(element.type === "text" || element.type === "number") {
                 element.value = userSettings[key];
             }
-        }
-    })
+        };
+    });
     document.dispatchEvent(new CustomEvent("FetchLocalStorage"))
 });
 
@@ -93,6 +136,8 @@ function refreshValue(value, valueArg) {
         case "sfxVolume":
             break;
         case "skipIntro":
+            break;
+        case "preferredFSEnabled":
             break;
         case "preferredFS":
             break;

@@ -1,19 +1,18 @@
 {
     "name": "PulseHax",
-    "version": "0.12.0",
+    "version": "0.12.1",
     "description": "Hacking pulsus has never been so easy",
     "permissions": ["storage"],
     "host_permissions": ["https://pulsus.cc/*","https://www.pulsus.cc/*"],
     "content_scripts": [{
         "matches": ["https://pulsus.cc/*","https://www.pulsus.cc/*"],
-        "js": ["contentScript.js"],
+        "js": ["/pulsehax/game-scripts/contentScript.js"],
         "all_frames": true
         }],
     "web_accessible_resources": [{
         "resources": [
-        "/Init.js",
-        "/editorMenu.js",
-        "/colorBankMenu.js",
+        "/pulsehax/game-scripts/Init.js",
+        "/pulsehax/game-scripts/editorMenu.js",
         "/assets/game/icon.ico",
         "/assets/audio/retry.wav",
         "/assets/audio/scroll.wav",
@@ -25,21 +24,21 @@
     }],
     "action": {
     "default_icon": {
-        "128": "assets/icons/icon_128.png",
-        "64": "assets/icons/icon_64.png",
-        "32": "assets/icons/icon_32.png",
-        "48": "assets/icons/icon_48.png",
-        "16": "assets/icons/icon_16.png"
+        "128": "/assets/icons/icon_128.png",
+        "64": "/assets/icons/icon_64.png",
+        "32": "/assets/icons/icon_32.png",
+        "48": "/assets/icons/icon_48.png",
+        "16": "/assets/icons/icon_16.png"
     },
     "default_title": "PulseHax",
-    "default_popup": "popup.html"
+    "default_popup": "/pulsehax/popup-windows/popup.html"
     },
     "icons": {
-        "128": "assets/icons/icon_128.png",
-        "64": "assets/icons/icon_64.png",
-        "32": "assets/icons/icon_32.png",
-        "48": "assets/icons/icon_48.png",
-        "16": "assets/icons/icon_16.png"
+        "128": "/assets/icons/icon_128.png",
+        "64": "/assets/icons/icon_64.png",
+        "32": "/assets/icons/icon_32.png",
+        "48": "/assets/icons/icon_48.png",
+        "16": "/assets/icons/icon_16.png"
     },
     "manifest_version": 3
 }

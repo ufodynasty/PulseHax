@@ -28,6 +28,8 @@ PulseHax is a Pulsus extension that adds a lot of QoL features not yet added to 
 - `Enter` - Download/Play Map
 - `Tab` - Quick Retry
 
+> *[PulseHax Settings documentation](https://github.com/ufodynasty/PulseHax/wiki/Settings-Documentation)*
+
 ## Running PulseHax
 
 ### Through GitHub

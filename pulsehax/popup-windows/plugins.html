@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" class="dark-theme">
+<html id="html" lang="en" class="dark-theme" buffer="no-transition">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./util.js" defer></script>
-    <script src="./assets/script/jszip.min.js" defer></script>
-    <script src="./plugins.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="/assets/script/util.js" defer></script>
+    <script src="/assets/script/jszip.min.js" defer></script>
+    <script src="/pulsehax/popup-windows/plugins.js" defer></script>
+    <link rel="stylesheet" href="/assets/style/style.css">
+    <style id="pseudo-style"></style>
     <title>Extras</title>
 </head>
 <body>
     <div class="topnav">
-        <a href="./extras.html">Extras</a>
-        <a href="./editor.html">Editor</a>
-        <a href="./customTheme.html">Theme</a>
-        <a href="./plugins.html" class="selected">Plugins</a>
+        <a href="/pulsehax/popup-windows/extras.html">Extras</a>
+        <a href="/pulsehax/popup-windows/editor.html">Editor</a>
+        <a href="/pulsehax/popup-windows/customTheme.html">Theme</a>
+        <a href="/pulsehax/popup-windows/plugins.html" class="selected">Plugins</a>
     </div>
     <h1 class="welcome">Plugins</h1>
     <hr>
     <input type="button" id="theme-toggle" value="Switch to Light Theme">
+    <p class="save-popup-hidden" id="save-popup">Saved</p>
+    <hr class="small-hr">
     <main id="pluginManager" style="padding-top: 10px;">
         <input type="file" id="pluginImportAction" accept=".js" style="display:none">
         <input type="button" id="pluginImport" value="Import Plugin">
@@ -29,7 +32,5 @@
             <div style = "display:inline; text-align:left; color:#ff8000; font-size:10px;">Restart Pulsus to apply changes.</div>
         </div>
     </main>
-    <hr>
-    <p class="save-popup-hidden" id="save-popup">Saved</p>
 </body>
 </html>

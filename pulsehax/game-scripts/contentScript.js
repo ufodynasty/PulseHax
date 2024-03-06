@@ -1,10 +1,10 @@
 let initScript = document.createElement('script');
-initScript.src = chrome.runtime.getURL(`Init.js`);
+initScript.src = chrome.runtime.getURL(`/pulsehax/game-scripts/Init.js`);
 initScript.onload = function() {
   this.remove();
 };
 let editorMenu = document.createElement('script');
-editorMenu.src = chrome.runtime.getURL(`editorMenu.js`);
+editorMenu.src = chrome.runtime.getURL(`/pulsehax/game-scripts/editorMenu.js`);
 editorMenu.onload = function() {
   this.remove();
 };
@@ -45,6 +45,7 @@ window.addEventListener("SetupComplete", function() {
             customTheme: false,
             sfxVolume: 50,
             skipIntro: false,
+            preferredFSEnabled: false,
             preferredFS: 1,
             changeTab: false
         },
@@ -88,6 +89,7 @@ window.addEventListener("SetupComplete", function() {
             additionalThemes: ${userSettings.additionalThemes},
             changeTab: ${userSettings.changeTab},
             customTheme: ${userSettings.customTheme},
+            preferredFSEnabled: ${userSettings.preferredFSEnabled},
             preferredFS: ${userSettings.preferredFS === "" ? '""' : userSettings.preferredFS},
             sfxVolume: ${userSettings.sfxVolume}
         };

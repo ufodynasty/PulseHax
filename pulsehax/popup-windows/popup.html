@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class="dark-theme">
+<html id="html" lang="en" class="dark-theme" buffer="no-transition">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./util.js"></script>
-    <script src="./popup.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="/assets/script/util.js" defer></script>
+    <script src="/pulsehax/popup-windows/popup.js" defer></script>
+    <link rel="stylesheet" href="/assets/style/style.css">
+    <style id="pseudo-style"></style>
     <title>Popup</title>
 </head>
 <body>
@@ -14,10 +15,10 @@
     </h1>
     <hr>
     <input type="button" id="theme-toggle" value="Switch to Light Theme">
+    <p class="save-popup-hidden" id="save-popup">Saved</p>
+    <hr class="small-hr">
     <p>
         PulseHax is only available in Pulsus γ (gamma)! If you are currently in Pulsus γ and this popup is being shown, please report this issue to PulseHax support.
     </p>
-    <hr>
-    <p class="save-popup-hidden" id="save-popup">Saved</p>
 </body>
 </html>
