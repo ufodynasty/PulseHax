@@ -549,7 +549,8 @@ window.addEventListener("SetupComplete", function() {
     }
     ]);
 
-    eval(`musicManager.field.draw = ` + musicManager.field.draw.toString().replace(`128})}`, `128})} if(game.editorMode === 0 && game.shiftTab) {
+    eval(`musicManager.field.draw = ` + musicManager.field.draw.toString()
+        .replace(`128})}`, `128})} if(game.editorMode === 0 && game.shiftTab) {
         if (fill(0, 0, 0, 200),
             rectMode(CORNER),
             noStroke(),
@@ -565,6 +566,7 @@ window.addEventListener("SetupComplete", function() {
         })
     }
 }`)
+        .replace(/\*..\.timelineOffset/, "")
 );
 
 game.selectBeats = function(condition, options) {

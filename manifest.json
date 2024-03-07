@@ -1,6 +1,6 @@
 {
     "name": "PulseHax",
-    "version": "0.12.1",
+    "version": "0.12.2",
     "description": "Hacking pulsus has never been so easy",
     "permissions": ["storage"],
     "host_permissions": ["https://pulsus.cc/*","https://www.pulsus.cc/*"],
