@@ -11,7 +11,7 @@ def main() -> None:
     # Read it
     file: str = file.read()
     # Search for the timing points
-    file: str = re.search("\[TimingPoints\].*\[Colours\]", file.replace("\n", "placeholder")).group(0).replace("placeholder", "\n")[len("[TimingPoints]"):-len("[Colours]")].strip("\n")
+    file: str = re.search("\[TimingPoints\].*\[", file.replace("\n", "placeholder")).group(0).replace("placeholder", "\n")[len("[TimingPoints]"):-len("[")].strip("\n")
     # Turn it into a list cotaining all the lines (aka each timing point is now a list item)
     file: list[str] = io.StringIO(file).readlines()
     # Strip the \n
