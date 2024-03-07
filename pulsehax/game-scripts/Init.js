@@ -264,7 +264,7 @@ window.addEventListener("SetupComplete", function() {
         };
         musicManager.updateEditor = function${
             musicManager.updateEditor.toString()
-                .replace(/..\.timeEnd/gi, "let sections = game.sections.filter((section) => section.time <= game.time).sort((a, b) => a.time - b.time); sections = sections.length > 0 ? sections : [{bpm: game.timelineBPM, offset: game.timelineOffset}]; const currentSection = sections[sections.length-1]; game.timelineBPM = currentSection.bpm; game.timelineOffset = currentSection.offset, game.timeEnd")
+                .replace(/..\.timeEnd/gi, "let sections = game.sections.filter((section) => section.time <= game.time).sort((a, b) => a.time - b.time); sections = sections.length > 0 ? sections : [{bpm: game.beat[0]?.[9] ?? game.timelineBPM, offset: game.beat[0]?.[10] ?? game.timelineOffset}]; const currentSection = sections[sections.length-1]; game.timelineBPM = currentSection.bpm; game.timelineOffset = currentSection.offset, game.timeEnd")
                 .replace(musicManager.updateEditor.toString().split("{")[0], game.functionParams(musicManager.updateEditor))
         }
         editorAction = function${
