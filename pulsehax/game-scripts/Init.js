@@ -262,6 +262,11 @@ window.addEventListener("SetupComplete", function() {
                     )),`)
                 .replace(drawScreens.toString().split("{")[0], game.functionParams(drawScreens))
         };
+        musicManager.updateEditor = function${
+            musicManager.updateEditor.toString()
+                .replace(/..\.timeEnd/gi, "let sections = game.sections.filter((section) => section.time <= game.time).sort((a, b) => a.time - b.time); sections = sections.length > 0 ? sections : [{bpm: game.timelineBPM, offset: game.timelineOffset}]; const currentSection = sections[sections.length-1]; game.timelineBPM = currentSection.bpm; game.timelineOffset = currentSection.offset, game.timeEnd")
+                .replace(musicManager.updateEditor.toString().split("{")[0], game.functionParams(musicManager.updateEditor))
+        }
         editorAction = function${
             editorAction.toString()
                 .replace(`.snap===1/12&&(`, `.snap>0&&(`)
@@ -299,6 +304,7 @@ window.addEventListener("SetupComplete", function() {
                             }
                         }, 500)
                     }; game.pulseHax.dropdownClosed = false}})`)
+                .replace(")?255:200),", ")?theme.buttonUp:theme.buttonDown),")
                 .replace(`${game.pulseHax.params.NSMItem}.animation.height=0,`, `(${game.pulseHax.params.NSMItem}.animation.height = 0, game.pulseHax.dropdownClosed = false),`)
         };
         `);

@@ -15,7 +15,7 @@ def main() -> None:
             is_double = True
             result = re.search(f".{search}", file)
             if(result == None):
-                raise ValueError(f"Invalid parameter(s) used for ${search}")
+                return "undefined"
         result = result.group(0)
         return result[1 if result[0] == " " or result[0] == "," else 0 : 2 if not is_double else 3]
     
@@ -26,7 +26,7 @@ def main() -> None:
             is_double = True
             result = re.search(f".\({','.join(['.' for i in range(param_length)])}\)" + "{" + f"{start_search}", file)
             if(result == None):
-                raise ValueError(f"Invalid parameter(s) used for {start_search}")
+                return "undefined"
         result = result.group(0)
         return result[0 if result[0] != " " else 1 : 2 if not is_double else 3]
     names = {
@@ -75,11 +75,12 @@ def main() -> None:
         "themes": get_variable('=\[\{main'),
         "toLoad": get_variable('="hidden",.\.finishFade'),
         "user": get_variable('.uuid=.\.uuid\}\)'),
-        "welcome": get_variable('\.textA\),textSize\(100\)')
+        "welcome": get_variable('\.textA\),textSize\(100\)'),
+        "AS": get_variable('\.texdsatA\),textSize\(100\)')
     }
     parameters: str = ""
     for i in names:
-        parameters += "Object.defineProperty(globalThis, '" + i + "', {get:()=>{  return  " + names[i] + "  },set:(val)=>{  " + names[i] + "  =val}});" + ("\n" if i != "welcome" else "")
+        parameters += "Object.defineProperty(globalThis, '" + i + "', {get:()=>{  return  " + names[i] + "  },set:(val)=>{  " + names[i] + "  =val}});" + ("\n" if i != list(names)[-1] else "")
     print(parameters)
     if input("Copy to clipboard?"):
         pyperclip.copy(parameters)
