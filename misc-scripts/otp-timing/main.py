@@ -11,7 +11,7 @@ def main() -> None:
     # Read it
     file: str = file.read()
     # Search for the timing points
-    file: str = re.search("\[TimingPoints\].*\[", file.replace("\n", "placeholder")).group(0).replace("placeholder", "\n")[len("[TimingPoints]"):-len("[")].strip("\n")
+    file: str = re.search("\[TimingPoints\].*?\[", file.replace("\n", "placeholder")).group(0).replace("placeholder", "\n")[len("[TimingPoints]"):-len("[")].strip("\n")
     # Turn it into a list cotaining all the lines (aka each timing point is now a list item)
     file: list[str] = io.StringIO(file).readlines()
     # Strip the \n
@@ -21,6 +21,8 @@ def main() -> None:
     uninherited_points: list[list[str]] = []
     for i in file:
         current_value: list[str] = i.split(",")
+        if len(current_value) < 8:
+            current_value.pop(current_value.index(i))
         if current_value[-2] == '1': 
             uninherited_points.append([current_value[0], current_value[1]])
     # Filter for bpm changes only
