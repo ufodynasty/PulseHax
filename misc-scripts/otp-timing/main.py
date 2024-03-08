@@ -72,7 +72,7 @@ def main() -> None:
     result = f"const newSections = [{result}]" + '''
 newSections.map((section) => {
     ''' + f"section.time += 60/newSections[0].bpm*{tick_offset}*2; section.offset += 60/newSections[0].bpm*{tick_offset} * 1000;" + "});" + ("\nnewSections.shift()" if remove_first == 1 else "") + '''
-game.sections''' + (".push(newSections)" if overwrite == 2 else " = newSections")
+game.sections''' + (".push(...newSections)" if overwrite == 2 else " = newSections")
     print(result)
     pyperclip.copy(result)
     exit()
