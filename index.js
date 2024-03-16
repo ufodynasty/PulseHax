@@ -1,5 +1,3 @@
-/* Under Construction!
-
 var AutoUpdater = require('auto-updater');
 
 var autoupdater = new AutoUpdater({
@@ -7,10 +5,12 @@ var autoupdater = new AutoUpdater({
     autoupdate: false,
     checkgit: true,
     jsonhost: 'raw.githubusercontent.com/ufodynasty/PulseHax/master/package.json',
-    contenthost: 'api.github.com/repos/ufodynasty/PulseHax/releases/latest',
+    contenthost: 'codeload.github.com/ufodynasty/PulseHax/zip/master',
     progressDebounce: 0,
     devmode: false
 });
+
+console.log(autoupdater)
 
 // State the events
 autoupdater.on('git-clone', function() {
@@ -57,5 +57,3 @@ autoupdater.on('error', function(name, e) {
 
 // Start checking
 autoupdater.fire('check');
-
-*/

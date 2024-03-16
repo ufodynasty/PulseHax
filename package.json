@@ -1,6 +1,10 @@
 {
   "name": "pulsehax",
   "version": "1.0.0",
+  "auto-updater":{
+	"repo":"/ufodynasty/PulseHax",
+	"branch":"master"
+  },
   "description": "Hacking pulsus has never been easier",
   "main": "index.js",
   "scripts": {
