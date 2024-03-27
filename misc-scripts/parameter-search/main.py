@@ -71,12 +71,12 @@ def main() -> None:
         "screen": get_variable(',..,..,..,.=..\.newHits'),
         "scrollTimeline": get_function(3, 'var .=..\.timelineBPM/..\.bpm'),
         "server": get_variable('\.userStatus\[.\]\[1\]<.'),
+        "serverEmit": get_function(2, '.\.queueType'),
         "theme": get_variable('=\{main'),
         "themes": get_variable('=\[\{main'),
         "toLoad": get_variable('="hidden",.\.finishFade'),
         "user": get_variable('.uuid=.\.uuid\}\)'),
-        "welcome": get_variable('\.textA\),textSize\(100\)'),
-        "AS": get_variable('\.texdsatA\),textSize\(100\)')
+        "welcome": get_variable('\.textA\),textSize\(100\)')
     }
     parameters: str = ""
     for i in names:

@@ -40,6 +40,7 @@ function completeSetup() {
     Object.defineProperty(globalThis, 'screen', {get:()=>{  return  He  },set:(val)=>{  He  =val}});
     Object.defineProperty(globalThis, 'scrollTimeline', {get:()=>{  return  qn  },set:(val)=>{  qn  =val}});
     Object.defineProperty(globalThis, 'server', {get:()=>{  return  v  },set:(val)=>{  v  =val}});
+    Object.defineProperty(globalThis, 'serverEmit', {get:()=>{  return  B  },set:(val)=>{  B  =val}});
     Object.defineProperty(globalThis, 'theme', {get:()=>{  return  $  },set:(val)=>{  $  =val}});
     Object.defineProperty(globalThis, 'themes', {get:()=>{  return  qe  },set:(val)=>{  qe  =val}});
     Object.defineProperty(globalThis, 'toLoad', {get:()=>{  return  Ne  },set:(val)=>{  Ne  =val}});
@@ -254,14 +255,13 @@ window.addEventListener("SetupComplete", function() {
                 };`)
                 .replace(loadLevel.toString().split("{")[0], game.functionParams(loadLevel))
         };
-        drawScreens = function${
-            drawScreens.toString()
-                .replace(`${musicManager.name}(),`, `(${musicManager.name}(),
-                (!game.edit && (game.disMode === 1 || game.disMode === 2) && screen === "game" && game.mods.startPos === 0) && (
-                    game.mods.startPos = game.beat[0][1] < 0 ? 60000 / game.beat[0][9] * game.beat[0][1] - 1 : -1
-                    )),`)
-                .replace(drawScreens.toString().split("{")[0], game.functionParams(drawScreens))
-        };
+        serverEmit = function${
+            serverEmit.toString()
+                .replace("{", `{
+                    if(${serverEmit.toString().match(/.\)[^{]/)[0][0]} === "saveNewScore") return;
+                    `)
+                    .replace(serverEmit.toString().split("{")[0], game.functionParams(serverEmit))
+        }
         musicManager.updateEditor = function${
             musicManager.updateEditor.toString()
                 .replace(/..\.timeEnd/gi, "let sections = game.sections.filter((section) => section.time <= game.time).sort((a, b) => a.time - b.time); sections = sections.length > 0 ? sections : [{bpm: game.beat[0]?.[9] ?? game.timelineBPM, offset: game.beat[0]?.[10] ?? game.timelineOffset}]; const currentSection = sections[sections.length-1]; game.timelineBPM = currentSection.bpm; game.timelineOffset = currentSection.offset, game.timeEnd")
